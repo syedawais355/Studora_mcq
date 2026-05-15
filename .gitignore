@@ -1,0 +1,34 @@
+# --- secrets (NEVER COMMIT) ---
+.env
+.env.local
+.env.production
+.env.*.local
+*_console.json
+studora_google_console.json
+
+# --- deps & build ---
+node_modules/
+.vercel/
+.vercel
+*.log
+
+# --- editor / OS ---
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# --- large binaries (host on releases instead) ---
+*.apk
+*.aab
+*.ipa
+*.dmg
+*.exe
+
+# --- tooling caches ---
+.playwright-mcp/
+.claude/
+*.tsbuildinfo
+
+# --- generated css from build ---
+# main.css IS tracked since it's the deployed output, but local stamps are not

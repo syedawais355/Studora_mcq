@@ -1,0 +1,7 @@
+.nb-pag{display:flex;gap:0;justify-content:center;padding:30px 0 10px;font-family:var(--mono);flex-wrap:wrap}
+.nb-pag a,.nb-pag button,.nb-pag span{min-width:40px;height:40px;display:grid;place-items:center;border:1.5px solid var(--ink);border-right:0;font-size:13px;font-weight:600;text-decoration:none;color:var(--ink);padding:0 10px;background:var(--paper);cursor:pointer}
+.nb-pag > *:last-child{border-right:1.5px solid var(--ink)}
+.nb-pag .cur{background:var(--ink);color:var(--paper)}
+.nb-pag .dots{background:transparent;cursor:default}
+.nb-pag button:disabled{opacity:.35;cursor:default}
+.nb-pag button:not(:disabled):not(.cur):hover{background:var(--paper-2)}

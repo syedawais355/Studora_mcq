@@ -1,0 +1,66 @@
+/* Side rail — paper cards in the same visual language as the download modal
+   (.nb-dl-card / .nb-dl-radio): paper ground, ink border, yellow dog-eared
+   corner sticker, uppercase mono labels, hover-lift on every clickable row. */
+.nb-rail{
+  display:flex;flex-direction:column;gap:18px;position:sticky;top:84px;
+}
+@media(max-width:980px){.nb-rail{position:static}}
+
+/* Card shell — mirrors .nb-wall-card / .nb-dl-card. */
+.nb-rail-card{
+  background:var(--paper);border:1.5px solid var(--ink);border-radius:6px;
+  padding:18px 18px 14px;position:relative;
+}
+/* Yellow dog-eared corner sticker — the same `::before` trick used on the
+   download modal card. */
+.nb-rail-card::before{
+  content:"";position:absolute;inset:-8px -8px auto auto;
+  width:34px;height:34px;background:var(--yellow);
+  border:1.5px solid var(--ink);transform:rotate(8deg);
+  z-index:-1;border-radius:6px;
+}
+
+.nb-rail-card h4{
+  margin:0 0 12px;padding:0;
+  font-family:var(--mono);font-size:11.5px;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);
+}
+
+.nb-rail-card ul{
+  list-style:none;margin:0;padding:0;
+  display:flex;flex-direction:column;gap:8px;
+}
+.nb-rail-card li{margin:0}
+
+/* Row — mirrors .nb-dl-radio: paper card with ink border, hover shadow-pop. */
+.nb-rail-card li a{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:10px 12px;border-radius:6px;cursor:pointer;color:var(--ink);
+  background:var(--paper);border:1.5px solid var(--ink);text-decoration:none;
+  transition:transform .12s, box-shadow .12s, background .12s;
+}
+.nb-rail-card li a:hover{
+  transform:translate(-1px,-1px);box-shadow:var(--shadow-pop);
+  background:var(--yellow);
+}
+.nb-rail-card li a > span:first-child{
+  font-family:var(--sans);font-size:14px;font-weight:700;color:var(--ink);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;
+}
+.nb-rail-card li a > span:last-child{
+  font-family:var(--mono);font-size:11px;color:var(--ink-3);
+  letter-spacing:.04em;flex-shrink:0;white-space:nowrap;
+}
+
+/* Exam rail uses italic-serif "muted" tagline instead of a count. */
+.nb-rail-card li a > span.muted{
+  font-family:var(--serif);font-style:italic;font-size:12.5px;color:var(--ink-3);
+  letter-spacing:0;
+}
+
+/* Empty list — graceful fallback. */
+.nb-rail-card ul:empty::after{
+  content:"nothing here yet";display:block;
+  font-family:var(--serif);font-style:italic;font-size:13px;
+  color:var(--ink-3);padding:4px 6px;
+}

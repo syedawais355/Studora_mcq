@@ -1,0 +1,9 @@
+.nb-cats{background:var(--paper);border:1.5px solid var(--ink);padding:0;columns:3;column-gap:0;column-rule:1px dashed var(--rule-ink)}
+@media(max-width:800px){.nb-cats{columns:2}}
+@media(max-width:500px){.nb-cats{columns:1}}
+.nb-cats a{display:flex;align-items:center;gap:12px;padding:12px 20px;text-decoration:none;color:inherit;break-inside:avoid;border-bottom:1px dashed var(--rule-ink);transition:background .15s;cursor:pointer}
+.nb-cats a:hover{background:var(--yellow)}
+.nb-cats a .ico{width:24px;height:24px;color:var(--ink-2);flex-shrink:0}
+.nb-cats a .ico svg{width:100%;height:100%;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.nb-cats a h4{margin:0;font-size:14.5px;font-weight:600;flex:1}
+.nb-cats a span{font-family:var(--mono);font-size:11px;color:var(--ink-3)}

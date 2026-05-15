@@ -1,0 +1,21 @@
+.nb-exams{border:1.5px solid var(--ink);background:var(--paper)}
+.nb-exams .row{display:grid;grid-template-columns:80px 1.2fr 2fr 1fr 1fr 100px;border-bottom:1px solid var(--rule-ink);padding:0;align-items:center;text-decoration:none;color:inherit;transition:background .15s;cursor:pointer}
+/* Compact 5-column variant (home page) — drops the "next sitting" column */
+.nb-exams.compact .row{grid-template-columns:80px 1.2fr 2fr 1fr 100px}
+.nb-exams .row:last-child{border-bottom:0}
+.nb-exams .row.head{background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.14em;font-weight:600;cursor:default}
+.nb-exams .row.head > div{padding:10px 14px}
+.nb-exams .row:not(.head):hover{background:var(--paper-2)}
+.nb-exams .row > div{padding:14px}
+.nb-exams .row .n{font-family:var(--mono);font-size:12px;color:var(--ink-3)}
+.nb-exams .row h3{margin:0;font-size:20px;font-weight:800;letter-spacing:-.015em}
+.nb-exams .row .tag{font-family:var(--serif);font-style:italic;color:var(--ink-2);font-size:14px}
+.nb-exams .row .count{font-family:var(--mono);font-size:14px;font-weight:600}
+.nb-exams .row .season{font-family:var(--mono);font-size:12px;color:var(--ink-2)}
+.nb-exams .row .go{font-family:var(--mono);font-size:12px;color:var(--ink);font-weight:600;text-align:right}
+.nb-exams .row .go::after{content:"→";margin-left:4px;display:inline-block;transition:transform .2s}
+.nb-exams .row:not(.head):hover .go::after{transform:translateX(3px)}
+@media(max-width:900px){
+  .nb-exams .row,.nb-exams.compact .row{grid-template-columns:60px 1fr 80px}
+  .nb-exams .row > div.tag,.nb-exams .row > div.season,.nb-exams .row > div.count{display:none}
+}
