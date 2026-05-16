@@ -1,23 +1,126 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-PK">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Studora — Pakistan's calmest MCQ bank. 105,890+ questions for CSS, PMS, MDCAT, PPSC, FPSC. Study quietly. Score loudly.">
-<meta property="og:title" content="Studora · A quieter place to practice for Pakistan's toughest exams">
-<meta property="og:description" content="105,890+ MCQs. 47 subjects. 8 exam tracks. No paywall for the basics.">
-<meta property="og:type" content="website">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light">
 <meta name="theme-color" content="#faf8f1">
-<title>Studora · Study quietly. Score loudly.</title>
 
+<title>Studora · MCQ practice for CSS, PMS, MDCAT, PPSC, FPSC — Study quietly. Score loudly.</title>
+<meta name="description" content="Pakistan's calmest MCQ bank. 105,890+ practice questions for CSS, PMS, MDCAT, PPSC, FPSC, NTS. Free basics, no clutter, no ads. Study quietly. Score loudly.">
+<meta name="keywords" content="CSS MCQs, PMS MCQs, MDCAT MCQs, PPSC MCQs, FPSC MCQs, NTS MCQs, Pakistan competitive exam, online MCQ practice, past papers Pakistan, free MCQ test, Studora">
+<meta name="author" content="Studora">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<meta name="googlebot" content="index, follow">
+<link rel="canonical" href="https://mcqbank.vercel.app/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Studora">
+<meta property="og:title" content="Studora · A quieter place to practice for Pakistan's toughest exams">
+<meta property="og:description" content="105,890+ MCQs. 47 subjects. 8 exam tracks. No paywall for the basics. Built like a notebook, fast like an app.">
+<meta property="og:url" content="https://mcqbank.vercel.app/">
+<meta property="og:locale" content="en_PK">
+<meta property="og:image" content="https://mcqbank.vercel.app/assets/img/og-cover.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Studora — Study quietly. Score loudly.">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Studora · MCQ practice for Pakistan's toughest exams">
+<meta name="twitter:description" content="105,890+ MCQs for CSS, PMS, MDCAT, PPSC, FPSC. Free basics. Calm UI.">
+<meta name="twitter:image" content="https://mcqbank.vercel.app/assets/img/og-cover.svg">
+
+<!-- PWA -->
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="/assets/img/studora-logo.svg">
+<link rel="apple-touch-icon" href="/assets/img/studora-logo.svg">
+
+<!-- Performance hints -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://xwvvxhkfndchpbyyaych.supabase.co">
+<link rel="dns-prefetch" href="https://xwvvxhkfndchpbyyaych.supabase.co">
+
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,700;1,9..144,500;1,9..144,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/main.css?v=1778642504">
+
+<!-- Structured data: Organization + WebSite + EducationalOrganization -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://mcqbank.vercel.app/#org",
+      "name": "Studora",
+      "url": "https://mcqbank.vercel.app/",
+      "logo": "https://mcqbank.vercel.app/assets/img/studora-logo.svg",
+      "description": "Pakistan's calmest MCQ bank for competitive exam preparation."
+    },
+    {
+      "@type": "EducationalOrganization",
+      "@id": "https://mcqbank.vercel.app/#edu",
+      "name": "Studora",
+      "url": "https://mcqbank.vercel.app/",
+      "areaServed": { "@type": "Country", "name": "Pakistan" },
+      "description": "Online MCQ practice platform for CSS, PMS, MDCAT, PPSC, FPSC, and NTS exam preparation in Pakistan."
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://mcqbank.vercel.app/#site",
+      "url": "https://mcqbank.vercel.app/",
+      "name": "Studora",
+      "description": "Study quietly. Score loudly.",
+      "publisher": { "@id": "https://mcqbank.vercel.app/#org" },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://mcqbank.vercel.app/?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      },
+      "inLanguage": "en-PK"
+    }
+  ]
+}
+</script>
 </head>
 <body class="nb">
 <div id="app" role="main"></div>
 <div class="nb-toast-wrap" id="nb-toasts" aria-live="polite" aria-atomic="true"></div>
+
+<!-- Crawler / no-JS fallback: real content for Googlebot and accessibility tools. -->
+<noscript>
+  <style>.ns-wrap{max-width:760px;margin:0 auto;padding:32px 24px;font-family:Inter,system-ui,sans-serif;line-height:1.6;color:#1a1a1a}.ns-wrap h1{font-family:Fraunces,Georgia,serif;font-size:2rem;margin:0 0 .5em}.ns-wrap h2{font-size:1.2rem;margin:1.5em 0 .3em}.ns-wrap ul{padding-left:1.2em}.ns-wrap a{color:#3a3a3a}</style>
+  <div class="ns-wrap">
+    <h1>Studora — MCQ practice for Pakistan's toughest exams</h1>
+    <p>Studora is a quieter place to practice multiple-choice questions for Pakistan's competitive exams. Over 105,000 questions across 47 subjects and 8 exam tracks. No paywall for the basics. JavaScript is required for the interactive app — please enable it in your browser.</p>
+    <h2>Exam tracks we cover</h2>
+    <ul>
+      <li>CSS — Central Superior Services</li>
+      <li>PMS — Provincial Management Service</li>
+      <li>PPSC — Punjab Public Service Commission</li>
+      <li>FPSC — Federal Public Service Commission</li>
+      <li>MDCAT — Medical &amp; Dental College Admission Test</li>
+      <li>ECAT — Engineering College Admission Test</li>
+      <li>NTS — National Testing Service</li>
+      <li>KPPSC — KP Public Service Commission</li>
+    </ul>
+    <h2>Subjects covered</h2>
+    <p>General Knowledge, Pakistan Affairs, Current Affairs, Islamic Studies, English, Urdu, Mathematics, Biology, Chemistry, Physics, Computer Science, Everyday Science, Economics, Geography, History, Political Science, and more.</p>
+    <h2>How Studora is different</h2>
+    <ul>
+      <li>Calm, distraction-free interface — no auto-play videos, no ad clutter</li>
+      <li>PDFs of full subject and exam question banks for offline study</li>
+      <li>Free for the basics — login only when you want to save bookmarks</li>
+      <li>Server-side API — your data and your study history stay private</li>
+    </ul>
+    <p>Browse <a href="/subjects">all subjects</a> or pick an <a href="/exams">exam track</a>.</p>
+  </div>
+</noscript>
 
 <script src="/assets/vendor/supabase.js?v=1778642504"></script>
 <script type="module" src="/assets/js/main.js?v=1778642504"></script>
