@@ -61,11 +61,60 @@ self.addEventListener('fetch', (event) => {
       caches.open(CACHE_VERSION).then(async cache => {
         const cached = await cache.match(req);
         const networkFetch = fetch(req).then(res => {
-          if (res.ok) cache.put(req, res.clone());
+          // Strict cache-write gate (#46). A `res.ok` response can still be
+          // wrong — a 204, a partial body, or HTML returned for a .js URL
+          // during an incident or mis-deploy. If we put any of those in the
+          // cache, every visiting client pins the bad asset until they
+          // manually clear storage. Better to under-cache than to enshrine
+          // a broken response.
+          if (isCacheable(url, res)) cache.put(req, res.clone());
           return res;
         }).catch(() => cached); // network died — fall back to cached if present
         return cached || networkFetch;
       })
     );
   }
+});
+
+// Returns true only when the response is safe to persist. Validates status,
+// non-empty body, and Content-Type matches what the file extension claims.
+// Unknown extensions fall through to the loose 200+length check so we don't
+// regress on assets that don't fit the listed buckets.
+function isCacheable(url, res) {
+  if (!res || res.status !== 200) return false;
+  const len = parseInt(res.headers.get('Content-Length') || '', 10);
+  if (!Number.isFinite(len) || len <= 0) return false;
+  const ct = (res.headers.get('Content-Type') || '').toLowerCase();
+  const path = url.pathname.toLowerCase();
+  if (path.endsWith('.js') || path.endsWith('.mjs')) {
+    return ct.startsWith('application/javascript') || ct.startsWith('text/javascript');
+  }
+  if (path.endsWith('.css')) {
+    return ct.startsWith('text/css');
+  }
+  if (path.endsWith('.woff2')) {
+    return ct === 'font/woff2';
+  }
+  if (path.endsWith('.svg')) {
+    return ct.includes('image/svg+xml');
+  }
+  return true; // images, json, manifest, etc. — status + length are enough
+}
+
+// Ops kill switch (#46). When an incident is detected (bad cached asset,
+// stale shell pinning users to a broken build), the page can post
+// {type: 'CLEAR_CACHE'} and we drop every cache the SW owns. The reply on
+// event.ports[0] lets the caller wait for confirmation before reloading.
+self.addEventListener('message', (event) => {
+  const data = event.data;
+  if (!data || data.type !== 'CLEAR_CACHE') return;
+  event.waitUntil((async () => {
+    try {
+      const keys = await caches.keys();
+      await Promise.all(keys.map(k => caches.delete(k)));
+      event.ports?.[0]?.postMessage({ ok: true, cleared: keys.length });
+    } catch (err) {
+      event.ports?.[0]?.postMessage({ ok: false, error: String(err) });
+    }
+  })());
 });
