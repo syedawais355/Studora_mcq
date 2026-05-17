@@ -67,6 +67,24 @@ mark.hl.b{background:var(--sky)}
 .muted{color:var(--ink-3)}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
 
+/* Skip-to-content link — visible on focus only. WCAG 2.4.1 */
+.skip-link{
+  position:absolute;left:-9999px;top:0;
+  background:var(--ink,#17181c);color:var(--paper,#faf8f1);
+  padding:10px 16px;font-family:var(--mono);font-size:13px;font-weight:600;
+  border-radius:0 0 6px 0;z-index:9999;text-decoration:none;
+}
+.skip-link:focus{left:0;outline:2px solid var(--yellow,#ffe680);outline-offset:-2px}
+
+/* Respect reduced-motion users */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+}
+
+/* Visible focus indicators for keyboard users */
+:focus-visible{outline:2px solid var(--ink-3,#3a3a3a);outline-offset:2px;border-radius:2px}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--ink-3,#3a3a3a);outline-offset:2px}
+
 .nb-wrap{max-width:1240px;margin:0 auto;padding:0 24px}
 @media(max-width:600px){.nb-wrap{padding:0 16px}}
 

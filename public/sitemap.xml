@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://mcqbank.vercel.app/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://mcqbank.vercel.app/subjects</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mcqbank.vercel.app/exams</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mcqbank.vercel.app/quiz</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mcqbank.vercel.app/about</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://mcqbank.vercel.app/bookmarks</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <!-- TODO: dynamically generate per-subject and per-exam URLs at build time.
+       Example targets (must be filled from DB):
+       /subjects/general-knowledge
+       /subjects/pakistan-affairs
+       /subjects/islamic-studies
+       /exams/css
+       /exams/pms
+       /exams/ppsc
+       /exams/fpsc
+       /exams/mdcat
+       See scripts/gen-sitemap.mjs (TODO) for an automated build step. -->
+</urlset>

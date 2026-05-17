@@ -1,0 +1,36 @@
+{
+  "name": "Studora — MCQ Bank for Pakistan's Exams",
+  "short_name": "Studora",
+  "description": "A quieter place to practice for Pakistan's toughest exams. 105,890+ MCQs for CSS, PMS, MDCAT, PPSC, FPSC.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#faf8f1",
+  "theme_color": "#faf8f1",
+  "orientation": "portrait-primary",
+  "lang": "en-PK",
+  "categories": ["education", "books"],
+  "icons": [
+    {
+      "src": "/assets/img/studora-logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Quiz of the day",
+      "short_name": "Quiz",
+      "url": "/quiz"
+    },
+    {
+      "name": "Subjects",
+      "url": "/subjects"
+    },
+    {
+      "name": "Exams",
+      "url": "/exams"
+    }
+  ]
+}
