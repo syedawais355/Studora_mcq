@@ -1,5 +1,6 @@
 // Versioned persistence for the anonymous user state:
-// streaks, solved count, bookmarks, page-visit counter.
+// streaks, solved count, bookmarks, page-visit counter, streak freezes,
+// and the weekly-goal progress.
 //
 // The page-view counter is mirrored across localStorage, sessionStorage, and a
 // first-party cookie. On every read we take the MAX of the three. Wiping any
@@ -7,9 +8,18 @@
 // clear localStorage *and* cookies *and* close every tab to start over.
 
 const KEY = 'studora';
-const VERSION = 3;
+const VERSION = 4;
 const PV_COOKIE = 'sd_pv';
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365 * 2; // 2 years
+
+// Freezes: a missed day is forgiven if there's one in the bank. Two land at
+// the start of every calendar month, capped so they can't stockpile forever —
+// the point is to forgive a sick day, not bank a vacation.
+const FREEZE_MONTHLY_GRANT = 2;
+const FREEZE_CAP = 4;
+
+// Weekly goal: three preset rungs. The home-page picker mirrors this list.
+const WEEKLY_GOAL_OPTIONS = Object.freeze([50, 100, 200]);
 
 const DEFAULT_STATE = Object.freeze({
   version: VERSION,
@@ -20,6 +30,16 @@ const DEFAULT_STATE = Object.freeze({
   mistakes: [],          // question IDs answered wrong; cleared when answered right
   pagesVisited: 0,
   lastSeenISO: null,
+
+  // Streak freezes (#52).
+  freezes_available: 0,
+  last_active_iso: null,                 // YYYY-MM-DD (UTC) of most recent bumpStreak
+  freezes_granted_month_iso: null,       // YYYY-MM of the last monthly grant
+
+  // Weekly goal (#53).
+  weekly_goal: 0,                        // 0 = user hasn't picked yet
+  weekly_count: 0,                       // questions solved this ISO week
+  weekly_count_iso: null,                // ISO week the count was last reset in (e.g. "2026-W20")
 });
 
 // Hard cap so the Mistake Book never grows unbounded on heavy users.
@@ -95,14 +115,121 @@ export function update(patch) {
   return next;
 }
 
-export function bumpStreak() {
+// --- date helpers (UTC, no DST surprises) ------------------------------------
+
+function toUtcDateOnly(d) {
+  // Returns YYYY-MM-DD in UTC.
+  const yyyy = d.getUTCFullYear();
+  const mm = String(d.getUTCMonth() + 1).padStart(2, '0');
+  const dd = String(d.getUTCDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
+}
+
+function toUtcMonth(d) {
+  const yyyy = d.getUTCFullYear();
+  const mm = String(d.getUTCMonth() + 1).padStart(2, '0');
+  return `${yyyy}-${mm}`;
+}
+
+function daysBetweenIso(aIso, bIso) {
+  // Whole-day difference between two YYYY-MM-DD strings (b - a).
+  const a = Date.parse(aIso + 'T00:00:00Z');
+  const b = Date.parse(bIso + 'T00:00:00Z');
+  if (!Number.isFinite(a) || !Number.isFinite(b)) return 0;
+  return Math.round((b - a) / 86_400_000);
+}
+
+// ISO 8601 week label, e.g. "2026-W20". UTC-based so it matches the
+// date-only logic above.
+function toIsoWeek(d) {
+  const date = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+  // Thursday-of-this-week trick: ISO weeks are anchored on Thursday.
+  const day = date.getUTCDay() || 7;
+  date.setUTCDate(date.getUTCDate() + 4 - day);
+  const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+  const week = Math.ceil((((date - yearStart) / 86_400_000) + 1) / 7);
+  return `${date.getUTCFullYear()}-W${String(week).padStart(2, '0')}`;
+}
+
+// --- freezes (#52) -----------------------------------------------------------
+
+// Grants the monthly batch of freezes if we haven't done so for the current
+// calendar month yet. Safe to call on every boot — it no-ops within a month.
+export function grantFreezesMonthlyIfDue(now = new Date()) {
   const cur = load(true);
-  const next = cur.streak + 1;
+  const month = toUtcMonth(now);
+  if (cur.freezes_granted_month_iso === month) return cur;
+  const next = Math.min(FREEZE_CAP, (cur.freezes_available | 0) + FREEZE_MONTHLY_GRANT);
   return update({
-    streak: next,
+    freezes_available: next,
+    freezes_granted_month_iso: month,
+  });
+}
+
+// --- weekly goal (#53) -------------------------------------------------------
+
+// Increments the weekly counter, resetting it first if the ISO week has
+// rolled over since the last bump. Returns the new state.
+export function bumpWeeklyCount(now = new Date()) {
+  const cur = load(true);
+  const week = toIsoWeek(now);
+  const sameWeek = cur.weekly_count_iso === week;
+  const count = (sameWeek ? (cur.weekly_count | 0) : 0) + 1;
+  return update({
+    weekly_count: count,
+    weekly_count_iso: week,
+  });
+}
+
+export function setWeeklyGoal(n) {
+  const goal = WEEKLY_GOAL_OPTIONS.includes(n) ? n : 0;
+  if (!goal) return load(true);
+  return update({ weekly_goal: goal });
+}
+
+// --- streak with freeze protection ------------------------------------------
+
+export function bumpStreak(now = new Date()) {
+  const cur = load(true);
+  const today = toUtcDateOnly(now);
+  const last = cur.last_active_iso;
+
+  // Default behaviour: a correct pick extends the streak by one.
+  let streak = cur.streak + 1;
+  let freezes = cur.freezes_available | 0;
+
+  if (last) {
+    const gap = daysBetweenIso(last, today);
+    if (gap <= 1) {
+      // 0 = same UTC day (already counted today), 1 = the next day.
+      // Either way the run continues — no freeze needed.
+    } else if (gap >= 2) {
+      const missed = gap - 1; // calendar days with zero correct picks
+      if (freezes > 0 && missed <= freezes) {
+        // Spend a freeze for every missed day — silently. The streak survives.
+        freezes -= missed;
+      } else {
+        // No freezes (or too many missed days). The run resets to today.
+        streak = 1;
+      }
+    }
+  }
+
+  // Roll the weekly counter in the same write so a single correct pick can't
+  // half-update one side.
+  const week = toIsoWeek(now);
+  const sameWeek = cur.weekly_count_iso === week;
+  const weeklyCount = (sameWeek ? (cur.weekly_count | 0) : 0) + 1;
+
+  return update({
+    streak,
     solved: cur.solved + 1,
-    bestStreak: Math.max(cur.bestStreak, next),
-    lastSeenISO: new Date().toISOString(),
+    bestStreak: Math.max(cur.bestStreak, streak),
+    lastSeenISO: now.toISOString(),
+    last_active_iso: today,
+    freezes_available: freezes,
+    weekly_count: weeklyCount,
+    weekly_count_iso: week,
   });
 }
 
