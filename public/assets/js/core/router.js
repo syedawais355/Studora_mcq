@@ -29,13 +29,22 @@ export async function navigate(view, params = {}) {
   await handler(params);
 }
 
+// Encode each path segment individually so a slash that's part of a nested
+// slug (e.g. medical-mcqs/physiology-mcqs) stays literal in the URL. Plain
+// encodeURIComponent on the whole slug turns `/` into `%2F`, which then
+// fails to match the SEO middleware's regex and the per-route meta never
+// fires.
+function encodeSlugPath(slug) {
+  return String(slug).split('/').map(encodeURIComponent).join('/');
+}
+
 function pathFor(view, params) {
   if (view === 'home') return '/';
   if (view === 'category' && params.cat) {
-    return `/subjects/${encodeURIComponent(params.cat.category_slug || params.cat.category_id)}`;
+    return `/subjects/${encodeSlugPath(params.cat.category_slug || params.cat.category_id)}`;
   }
   if (view === 'exam' && params.exam) {
-    return `/exams/${encodeURIComponent(params.exam.slug || params.exam.id)}`;
+    return `/exams/${encodeSlugPath(params.exam.slug || params.exam.id)}`;
   }
   if (view === 'question' && params.qid) {
     return `/q/${encodeURIComponent(params.qid)}`;
