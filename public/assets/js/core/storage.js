@@ -49,6 +49,14 @@ const DEFAULT_STATE = Object.freeze({
 // Hard cap so the Mistake Book never grows unbounded on heavy users.
 const MISTAKE_CAP = 500;
 
+// Hard cap on saved bookmarks per device (#44). A hostile actor with any
+// write path into localStorage — XSS payload, malicious browser extension,
+// a DevTools paste a curious user runs from a tutorial — could otherwise
+// poison the array to hundreds of thousands of entries, freezing the
+// Bookmarks page on every subsequent load. 1000 is well past any plausible
+// human use of the feature while still small enough to render quickly.
+const BOOKMARK_CAP = 1000;
+
 // Bookmark folders (#62). At most a dozen folders per device — enough for
 // "Pre-test cram", "Mistakes I keep making", "Re-read tomorrow", a folder per
 // subject, etc., without letting the sidebar explode. The cap is a UX choice,
@@ -105,6 +113,68 @@ function safeRead() {
   } catch { return null; }
 }
 
+// Defence against poisoned localStorage (#44). Any state we read might have
+// been written by a malicious browser extension, an XSS payload, or a user
+// who pasted DevTools code from a sketchy tutorial. We can't trust the
+// shape, so we walk it on every load and repair what doesn't fit. The work
+// is bounded by BOOKMARK_CAP / MISTAKE_CAP so even a 100k-entry payload
+// gets trimmed in a single pass.
+function validateState(state) {
+  // bookmarks must be an array; otherwise reset and warn so devs notice in
+  // the console if real user data was somehow malformed.
+  if (!Array.isArray(state.bookmarks)) {
+    try { console.warn('[storage] bookmarks was not an array; resetting'); } catch { /* ignore */ }
+    state.bookmarks = [];
+  } else {
+    const seen = new Set();
+    const cleaned = [];
+    for (const entry of state.bookmarks) {
+      let id = null;
+      let folder = null;
+      if (typeof entry === 'number') {
+        if (Number.isInteger(entry) && entry > 0) id = entry;
+      } else if (entry && typeof entry === 'object') {
+        if (Number.isInteger(entry.id) && entry.id > 0) id = entry.id;
+        if (entry.folder === null || entry.folder === undefined) {
+          folder = null;
+        } else if (typeof entry.folder === 'string'
+                   && entry.folder.length <= 32
+                   && /^[a-zA-Z0-9 _-]+$/.test(entry.folder)) {
+          folder = entry.folder;
+        } else {
+          // Invalid folder name — drop the whole entry to avoid silently
+          // smuggling unsanitised strings into the UI.
+          id = null;
+        }
+      }
+      if (id === null || seen.has(id)) continue;
+      seen.add(id);
+      cleaned.push(typeof entry === 'number' ? entry : { id, folder });
+      if (cleaned.length >= BOOKMARK_CAP) break; // newest entries live at the head
+    }
+    state.bookmarks = cleaned;
+  }
+
+  // mistakes must be an array of positive integers, truncated to MISTAKE_CAP.
+  if (!Array.isArray(state.mistakes)) {
+    try { console.warn('[storage] mistakes was not an array; resetting'); } catch { /* ignore */ }
+    state.mistakes = [];
+  } else {
+    const seen = new Set();
+    const cleaned = [];
+    for (const id of state.mistakes) {
+      if (!Number.isInteger(id) || id <= 0) continue;
+      if (seen.has(id)) continue;
+      seen.add(id);
+      cleaned.push(id);
+      if (cleaned.length >= MISTAKE_CAP) break;
+    }
+    state.mistakes = cleaned;
+  }
+
+  return state;
+}
+
 function safeWrite(payload) {
   try { localStorage.setItem(KEY, JSON.stringify(payload)); } catch { /* quota / private mode */ }
 }
@@ -150,20 +220,28 @@ function reconcilePagesVisited(localValue) {
 
 export function load(raw = false) {
   const stored = { ...DEFAULT_STATE, ...(safeRead() || {}) };
+  // Shape + cap enforcement (#44). Run this BEFORE the legacy-bookmark lift
+  // so the lift only ever sees a sane, capped input — never the raw poison.
+  const originalBookmarkCount = Array.isArray(stored.bookmarks) ? stored.bookmarks.length : -1;
+  const originalMistakeCount  = Array.isArray(stored.mistakes)  ? stored.mistakes.length  : -1;
+  validateState(stored);
+  const wasRepaired = stored.bookmarks.length !== originalBookmarkCount
+                    || stored.mistakes.length  !== originalMistakeCount;
   // Soft schema lift (#62): old bookmarks were bare question IDs, new ones
   // carry a folder slot. We rewrite the array on every read so the rest of
   // the codebase sees a uniform shape — no version bump required.
   const normalized = normalizeBookmarks(stored.bookmarks);
-  const wasLegacy = (stored.bookmarks || []).some(b => typeof b === 'number' || typeof b === 'string');
+  const wasLegacy = stored.bookmarks.some(b => typeof b === 'number' || typeof b === 'string');
   stored.bookmarks = normalized;
   if (raw) {
     // Persist the lift the first time we see legacy records so future reads
-    // don't repeat the work — but only when something actually changed.
-    if (wasLegacy) safeWrite({ ...stored, bookmarks: normalized });
+    // don't repeat the work — also persist when validation had to repair
+    // something so the poisoned state is healed on disk.
+    if (wasLegacy || wasRepaired) safeWrite({ ...stored, bookmarks: normalized });
     return stored;
   }
   stored.pagesVisited = reconcilePagesVisited(stored.pagesVisited);
-  if (wasLegacy) safeWrite({ ...stored, bookmarks: normalized });
+  if (wasLegacy || wasRepaired) safeWrite({ ...stored, bookmarks: normalized });
   return stored;
 }
 
