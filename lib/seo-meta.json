@@ -1,0 +1,492 @@
+{
+  "subjects": {
+    "election-officer-mcqs": {
+      "title": "Election Officer MCQs — practice 174 questions on Studora",
+      "description": "Practice 174 verified multiple-choice questions on Election Officer. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Election Officer MCQs"
+    },
+    "medical-mcqs/physiology-mcqs": {
+      "title": "Physiology MCQs — practice 522 questions on Studora",
+      "description": "Practice 522 verified multiple-choice questions on Physiology. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Physiology MCQs"
+    },
+    "pakistan-current-affairs-mcqs": {
+      "title": "Pakistan Current Affairs MCQs — practice 4,336 questions on Studora",
+      "description": "Practice 4,336 verified multiple-choice questions on Pakistan Current Affairs. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Pakistan Current Affairs MCQs"
+    },
+    "economics-mcqs": {
+      "title": "Economics MCQs — practice 4,548 questions on Studora",
+      "description": "Practice 4,548 verified multiple-choice questions on Economics. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Economics MCQs"
+    },
+    "physical-education": {
+      "title": "Physical Education MCQs — practice 3,145 questions on Studora",
+      "description": "Practice 3,145 verified multiple-choice questions on Physical Education. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Physical Education MCQs"
+    },
+    "medical-mcqs/biochemistry": {
+      "title": "Biochemistry MCQs — practice 448 questions on Studora",
+      "description": "Practice 448 verified multiple-choice questions on Biochemistry. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Biochemistry MCQs"
+    },
+    "international-relations": {
+      "title": "International Relations MCQs — practice 1,997 questions on Studora",
+      "description": "Practice 1,997 verified multiple-choice questions on International Relations. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "International Relations MCQs"
+    },
+    "accounting-mcqs": {
+      "title": "Accounting MCQs — practice 1,465 questions on Studora",
+      "description": "Practice 1,465 verified multiple-choice questions on Accounting. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Accounting MCQs"
+    },
+    "psychology-mcqs": {
+      "title": "Psychology MCQs — practice 4,463 questions on Studora",
+      "description": "Practice 4,463 verified multiple-choice questions on Psychology. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Psychology MCQs"
+    },
+    "physics-mcqs": {
+      "title": "Physics MCQs — practice 940 questions on Studora",
+      "description": "Practice 940 verified multiple-choice questions on Physics. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Physics MCQs"
+    },
+    "everyday-science-mcqs": {
+      "title": "Everyday Science MCQs — practice 2,146 questions on Studora",
+      "description": "Practice 2,146 verified multiple-choice questions on Everyday Science. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Everyday Science MCQs"
+    },
+    "islamic-studies-mcqs": {
+      "title": "Islamic Studies MCQs — practice 1,560 questions on Studora",
+      "description": "Practice 1,560 verified multiple-choice questions on Islamic Studies. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Islamic Studies MCQs"
+    },
+    "sociology-mcqs": {
+      "title": "Sociology MCQs — practice 1,627 questions on Studora",
+      "description": "Practice 1,627 verified multiple-choice questions on Sociology. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Sociology MCQs"
+    },
+    "auditing-mcqs": {
+      "title": "Auditing MCQs — practice 153 questions on Studora",
+      "description": "Practice 153 verified multiple-choice questions on Auditing. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Auditing MCQs"
+    },
+    "english-literature-mcqs": {
+      "title": "English Literature MCQs — practice 3,736 questions on Studora",
+      "description": "Practice 3,736 verified multiple-choice questions on English Literature. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "English Literature MCQs"
+    },
+    "hrm-mcqs": {
+      "title": "HRM MCQs — practice 1,029 questions on Studora",
+      "description": "Practice 1,029 verified multiple-choice questions on HRM. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "HRM MCQs"
+    },
+    "pak-study-mcqs": {
+      "title": "Pak Study MCQs — practice 2,956 questions on Studora",
+      "description": "Practice 2,956 verified multiple-choice questions on Pak Study. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Pak Study MCQs"
+    },
+    "medical-mcqs/oral-anatomy": {
+      "title": "Oral Anatomy MCQs — practice 247 questions on Studora",
+      "description": "Practice 247 verified multiple-choice questions on Oral Anatomy. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Oral Anatomy MCQs"
+    },
+    "pedagogy-mcqs": {
+      "title": "Pedagogy MCQs — practice 6,213 questions on Studora",
+      "description": "Practice 6,213 verified multiple-choice questions on Pedagogy. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Pedagogy MCQs"
+    },
+    "judiciary-and-law-mcqs": {
+      "title": "Judiciary And Law MCQs — practice 2,988 questions on Studora",
+      "description": "Practice 2,988 verified multiple-choice questions on Judiciary And Law. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Judiciary And Law MCQs"
+    },
+    "medical-mcqs/general-anatomy-mcqs": {
+      "title": "General Anatomy MCQs — practice 538 questions on Studora",
+      "description": "Practice 538 verified multiple-choice questions on General Anatomy. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "General Anatomy MCQs"
+    },
+    "mechanical-engineering-mcqs": {
+      "title": "Mechanical Engineering MCQs — practice 2,103 questions on Studora",
+      "description": "Practice 2,103 verified multiple-choice questions on Mechanical Engineering. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Mechanical Engineering MCQs"
+    },
+    "medical-mcqs/microbiology": {
+      "title": "Microbiology MCQs — practice 502 questions on Studora",
+      "description": "Practice 502 verified multiple-choice questions on Microbiology. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Microbiology MCQs"
+    },
+    "political-science-mcqs": {
+      "title": "Political Science MCQs — practice 4,165 questions on Studora",
+      "description": "Practice 4,165 verified multiple-choice questions on Political Science. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Political Science MCQs"
+    },
+    "medical-mcqs/pharmacology": {
+      "title": "Pharmacology MCQs — practice 576 questions on Studora",
+      "description": "Practice 576 verified multiple-choice questions on Pharmacology. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Pharmacology MCQs"
+    },
+    "medical-mcqs/pathology": {
+      "title": "Pathology MCQs — practice 333 questions on Studora",
+      "description": "Practice 333 verified multiple-choice questions on Pathology. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Pathology MCQs"
+    },
+    "software-engineering-mcqs": {
+      "title": "Software Engineering MCQs — practice 2,048 questions on Studora",
+      "description": "Practice 2,048 verified multiple-choice questions on Software Engineering. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Software Engineering MCQs"
+    },
+    "finance-mcqs": {
+      "title": "Finance MCQs — practice 1,051 questions on Studora",
+      "description": "Practice 1,051 verified multiple-choice questions on Finance. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Finance MCQs"
+    },
+    "biology-mcqs": {
+      "title": "Biology MCQs — practice 1,545 questions on Studora",
+      "description": "Practice 1,545 verified multiple-choice questions on Biology. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Biology MCQs"
+    },
+    "general_knowledge_mcqs": {
+      "title": "General Knowledge MCQs — practice 5,894 questions on Studora",
+      "description": "Practice 5,894 verified multiple-choice questions on General Knowledge. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "General Knowledge MCQs"
+    },
+    "electrical-engineering-mcqs": {
+      "title": "Electrical Engineering MCQs — practice 3,699 questions on Studora",
+      "description": "Practice 3,699 verified multiple-choice questions on Electrical Engineering. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Electrical Engineering MCQs"
+    },
+    "medical-mcqs/oral-pathology-and-medicine": {
+      "title": "Oral Pathology and Medicine MCQs — practice 950 questions on Studora",
+      "description": "Practice 950 verified multiple-choice questions on Oral Pathology and Medicine. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Oral Pathology and Medicine MCQs"
+    },
+    "medical-mcqs": {
+      "title": "Medical MCQs — practice 5,134 questions on Studora",
+      "description": "Practice 5,134 verified multiple-choice questions on Medical. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Medical MCQs"
+    },
+    "statistics-mcqs": {
+      "title": "Statistics MCQs — practice 739 questions on Studora",
+      "description": "Practice 739 verified multiple-choice questions on Statistics. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Statistics MCQs"
+    },
+    "chemical-engineering": {
+      "title": "Chemical Engineering MCQs — practice 8,662 questions on Studora",
+      "description": "Practice 8,662 verified multiple-choice questions on Chemical Engineering. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Chemical Engineering MCQs"
+    },
+    "urdu-general-knowledge": {
+      "title": "URDU MCQs — practice 459 questions on Studora",
+      "description": "Practice 459 verified multiple-choice questions on URDU. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "URDU MCQs"
+    },
+    "forestry-mcqs": {
+      "title": "Forestry MCQs — practice 1,965 questions on Studora",
+      "description": "Practice 1,965 verified multiple-choice questions on Forestry. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Forestry MCQs"
+    },
+    "english-mcqs": {
+      "title": "English MCQs — practice 2,986 questions on Studora",
+      "description": "Practice 2,986 verified multiple-choice questions on English. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "English MCQs"
+    },
+    "world-current-affairs-mcqs": {
+      "title": "World Current Affairs MCQs — practice 4,791 questions on Studora",
+      "description": "Practice 4,791 verified multiple-choice questions on World Current Affairs. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "World Current Affairs MCQs"
+    },
+    "civil-engineering-mcqs": {
+      "title": "Civil Engineering MCQs — practice 3,026 questions on Studora",
+      "description": "Practice 3,026 verified multiple-choice questions on Civil Engineering. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Civil Engineering MCQs"
+    },
+    "mathematics-mcqs": {
+      "title": "Maths MCQs — practice 1,638 questions on Studora",
+      "description": "Practice 1,638 verified multiple-choice questions on Maths. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Maths MCQs"
+    },
+    "marketing-mcqs": {
+      "title": "Marketing MCQs — practice 1,729 questions on Studora",
+      "description": "Practice 1,729 verified multiple-choice questions on Marketing. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Marketing MCQs"
+    },
+    "medical-mcqs/oral-histology": {
+      "title": "Oral Histology MCQs — practice 402 questions on Studora",
+      "description": "Practice 402 verified multiple-choice questions on Oral Histology. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Oral Histology MCQs"
+    },
+    "medical-mcqs/dental-materials": {
+      "title": "Dental Materials MCQs — practice 627 questions on Studora",
+      "description": "Practice 627 verified multiple-choice questions on Dental Materials. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Dental Materials MCQs"
+    },
+    "computer-mcqs": {
+      "title": "Computer MCQs — practice 1,391 questions on Studora",
+      "description": "Practice 1,391 verified multiple-choice questions on Computer. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Computer MCQs"
+    },
+    "chemistry-mcqs": {
+      "title": "Chemistry MCQs — practice 1,527 questions on Studora",
+      "description": "Practice 1,527 verified multiple-choice questions on Chemistry. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Chemistry MCQs"
+    },
+    "agriculture-mcqs": {
+      "title": "Agriculture MCQs — practice 2,865 questions on Studora",
+      "description": "Practice 2,865 verified multiple-choice questions on Agriculture. Covers every major topic for CSS, PMS, PPSC, FPSC and other Pakistani competitive exams. Free for the basics on Studora.",
+      "h1": "Agriculture MCQs"
+    }
+  },
+  "exams": {
+    "css": {
+      "title": "CSS preparation — 30,165 MCQs on Studora",
+      "description": "Prepare for CSS (Central Superior Services). 30,165 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "CSS — Central Superior Services"
+    },
+    "pms": {
+      "title": "PMS preparation — 26,533 MCQs on Studora",
+      "description": "Prepare for PMS (Provincial Management Service). 26,533 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "PMS — Provincial Management Service"
+    },
+    "pcs": {
+      "title": "PCS preparation — 19,917 MCQs on Studora",
+      "description": "Prepare for PCS (Provincial Civil Service). 19,917 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "PCS — Provincial Civil Service"
+    },
+    "fbr-iir": {
+      "title": "FBR IIR preparation — 16,002 MCQs on Studora",
+      "description": "Prepare for FBR IIR (Inspector Inland Revenue). 16,002 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "FBR IIR — Inspector Inland Revenue"
+    },
+    "lat": {
+      "title": "LAT preparation — 14,838 MCQs on Studora",
+      "description": "Prepare for LAT (Law Admission Test). 14,838 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "LAT — Law Admission Test"
+    },
+    "fia-ad": {
+      "title": "FIA AD preparation — 20,372 MCQs on Studora",
+      "description": "Prepare for FIA AD (Assistant Director / Inspector FIA). 20,372 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "FIA AD — Assistant Director / Inspector FIA"
+    },
+    "ib-ad": {
+      "title": "IB AD preparation — 20,372 MCQs on Studora",
+      "description": "Prepare for IB AD (Assistant Director / Inspector IB). 20,372 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "IB AD — Assistant Director / Inspector IB"
+    },
+    "tehsildar": {
+      "title": "TEHSILDAR preparation — 13,975 MCQs on Studora",
+      "description": "Prepare for TEHSILDAR (Tehsildar / Naib Tehsildar Exam). 13,975 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "TEHSILDAR — Tehsildar / Naib Tehsildar Exam"
+    },
+    "fpsc": {
+      "title": "FPSC preparation — 19,917 MCQs on Studora",
+      "description": "Prepare for FPSC (Federal Public Service Commission). 19,917 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "FPSC — Federal Public Service Commission"
+    },
+    "ppsc": {
+      "title": "PPSC preparation — 19,917 MCQs on Studora",
+      "description": "Prepare for PPSC (Punjab Public Service Commission). 19,917 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "PPSC — Punjab Public Service Commission"
+    },
+    "spsc": {
+      "title": "SPSC preparation — 17,761 MCQs on Studora",
+      "description": "Prepare for SPSC (Sindh Public Service Commission). 17,761 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "SPSC — Sindh Public Service Commission"
+    },
+    "kppsc": {
+      "title": "KPPSC preparation — 19,917 MCQs on Studora",
+      "description": "Prepare for KPPSC (Khyber Pakhtunkhwa Public Service Commission). 19,917 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "KPPSC — Khyber Pakhtunkhwa Public Service Commission"
+    },
+    "bpsc": {
+      "title": "BPSC preparation — 17,761 MCQs on Studora",
+      "description": "Prepare for BPSC (Balochistan Public Service Commission). 17,761 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "BPSC — Balochistan Public Service Commission"
+    },
+    "ajkpsc": {
+      "title": "AJKPSC preparation — 17,761 MCQs on Studora",
+      "description": "Prepare for AJKPSC (Azad Jammu & Kashmir Public Service Commission). 17,761 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "AJKPSC — Azad Jammu & Kashmir Public Service Commission"
+    },
+    "gbpsc": {
+      "title": "GBPSC preparation — 17,761 MCQs on Studora",
+      "description": "Prepare for GBPSC (Gilgit Baltistan Public Service Commission). 17,761 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "GBPSC — Gilgit Baltistan Public Service Commission"
+    },
+    "mdcat": {
+      "title": "MDCAT preparation — 12,677 MCQs on Studora",
+      "description": "Prepare for MDCAT (Medical and Dental Colleges Admission Test). 12,677 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "MDCAT — Medical and Dental Colleges Admission Test"
+    },
+    "nums": {
+      "title": "NUMS preparation — 10,226 MCQs on Studora",
+      "description": "Prepare for NUMS (National University of Medical Sciences Test). 10,226 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "NUMS — National University of Medical Sciences Test"
+    },
+    "aku-test": {
+      "title": "AKU TEST preparation — 12,603 MCQs on Studora",
+      "description": "Prepare for AKU TEST (Aga Khan University Entrance Test). 12,603 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "AKU TEST — Aga Khan University Entrance Test"
+    },
+    "nle": {
+      "title": "NLE preparation — 7,521 MCQs on Studora",
+      "description": "Prepare for NLE (National Licensing Examination). 7,521 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "NLE — National Licensing Examination"
+    },
+    "neb": {
+      "title": "NEB preparation — 6,999 MCQs on Studora",
+      "description": "Prepare for NEB (National Examination Board). 6,999 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "NEB — National Examination Board"
+    },
+    "etea-medical": {
+      "title": "ETEA MEDICAL preparation — 11,321 MCQs on Studora",
+      "description": "Prepare for ETEA MEDICAL (Educational Testing and Evaluation Agency). 11,321 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "ETEA MEDICAL — Educational Testing and Evaluation Agency"
+    },
+    "ecat": {
+      "title": "ECAT preparation — 5,531 MCQs on Studora",
+      "description": "Prepare for ECAT (Engineering Colleges Admission Test). 5,531 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "ECAT — Engineering Colleges Admission Test"
+    },
+    "nust-net": {
+      "title": "NUST NET preparation — 10,577 MCQs on Studora",
+      "description": "Prepare for NUST NET (NUST Entrance Test (Series 1-4)). 10,577 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "NUST NET — NUST Entrance Test (Series 1-4)"
+    },
+    "tcc": {
+      "title": "TCC preparation — 9,239 MCQs on Studora",
+      "description": "Prepare for TCC (Technical Cadet Course). 9,239 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "TCC — Technical Cadet Course"
+    },
+    "pieas-test": {
+      "title": "PIEAS TEST preparation — 4,138 MCQs on Studora",
+      "description": "Prepare for PIEAS TEST (Pakistan Institute of Engineering & Applied Sciences). 4,138 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "PIEAS TEST — Pakistan Institute of Engineering & Applied Sciences"
+    },
+    "giki-test": {
+      "title": "GIKI TEST preparation — 4,138 MCQs on Studora",
+      "description": "Prepare for GIKI TEST (Ghulam Ishaq Khan Institute Entry Test). 4,138 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "GIKI TEST — Ghulam Ishaq Khan Institute Entry Test"
+    },
+    "fast-nu-test": {
+      "title": "FAST-NU TEST preparation — 8,106 MCQs on Studora",
+      "description": "Prepare for FAST-NU TEST (Foundation for Advancement of Science & Tech). 8,106 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "FAST-NU TEST — Foundation for Advancement of Science & Tech"
+    },
+    "ned-test": {
+      "title": "NED TEST preparation — 10,925 MCQs on Studora",
+      "description": "Prepare for NED TEST (NED University Entry Test). 10,925 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "NED TEST — NED University Entry Test"
+    },
+    "lums-lcat": {
+      "title": "LUMS LCAT preparation — 14,042 MCQs on Studora",
+      "description": "Prepare for LUMS LCAT (LUMS Common Admission Test). 14,042 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "LUMS LCAT — LUMS Common Admission Test"
+    },
+    "iba-test": {
+      "title": "IBA TEST preparation — 12,513 MCQs on Studora",
+      "description": "Prepare for IBA TEST (Institute of Business Administration Test). 12,513 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "IBA TEST — Institute of Business Administration Test"
+    },
+    "civil-judge": {
+      "title": "CIVIL JUDGE preparation — 14,838 MCQs on Studora",
+      "description": "Prepare for CIVIL JUDGE (Civil Judge / Judicial Magistrate Exam). 14,838 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "CIVIL JUDGE — Civil Judge / Judicial Magistrate Exam"
+    },
+    "asj": {
+      "title": "ASJ preparation — 11,879 MCQs on Studora",
+      "description": "Prepare for ASJ (Additional Sessions Judge Exam). 11,879 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "ASJ — Additional Sessions Judge Exam"
+    },
+    "adpp": {
+      "title": "ADPP preparation — 11,879 MCQs on Studora",
+      "description": "Prepare for ADPP (Assistant District Public Prosecutor). 11,879 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "ADPP — Assistant District Public Prosecutor"
+    },
+    "issb": {
+      "title": "ISSB preparation — 21,523 MCQs on Studora",
+      "description": "Prepare for ISSB (Inter Services Selection Board). 21,523 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "ISSB — Inter Services Selection Board"
+    },
+    "pma-lc": {
+      "title": "PMA L/C preparation — 21,007 MCQs on Studora",
+      "description": "Prepare for PMA L/C (Pakistan Military Academy Long Course). 21,007 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "PMA L/C — Pakistan Military Academy Long Course"
+    },
+    "afns": {
+      "title": "AFNS preparation — 9,285 MCQs on Studora",
+      "description": "Prepare for AFNS (Armed Forces Nursing Service). 9,285 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "AFNS — Armed Forces Nursing Service"
+    },
+    "gdp": {
+      "title": "GDP preparation — 7,754 MCQs on Studora",
+      "description": "Prepare for GDP (General Duty Pilot). 7,754 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "GDP — General Duty Pilot"
+    },
+    "cae": {
+      "title": "CAE preparation — 14,985 MCQs on Studora",
+      "description": "Prepare for CAE (College of Aeronautical Engineering). 14,985 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "CAE — College of Aeronautical Engineering"
+    },
+    "pn-cadet": {
+      "title": "PN CADET preparation — 14,457 MCQs on Studora",
+      "description": "Prepare for PN CADET (Pakistan Navy Cadet). 14,457 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "PN CADET — Pakistan Navy Cadet"
+    },
+    "pst": {
+      "title": "PST preparation — 21,764 MCQs on Studora",
+      "description": "Prepare for PST (Primary School Teacher). 21,764 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "PST — Primary School Teacher"
+    },
+    "est": {
+      "title": "EST preparation — 23,461 MCQs on Studora",
+      "description": "Prepare for EST (Elementary School Teacher). 23,461 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "EST — Elementary School Teacher"
+    },
+    "sst": {
+      "title": "SST preparation — 22,133 MCQs on Studora",
+      "description": "Prepare for SST (Secondary School Teacher). 22,133 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "SST — Secondary School Teacher"
+    },
+    "sse": {
+      "title": "SSE preparation — 22,093 MCQs on Studora",
+      "description": "Prepare for SSE (Secondary School Educator). 22,093 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "SSE — Secondary School Educator"
+    },
+    "lecturer": {
+      "title": "LECTURER preparation — 21,807 MCQs on Studora",
+      "description": "Prepare for LECTURER (Higher Education Department Lecturer). 21,807 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "LECTURER — Higher Education Department Lecturer"
+    },
+    "usat": {
+      "title": "USAT preparation — 15,672 MCQs on Studora",
+      "description": "Prepare for USAT (Undergraduate Studies Admission Test). 15,672 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "USAT — Undergraduate Studies Admission Test"
+    },
+    "hat": {
+      "title": "HAT preparation — 11,301 MCQs on Studora",
+      "description": "Prepare for HAT (Higher Education Aptitude Test). 11,301 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "HAT — Higher Education Aptitude Test"
+    },
+    "nts-nat": {
+      "title": "NTS NAT preparation — 17,242 MCQs on Studora",
+      "description": "Prepare for NTS NAT (National Aptitude Test). 17,242 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "NTS NAT — National Aptitude Test"
+    },
+    "pts-ots-cts": {
+      "title": "PTS/OTS/CTS preparation — 17,065 MCQs on Studora",
+      "description": "Prepare for PTS/OTS/CTS (Pakistan/Open/Central Testing Services). 17,065 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "PTS/OTS/CTS — Pakistan/Open/Central Testing Services"
+    },
+    "law-gat": {
+      "title": "LAW GAT preparation — 11,879 MCQs on Studora",
+      "description": "Prepare for LAW GAT (Graduate Assessment Test (Law)). 11,879 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "LAW GAT — Graduate Assessment Test (Law)"
+    },
+    "nts-gat": {
+      "title": "NTS GAT preparation — 11,301 MCQs on Studora",
+      "description": "Prepare for NTS GAT (Graduate Assessment Test (NTS)). 11,301 curated multiple-choice questions, organised by subject. Free for the basics, no clutter, no ads. Study quietly. Score loudly.",
+      "h1": "NTS GAT — Graduate Assessment Test (NTS)"
+    }
+  },
+  "generatedAt": "2026-05-17T05:17:36.520Z"
+}
