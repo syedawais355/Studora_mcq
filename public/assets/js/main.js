@@ -1,37 +1,39 @@
 // Studora SPA entry. Boots data, hydrates local state, wires Supabase Auth,
 // registers routes, hydrates from URL path.
+//
+// Route handlers are registered as dynamic-import thunks so the first paint
+// only pulls in the page renderer the current URL actually needs. Sibling
+// page modules and the modal components (download / report / exam-download)
+// stay off the critical path until the user navigates to them or opens them.
 import { API } from './core/api.js?v=1778642504';
 import { state, hydrateFromStorage, setUser } from './core/state.js?v=1778642504';
-import { register, navigate, bootFromPath } from './core/router.js?v=1778642504';
+import { register, bootFromPath } from './core/router.js?v=1778642504';
 import { onAuthChange, currentUser, signOut } from './core/auth.js?v=1778642504';
 import { releaseWall } from './components/login-wall.js?v=1778642504';
 import { toast } from './core/toast.js?v=1778642504';
-import { renderHome }     from './pages/home.js?v=1778642504';
-import { renderSubjects } from './pages/subjects.js?v=1778642504';
-import { renderExams }    from './pages/exams.js?v=1778642504';
-import { renderCategory } from './pages/category.js?v=1778642504';
-import { renderExam }     from './pages/exam.js?v=1778642504';
-import { renderAbout }    from './pages/about.js?v=1778642504';
-import { renderBookmarks } from './pages/bookmarks.js?v=1778642504';
-import { renderMistakes }  from './pages/mistakes.js?v=1778642504';
-import { renderQuestion } from './pages/question.js?v=1778642504';
-import { renderQuiz }     from './pages/quiz.js?v=1778642504';
-import { renderAnalytics } from './pages/analytics.js?v=1778642504';
+// The page renderers are NOT statically imported — they're behind dynamic
+// import() thunks below so first paint only pulls the route the URL needs.
+// rerenderTopbar is imported eagerly so the storage-event listener can swap
+// the topbar in place across tabs without an extra round trip.
 import { topbar, rerenderTopbar } from './components/topbar.js?v=1778642504';
 
 const root = document.getElementById('app');
 
-register('home',     renderHome);
-register('subjects', renderSubjects);
-register('exams',    renderExams);
-register('category', renderCategory);
-register('exam',     renderExam);
-register('about',    renderAbout);
-register('bookmarks', renderBookmarks);
-register('mistakes', renderMistakes);
-register('question', renderQuestion);
-register('quiz', renderQuiz);
-register('analytics', renderAnalytics);
+// Dynamic-import thunks — the bundler keeps each page in its own chunk and the
+// browser only fetches the one the current route resolves to. params is
+// threaded through so renderers that take arguments (renderQuestion) still
+// receive them; extra params on the others are harmless.
+register('home',      (params) => import('./pages/home.js?v=1778642504').then(m => m.renderHome(params)));
+register('subjects',  (params) => import('./pages/subjects.js?v=1778642504').then(m => m.renderSubjects(params)));
+register('exams',     (params) => import('./pages/exams.js?v=1778642504').then(m => m.renderExams(params)));
+register('category',  (params) => import('./pages/category.js?v=1778642504').then(m => m.renderCategory(params)));
+register('exam',      (params) => import('./pages/exam.js?v=1778642504').then(m => m.renderExam(params)));
+register('about',     (params) => import('./pages/about.js?v=1778642504').then(m => m.renderAbout(params)));
+register('bookmarks', (params) => import('./pages/bookmarks.js?v=1778642504').then(m => m.renderBookmarks(params)));
+register('mistakes',  (params) => import('./pages/mistakes.js?v=1778642504').then(m => m.renderMistakes(params)));
+register('question',  (params) => import('./pages/question.js?v=1778642504').then(m => m.renderQuestion(params)));
+register('quiz',      (params) => import('./pages/quiz.js?v=1778642504').then(m => m.renderQuiz(params)));
+register('analytics', (params) => import('./pages/analytics.js?v=1778642504').then(m => m.renderAnalytics(params)));
 
 // Delegated click-handler for actions baked into the topbar / login wall —
 // these elements get re-rendered, so we attach once at the document level.
@@ -103,6 +105,10 @@ async function init() {
 
   // Supabase will detect ?code=… in the URL and exchange it for a session
   // here. After that finishes, currentUser() returns the signed-in user.
+  // currentUser() now awaits a lazy import of the supabase vendor bundle —
+  // anonymous visitors who never sign in still pay that cost once on first
+  // load, but bookmarks/mistakes/report flows would have triggered it anyway,
+  // and the inline loading state above covers the extra network round trip.
   try {
     const user = await currentUser();
     setUser(user);

@@ -8,7 +8,7 @@
 // CACHE_VERSION is bumped automatically by scripts/stamp-version.mjs since the
 // service worker file goes through the same stamping pass.
 
-const CACHE_VERSION = 'studora-v1-1778642504';
+const CACHE_VERSION = 'studora-v2-1778642504';
 const SHELL = [
   '/',
   '/manifest.webmanifest',
@@ -57,9 +57,23 @@ self.addEventListener('fetch', (event) => {
 
   // 2. Static assets — stale-while-revalidate from the versioned cache.
   if (url.pathname.startsWith('/assets/') || url.pathname === '/manifest.webmanifest') {
+    // Strip the cache-buster querystring (`?v=…`) before using the URL as a
+    // cache key. The stamp-version build step rewrites every asset URL each
+    // deploy, but the bytes behind a given pathname are immutable per the
+    // hashed filenames + far-future Cache-Control. Keying on the bare
+    // pathname means:
+    //   • cache entries survive deploys when the file content hasn't moved,
+    //     so users don't re-download identical bytes on every push;
+    //   • the cache never accumulates one entry per historical `?v=` value,
+    //     which used to leave storage growing unbounded across deploys.
+    const cacheKey = new Request(url.origin + url.pathname, {
+      method: 'GET',
+      credentials: req.credentials,
+      mode: req.mode,
+    });
     event.respondWith(
       caches.open(CACHE_VERSION).then(async cache => {
-        const cached = await cache.match(req);
+        const cached = await cache.match(cacheKey);
         const networkFetch = fetch(req).then(res => {
           // Strict cache-write gate (#46). A `res.ok` response can still be
           // wrong — a 204, a partial body, or HTML returned for a .js URL
@@ -67,7 +81,7 @@ self.addEventListener('fetch', (event) => {
           // cache, every visiting client pins the bad asset until they
           // manually clear storage. Better to under-cache than to enshrine
           // a broken response.
-          if (isCacheable(url, res)) cache.put(req, res.clone());
+          if (isCacheable(url, res)) cache.put(cacheKey, res.clone());
           return res;
         }).catch(() => cached); // network died — fall back to cached if present
         return cached || networkFetch;
