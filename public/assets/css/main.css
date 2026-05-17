@@ -453,6 +453,206 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(-
 .nb-qod button{background:var(--yellow);color:var(--ink);padding:12px 22px;font-family:var(--mono);font-weight:700;font-size:13px;text-decoration:none;display:inline-block;align-self:flex-start;border:1.5px solid rgba(255,255,255,.2);transition:transform .15s,box-shadow .15s;cursor:pointer;border-radius:6px;letter-spacing:.04em}
 .nb-qod button:hover{transform:translate(-1px,-1px);box-shadow:2px 2px 0 rgba(255,255,255,.3)}
 
+/* ==== components/qotd.css ==== */
+/* Question of the day — calm notebook-margin card. Lives on the home page
+ * directly above "Today's notes". Mirrors the visual language of .nb-mcq
+ * (border, paper background, mono caption, serif italics for warmth) but
+ * sits on its own without a quiz toolbar. */
+
+.nb-qotd{
+  border:1.5px solid var(--ink);
+  background:var(--paper);
+  border-left:4px solid var(--ink);
+  border-radius:0 4px 4px 0;
+  box-shadow:var(--shadow-pop);
+  padding:18px 22px 20px;
+  margin:0 0 22px;
+  position:relative;
+  animation:nbPageIn .25s ease both;
+}
+
+.nb-qotd-head{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:10px;
+  padding-bottom:10px;
+  border-bottom:1px dashed var(--rule-ink);
+}
+.nb-qotd-head h3{
+  margin:0;
+  font-family:var(--serif);
+  font-style:italic;
+  font-weight:500;
+  font-size:24px;
+  letter-spacing:-.015em;
+  color:var(--ink);
+  line-height:1.1;
+}
+.nb-qotd-head h3 em{
+  font-style:italic;
+  color:var(--ink-2);
+}
+.nb-qotd-date{
+  font-family:var(--mono);
+  font-size:11px;
+  color:var(--ink-3);
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.nb-qotd-cat{
+  font-family:var(--mono);
+  font-size:11px;
+  color:var(--ink-3);
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  margin-bottom:6px;
+}
+
+.nb-qotd-q{
+  margin:0 0 14px;
+  font-size:17px;
+  font-weight:600;
+  line-height:1.4;
+  letter-spacing:-.005em;
+  color:var(--ink);
+}
+
+.nb-qotd-opts{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin:0 0 12px;
+}
+@media(max-width:600px){
+  .nb-qotd-opts{grid-template-columns:1fr}
+}
+
+/* Pill-shaped option buttons — reset native button chrome, lean on the
+ * paper/ink token pair so they read as part of the notebook surface. */
+.nb-qotd-opt{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:11px 14px;
+  border:1.5px solid var(--rule-ink);
+  border-radius:999px;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:14.5px;
+  text-align:left;
+  cursor:pointer;
+  transition:border-color .18s,background .18s,transform .12s;
+  font:inherit;
+  width:100%;
+}
+.nb-qotd-opt:hover:not(:disabled){
+  border-color:var(--ink);
+  background:var(--paper-2);
+}
+.nb-qotd-opt:focus-visible{
+  outline:2px solid var(--ink);
+  outline-offset:2px;
+}
+.nb-qotd-opt:disabled{cursor:default}
+
+.nb-qotd-opt .k{
+  width:24px;
+  height:24px;
+  flex-shrink:0;
+  border:1.5px solid var(--ink);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  font-family:var(--mono);
+  font-size:11px;
+  font-weight:700;
+  text-transform:uppercase;
+  background:var(--paper);
+}
+.nb-qotd-opt .txt{
+  flex:1;
+  line-height:1.35;
+}
+
+/* Answered states — same palette tokens as .nb-mcq so the two cards feel
+ * cut from the same notebook. */
+.nb-qotd-opt.correct{
+  background:var(--mint);
+  border-color:var(--green);
+}
+.nb-qotd-opt.correct .k{
+  background:var(--green);
+  color:var(--paper);
+  border-color:var(--green);
+}
+.nb-qotd-opt.wrong{
+  background:var(--blush);
+  border-color:var(--red);
+}
+.nb-qotd-opt.wrong .k{
+  background:var(--red);
+  color:var(--paper);
+  border-color:var(--red);
+}
+.nb-qotd-opt.picked{
+  font-weight:600;
+}
+
+.nb-qotd-foot{
+  margin:8px 0 0;
+  font-family:var(--serif);
+  font-size:14px;
+  font-style:italic;
+  color:var(--ink-2);
+  line-height:1.45;
+}
+.nb-qotd-foot strong{
+  font-family:var(--sans);
+  font-style:normal;
+  font-weight:700;
+  color:var(--ink);
+}
+.nb-qotd-foot.ok{color:var(--ink)}
+.nb-qotd-foot.no{color:var(--ink)}
+.nb-qotd-foot.hint{color:var(--ink-3)}
+
+.nb-qotd-err{
+  margin:8px 0 0;
+  font-family:var(--serif);
+  font-style:italic;
+  font-size:14px;
+  color:var(--ink-3);
+}
+
+/* Loading skeleton — quiet shimmer in the paper palette, no flash. */
+.nb-qotd-skel{display:grid;gap:9px}
+.nb-qotd-skel .line,
+.nb-qotd-skel .opt{
+  height:14px;
+  border-radius:4px;
+  background:linear-gradient(90deg,var(--paper-2) 0%,var(--rule) 50%,var(--paper-2) 100%);
+  background-size:200% 100%;
+  animation:nbShimmer 1.4s linear infinite;
+}
+.nb-qotd-skel .line.w90{width:90%}
+.nb-qotd-skel .line.w70{width:70%;margin-bottom:6px}
+.nb-qotd-skel .opt{height:38px;border-radius:999px}
+
+@keyframes nbShimmer{
+  0%{background-position:200% 0}
+  100%{background-position:-200% 0}
+}
+@media (prefers-reduced-motion: reduce){
+  .nb-qotd{animation:none}
+  .nb-qotd-skel .line,
+  .nb-qotd-skel .opt{animation:none}
+}
+
 /* ==== components/mcq.css ==== */
 /* MCQ card — pixel-faithful to blueprint */
 .nb-mcq{

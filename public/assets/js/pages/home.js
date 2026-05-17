@@ -5,6 +5,7 @@ import { state } from '../core/state.js?v=1778642504';
 import { EXAM_META, DAILY_NOTES, formatDate } from '../core/data.js?v=1778642504';
 import { topbar, footer } from '../components/topbar.js?v=1778642504';
 import { setupSearch } from '../components/search.js?v=1778642504';
+import { renderQotd, setupQotd } from '../components/qotd.js?v=1778642504';
 import { trackPage } from '../components/login-wall.js?v=1778642504';
 import { wireNav, navigate } from '../core/router.js?v=1778642504';
 
@@ -97,6 +98,8 @@ export async function renderHome() {
       `).join('') : '<a style="padding:20px;font-family:var(--mono);font-size:12px;color:var(--ink-3)">loading subjects…</a>'}
     </div>
 
+    ${renderQotd()}
+
     <div class="nb-sh">
       <h2>Today's <em>notes</em></h2>
       <span class="caption">— current affairs, daily</span>
@@ -122,6 +125,7 @@ export async function renderHome() {
 
   wireNav(r);
   setupSearch();
+  setupQotd();
   document.getElementById('nb-quiz')?.addEventListener('click', () => {
     navigate('quiz');
   });
