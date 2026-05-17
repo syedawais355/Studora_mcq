@@ -17,6 +17,34 @@ export async function renderHome() {
   const exams  = state.exams.slice(0, 8);                       // top 8 by MCQ count (sorted server-side)
   const totalQ = state.cats.reduce((a, c) => a + (c.answerable_questions || 0), 0);
 
+  // Personal stats card: only render when the visitor has any history.
+  const personal = (state.streak > 0 || state.solved > 0 || state.bestStreak > 0)
+    ? `
+    <section class="nb-personal" aria-label="Your stats">
+      <div class="nb-personal-card">
+        <div class="nb-personal-row">
+          <div class="nb-personal-stat">
+            <strong>${state.streak}</strong>
+            <span>current streak</span>
+          </div>
+          <div class="nb-personal-stat">
+            <strong>${state.bestStreak}</strong>
+            <span>personal best</span>
+          </div>
+          <div class="nb-personal-stat">
+            <strong>${state.solved.toLocaleString()}</strong>
+            <span>questions solved</span>
+          </div>
+          ${state.mistakes?.length ? `
+          <div class="nb-personal-stat">
+            <strong>${state.mistakes.length}</strong>
+            <span><a data-nav="mistakes" class="sq">mistakes to review</a></span>
+          </div>` : ''}
+        </div>
+        ${milestoneCopy(state.streak)}
+      </div>
+    </section>` : '';
+
   r.innerHTML = `
   ${topbar('home')}
   <section class="nb-hero">
@@ -34,6 +62,7 @@ export async function renderHome() {
     </div>
   </section>
 
+  ${personal}
   <main class="nb-wrap">
     <div class="nb-sh">
       <h2>Exams</h2>
@@ -102,4 +131,25 @@ export async function renderHome() {
     animCount(document.getElementById('hs-s'), state.cats.length);
     animCount(document.getElementById('hs-e'), state.exams.length);
   }
+}
+
+// Encouraging copy at meaningful streak counts. Returns '' for streaks under
+// the first milestone so the card stays clean for casual visitors.
+function milestoneCopy(streak) {
+  if (streak >= 100) {
+    return `<p class="nb-personal-note">Triple digits. You've solved more in a row than most students do in a month. <em>Whatever you're chasing, you're catching it.</em></p>`;
+  }
+  if (streak >= 30) {
+    return `<p class="nb-personal-note">A full month of correct picks back-to-back. <em>This is what real exam readiness feels like.</em></p>`;
+  }
+  if (streak >= 14) {
+    return `<p class="nb-personal-note">Two weeks running. You're not studying — you're <em>training</em>.</p>`;
+  }
+  if (streak >= 7) {
+    return `<p class="nb-personal-note">Seven in a row. <em>The habit is forming.</em></p>`;
+  }
+  if (streak >= 3) {
+    return `<p class="nb-personal-note">Nice run. Three more to break a week.</p>`;
+  }
+  return '';
 }

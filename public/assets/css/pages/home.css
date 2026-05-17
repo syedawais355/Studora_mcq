@@ -16,3 +16,20 @@
   .nb-stats > div:nth-child(1),.nb-stats > div:nth-child(2){border-bottom:1.5px solid var(--ink)}
   .nb-stats strong{font-size:28px}
 }
+
+/* Personal stats card on the home page — appears only when the visitor
+   has any progress (streak, solved, or best > 0). */
+.nb-personal{max-width:1240px;margin:0 auto;padding:24px 24px 0;font-family:var(--sans)}
+.nb-personal-card{background:var(--paper);border:1.5px solid var(--ink);border-radius:10px;padding:20px 24px;box-shadow:3px 3px 0 var(--ink);position:relative}
+.nb-personal-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:14px;align-items:end}
+.nb-personal-stat{display:flex;flex-direction:column;gap:2px}
+.nb-personal-stat strong{font-family:var(--serif);font-style:italic;font-size:36px;font-weight:700;line-height:1;color:var(--ink)}
+.nb-personal-stat span{font-family:var(--mono);font-size:11.5px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.04em}
+.nb-personal-stat a{color:var(--red);font-weight:600}
+.nb-personal-note{margin:14px 0 0;font-family:var(--serif);font-style:italic;font-size:15px;color:var(--ink-2);line-height:1.5}
+.nb-personal-note em{font-style:italic;color:var(--ink);font-weight:600}
+@media(max-width:600px){
+  .nb-personal{padding:16px 16px 0}
+  .nb-personal-card{padding:16px 18px}
+  .nb-personal-stat strong{font-size:28px}
+}
