@@ -161,7 +161,9 @@ export async function renderBookmarks() {
       return injectFolderChip(card, q.id, folder);
     }).join('');
 
-    wireMcqCards();
+    // Scope wiring to the list element so we don't re-walk every MCQ in
+    // the document each time the filter or folder tab changes (#23).
+    wireMcqCards(list);
     wireFolderChips(rows, render);
   }
   render();

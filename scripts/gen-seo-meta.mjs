@@ -50,15 +50,32 @@ async function main() {
     return;
   }
 
-  const headers = { apikey: key, Authorization: `Bearer ${key}` };
+  // Range + Prefer:count=exact ask PostgREST for up to 9999 rows AND tell us
+  // the total via Content-Range, so we can assert we got every row instead of
+  // silently shipping a partial seo-meta map (#24).
+  const headers = {
+    apikey: key,
+    Authorization: `Bearer ${key}`,
+    Range: '0-9999',
+    Prefer: 'count=exact',
+  };
+
+  async function fetchAll(endpoint) {
+    const r = await fetch(endpoint, { headers });
+    if (!r.ok) throw new Error(`PostgREST ${r.status} for ${endpoint}`);
+    const body = await r.json();
+    const range = r.headers.get('content-range') || '';
+    const total = parseInt(range.split('/')[1], 10);
+    if (Number.isFinite(total) && total !== body.length) {
+      throw new Error(`PostgREST returned ${body.length} rows but total is ${total} for ${endpoint}`);
+    }
+    return body;
+  }
 
   const [cats, exams, examStats] = await Promise.all([
-    fetch(`${url}/rest/v1/mv_category_stats?select=category_slug,category_title,total_questions,answerable_questions`, { headers })
-      .then(r => r.ok ? r.json() : []),
-    fetch(`${url}/rest/v1/exams?select=id,slug,acronym,full_name,purpose`, { headers })
-      .then(r => r.ok ? r.json() : []),
-    fetch(`${url}/rest/v1/mv_exam_stats?select=exam_id,total_questions,category_count`, { headers })
-      .then(r => r.ok ? r.json() : []),
+    fetchAll(`${url}/rest/v1/mv_category_stats?select=category_slug,category_title,total_questions,answerable_questions`),
+    fetchAll(`${url}/rest/v1/exams?select=id,slug,acronym,full_name,purpose`),
+    fetchAll(`${url}/rest/v1/mv_exam_stats?select=exam_id,total_questions,category_count`),
   ]);
 
   const statsByExam = new Map((examStats || []).map(s => [s.exam_id, s]));

@@ -517,7 +517,22 @@ export const BOOKMARK_FOLDER_NAME_MAX = FOLDER_NAME_MAX;
 export function recordMistake(questionId) {
   const cur = load(true);
   const list = Array.isArray(cur.mistakes) ? cur.mistakes : [];
-  if (list.includes(questionId)) return cur; // already on the list — no-op
+  // If the id is already in the book, MOVE it to the head so "newest first"
+  // ordering stays honest — re-mistaking a question makes it the freshest
+  // entry, which is what the Mistake page sort relies on (#26).
+  if (list.includes(questionId)) {
+    const moved = [questionId, ...list.filter(id => id !== questionId)];
+    return update({ mistakes: moved });
+  }
+  // About to evict — surface a one-time toast so the user knows the oldest
+  // entry just dropped off the bottom. Lazy-imported to avoid the storage →
+  // toast circular import on boot; silently skipped if the toast module or
+  // its mount aren't ready yet (#26).
+  if (list.length === MISTAKE_CAP) {
+    import('./toast.js?v=1778642504')
+      .then(m => m?.toast?.('Mistake book is full — oldest entry dropped', 'err'))
+      .catch(() => { /* boot path or no toast host — silent */ });
+  }
   const next = [questionId, ...list].slice(0, MISTAKE_CAP);
   return update({ mistakes: next });
 }

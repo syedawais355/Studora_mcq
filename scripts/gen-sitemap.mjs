@@ -42,13 +42,34 @@ async function fetchSlugs() {
     return { categories: [], exams: [] };
   }
 
-  const headers = { apikey: key, Authorization: `Bearer ${key}` };
+  // Range + Prefer:count=exact ask PostgREST for up to 9999 rows AND tell us
+  // the total via Content-Range, so we can assert we got every row instead of
+  // silently shipping a partial sitemap (#24).
+  const headers = {
+    apikey: key,
+    Authorization: `Bearer ${key}`,
+    Range: '0-9999',
+    Prefer: 'count=exact',
+  };
+
+  // PostgREST returns Content-Range like "0-46/47". If the slash-suffix total
+  // doesn't match the body length, we hit the 10k cap and the sitemap would
+  // be partial — better to crash the build than ship a truncated file.
+  async function fetchAll(endpoint) {
+    const r = await fetch(endpoint, { headers });
+    if (!r.ok) throw new Error(`PostgREST ${r.status} for ${endpoint}`);
+    const body = await r.json();
+    const range = r.headers.get('content-range') || '';
+    const total = parseInt(range.split('/')[1], 10);
+    if (Number.isFinite(total) && total !== body.length) {
+      throw new Error(`PostgREST returned ${body.length} rows but total is ${total} for ${endpoint}`);
+    }
+    return body;
+  }
 
   const [cats, exams] = await Promise.all([
-    fetch(`${url}/rest/v1/mv_category_stats?select=category_slug&order=total_questions.desc`, { headers })
-      .then(r => r.ok ? r.json() : []),
-    fetch(`${url}/rest/v1/exams?select=slug&order=slug.asc`, { headers })
-      .then(r => r.ok ? r.json() : []),
+    fetchAll(`${url}/rest/v1/mv_category_stats?select=category_slug&order=total_questions.desc`),
+    fetchAll(`${url}/rest/v1/exams?select=slug&order=slug.asc`),
   ]);
 
   return {
