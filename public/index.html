@@ -38,12 +38,14 @@
 <link rel="apple-touch-icon" href="/assets/img/studora-logo.svg">
 
 <!-- Performance hints -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://xwvvxhkfndchpbyyaych.supabase.co">
 <link rel="dns-prefetch" href="https://xwvvxhkfndchpbyyaych.supabase.co">
 
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,700;1,9..144,500;1,9..144,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- Preload the two fonts the hero actually paints with so they arrive
+     in the first round trip and don't cause a layout shift. -->
+<link rel="preload" as="font" type="font/woff2" crossorigin href="/assets/fonts/inter-var.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="/assets/fonts/fraunces-italic-var.woff2">
+
 <link rel="stylesheet" href="/assets/css/main.css?v=1778642504">
 
 <!-- Structured data: Organization + WebSite + EducationalOrganization -->

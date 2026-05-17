@@ -11,6 +11,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..', 'public', 'assets', 'css');
 
 const ORDER = [
+  'fonts.css',
   'base/tokens.css',
   'base/reset.css',
   'base/animations.css',
