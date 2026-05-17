@@ -1,7 +1,7 @@
 // Home page — hero (slim) + Exams table + Subjects grid + Daily + Quiz of the day.
 import { esc, cleanTitle, animCount, skeletons } from '../core/helpers.js?v=1778642504';
 import { icon, catIcon } from '../core/icons.js?v=1778642504';
-import { state } from '../core/state.js?v=1778642504';
+import { state, setWeeklyGoal, WEEKLY_GOAL_OPTIONS } from '../core/state.js?v=1778642504';
 import { EXAM_META, DAILY_NOTES, formatDate } from '../core/data.js?v=1778642504';
 import { topbar, footer } from '../components/topbar.js?v=1778642504';
 import { setupSearch } from '../components/search.js?v=1778642504';
@@ -18,8 +18,13 @@ export async function renderHome() {
   const exams  = state.exams.slice(0, 8);                       // top 8 by MCQ count (sorted server-side)
   const totalQ = state.cats.reduce((a, c) => a + (c.answerable_questions || 0), 0);
 
-  // Personal stats card: only render when the visitor has any history.
-  const personal = (state.streak > 0 || state.solved > 0 || state.bestStreak > 0)
+  // Personal stats card: render when the visitor has any history, OR when
+  // they've already picked a weekly goal (so the progress bar doesn't vanish
+  // on ISO-week resets that zero out the count).
+  const hasHistory = state.streak > 0 || state.solved > 0 || state.bestStreak > 0;
+  const showPersonal = hasHistory || state.weeklyGoal > 0;
+
+  const personal = showPersonal
     ? `
     <section class="nb-personal" aria-label="Your stats">
       <div class="nb-personal-card">
@@ -27,6 +32,7 @@ export async function renderHome() {
           <div class="nb-personal-stat">
             <strong>${state.streak}</strong>
             <span>current streak</span>
+            ${freezePill(state.freezesAvailable)}
           </div>
           <div class="nb-personal-stat">
             <strong>${state.bestStreak}</strong>
@@ -42,6 +48,7 @@ export async function renderHome() {
             <span><a data-nav="mistakes" class="sq">mistakes to review</a></span>
           </div>` : ''}
         </div>
+        ${weeklyBlock(state.weeklyGoal, state.weeklyCount)}
         ${milestoneCopy(state.streak)}
       </div>
     </section>` : '';
@@ -130,11 +137,68 @@ export async function renderHome() {
     navigate('quiz');
   });
 
+  // Wire the weekly-goal picker. Re-renders the page so the chosen goal
+  // immediately swaps the picker for the progress bar.
+  r.querySelectorAll('[data-set-weekly-goal]').forEach((el) => {
+    el.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      const n = parseInt(el.getAttribute('data-set-weekly-goal'), 10);
+      if (!WEEKLY_GOAL_OPTIONS.includes(n)) return;
+      setWeeklyGoal(n);
+      renderHome();
+    });
+  });
+
   if (totalQ) {
     animCount(document.getElementById('hs-q'), totalQ);
     animCount(document.getElementById('hs-s'), state.cats.length);
     animCount(document.getElementById('hs-e'), state.exams.length);
   }
+}
+
+// Small italic pill that sits under the "current streak" stat. Only render
+// it when there's at least one freeze in the bank — empty is the resting
+// state for new visitors and shouldn't add visual noise.
+function freezePill(count) {
+  if (!count || count <= 0) return '';
+  const label = count === 1 ? '1 freeze' : `${count} freezes`;
+  const tip = "A missed day is forgiven automatically — you've got two to spare each month.";
+  return `<em class="nb-personal-freeze" title="${esc(tip)}" aria-label="${esc(label)} available">${esc(label)}</em>`;
+}
+
+// Weekly goal block: either the one-time picker (no goal yet) or the quiet
+// progress bar (goal set). Deliberately understated — no animation, no
+// celebration, no shouty copy.
+function weeklyBlock(goal, count) {
+  if (!goal || goal <= 0) {
+    const pills = WEEKLY_GOAL_OPTIONS.map((n) =>
+      `<button type="button" class="nb-personal-goal-pill" data-set-weekly-goal="${n}" aria-label="Set weekly goal to ${n} questions">${n}</button>`
+    ).join('');
+    return `
+      <div class="nb-personal-goal-picker" role="group" aria-label="Pick a weekly goal">
+        <em class="nb-personal-goal-label">Pick a weekly goal — you can change it later.</em>
+        <div class="nb-personal-goal-pills">${pills}</div>
+      </div>`;
+  }
+
+  const safeCount = Math.max(0, count | 0);
+  const pct = Math.min(100, Math.round((safeCount / goal) * 100));
+  return `
+    <div class="nb-personal-weekly" role="group" aria-label="Weekly progress">
+      <div class="nb-personal-weekly-label">
+        <em>${safeCount} of ${goal}</em> this week
+      </div>
+      <div
+        class="nb-personal-weekly-bar"
+        role="progressbar"
+        aria-valuenow="${safeCount}"
+        aria-valuemin="0"
+        aria-valuemax="${goal}"
+        aria-label="${safeCount} of ${goal} questions this week"
+      >
+        <div class="nb-personal-weekly-fill" style="width:${pct}%"></div>
+      </div>
+    </div>`;
 }
 
 // Encouraging copy at meaningful streak counts. Returns '' for streaks under
