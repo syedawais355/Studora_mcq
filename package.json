@@ -8,8 +8,9 @@
     "build:css": "node scripts/build-css.mjs",
     "build:sitemap": "node scripts/gen-sitemap.mjs",
     "build:seo-meta": "node scripts/gen-seo-meta.mjs",
+    "build:check-seo": "node scripts/check-seo-anchors.mjs",
     "stamp": "node scripts/stamp-version.mjs",
-    "build": "npm run build:css && npm run build:sitemap && npm run build:seo-meta && npm run stamp",
+    "build": "npm run build:css && npm run build:sitemap && npm run build:seo-meta && npm run build:check-seo && npm run stamp",
     "deploy": "npm run build && vercel --prod"
   },
   "dependencies": {

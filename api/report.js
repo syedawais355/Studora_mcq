@@ -5,7 +5,14 @@ import { createHash } from 'node:crypto';
 const VALID_REASONS = new Set([
   'wrong_answer', 'typo', 'outdated', 'unclear', 'offensive', 'other',
 ]);
-const MAX_DETAILS = 600;
+const MAX_DETAILS = 1000;
+
+// Strict allowlist of accepted body keys (#49). Rejecting unknown keys at the
+// boundary is cheap defence-in-depth against mass-assignment regressions: if
+// a future refactor adds a column to mcq_reports and a teammate forgets to
+// scrub the input shape, an attacker can't smuggle the new column through
+// here. Update this set deliberately when the contract changes.
+const ALLOWED_KEYS = new Set(['question_id', 'reason', 'details']);
 
 // Robust JSON body parse — Vercel's serverless wrapper may or may not have
 // parsed it for us depending on Content-Type.
@@ -26,9 +33,35 @@ function hashIp(ip) {
   return createHash('sha256').update(`studora:${ip || 'unknown'}`).digest('hex').slice(0, 32);
 }
 
+// Strip ASCII control characters from free-text input (#48). Tabs and
+// newlines stay because triage notes do contain line breaks; everything
+// else in the 0x00–0x1F range is rejected — null bytes, vertical tabs,
+// form feeds, and the assorted control codes have no legitimate place in
+// a user-typed bug report and are the usual building blocks of log
+// injection and terminal-escape payloads. DEL (0x7F) goes too.
+function sanitiseDetails(raw) {
+  const trimmed = String(raw || '').trim();
+  if (!trimmed) return null;
+  // eslint-disable-next-line no-control-regex
+  const stripped = trimmed.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '');
+  const capped = stripped.slice(0, MAX_DETAILS);
+  return capped || null;
+}
+
 export default withGuards({ ratePerMin: 10, methods: ['POST'] }, async (req, res) => {
   const body = await readJson(req);
-  if (!body) return res.status(400).json({ error: 'Invalid JSON body' });
+  if (!body || typeof body !== 'object' || Array.isArray(body)) {
+    return res.status(400).json({ error: 'Invalid JSON body' });
+  }
+
+  // Reject any unexpected keys before doing anything else (#49). Surface the
+  // offending key in the error so honest clients can self-diagnose; attackers
+  // already know what they tried to send.
+  for (const k of Object.keys(body)) {
+    if (!ALLOWED_KEYS.has(k)) {
+      return res.status(400).json({ error: `Unexpected field: ${k}` });
+    }
+  }
 
   const qid = parseInt(body.question_id, 10);
   if (!Number.isInteger(qid) || qid < 1) {
@@ -38,10 +71,17 @@ export default withGuards({ ratePerMin: 10, methods: ['POST'] }, async (req, res
   if (!VALID_REASONS.has(reason)) {
     return res.status(400).json({ error: 'Invalid reason' });
   }
-  const details = String(body.details || '').trim().slice(0, MAX_DETAILS) || null;
+  const details = sanitiseDetails(body.details);
 
   const ipHash = hashIp(clientIp(req));
-  const userId = typeof body.user_id === 'string' ? body.user_id.slice(0, 64) : null;
+
+  // #48: user_id is NEVER taken from the request body. The old endpoint
+  // accepted body.user_id and inserted it verbatim, which let any caller
+  // attribute reports to an arbitrary victim. The mcq_reports table still
+  // has a user_id column (other systems may read it) so we explicitly write
+  // null from here — server-trusted identity isn't available on this
+  // anonymous endpoint, and dedupe relies on ip_hash alone.
+  const userId = null;
 
   const supabase = getSupabase();
   const { data, error } = await supabase
