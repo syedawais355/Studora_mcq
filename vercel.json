@@ -20,7 +20,8 @@
     { "source": "/analytics",       "destination": "/" },
     { "source": "/quiz",            "destination": "/" },
     { "source": "/home",            "destination": "/" },
-    { "source": "/results",         "destination": "/api/results-page" }
+    { "source": "/results",         "destination": "/api/share-card?as=html" },
+    { "source": "/api/csp-report",  "destination": "/api/report?_csp=1" }
   ],
   "headers": [
     {
