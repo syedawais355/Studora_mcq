@@ -24,6 +24,7 @@ const ORDER = [
   'components/exam-table.css',
   'components/category-grid.css',
   'components/daily.css',
+  'components/qotd.css',
   'components/mcq.css',
   'components/pagination.css',
   'components/tabs.css',
