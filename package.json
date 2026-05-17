@@ -6,8 +6,9 @@
   "scripts": {
     "start": "vercel dev",
     "build:css": "node scripts/build-css.mjs",
+    "build:sitemap": "node scripts/gen-sitemap.mjs",
     "stamp": "node scripts/stamp-version.mjs",
-    "build": "npm run build:css && npm run stamp",
+    "build": "npm run build:css && npm run build:sitemap && npm run stamp",
     "deploy": "npm run build && vercel --prod"
   },
   "dependencies": {
