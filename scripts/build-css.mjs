@@ -43,6 +43,7 @@ const ORDER = [
   'pages/about.css',
   'pages/bookmarks.css',
   'pages/quiz.css',
+  'pages/analytics.css',
 ];
 
 const HEADER = `/* Studora — single-bundle stylesheet (concatenated from base/, components/, pages/).

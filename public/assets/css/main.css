@@ -2160,3 +2160,247 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(-
 }
 .nb-qz-actions .nb-btn{padding:11px 18px;font-size:12.5px}
 
+/* ==== pages/analytics.css ==== */
+/* Personal analytics dashboard (/analytics).
+   Quiet, paper-and-ink panels mirroring the home page's .nb-personal-card.
+   Numbers in Fraunces italic, labels in JetBrains Mono small-caps. No new
+   colors — everything routes through the existing yellow / mint / red /
+   paper-2 tokens so a future palette swap touches one place. */
+
+/* Top-line cards row. Four to a row on desktop, stacks to one on phones so
+   the figures stay readable. The shadowed border matches .nb-personal-card,
+   .nb-qotd and .nb-qq for visual consistency. */
+.nb-an-cards{
+  display:grid;
+  grid-template-columns:repeat(4, minmax(0, 1fr));
+  gap:14px;
+  margin:18px 0 24px;
+}
+.nb-an-card{
+  background:var(--paper);
+  border:1.5px solid var(--ink);
+  border-radius:10px;
+  padding:18px 20px;
+  box-shadow:3px 3px 0 var(--ink);
+  display:flex;flex-direction:column;gap:6px;
+  min-width:0;
+}
+.nb-an-card strong{
+  font-family:var(--serif);font-style:italic;font-weight:700;
+  font-size:42px;line-height:1;color:var(--ink);
+  letter-spacing:-.01em;
+}
+.nb-an-card .lbl{
+  font-family:var(--mono);font-size:11px;color:var(--ink-3);
+  text-transform:uppercase;letter-spacing:.08em;
+}
+.nb-an-card .sub{
+  font-family:var(--mono);font-size:11px;color:var(--ink-2);
+  letter-spacing:.04em;
+}
+
+/* Section block — used for the activity strip, weakest-topics list, and
+   each summary card. Same paper-on-ink shell so the page reads as one
+   coherent dashboard rather than a pile of unrelated widgets. */
+.nb-an-block{
+  background:var(--paper);
+  border:1.5px solid var(--ink);
+  border-radius:10px;
+  padding:20px 22px;
+  box-shadow:3px 3px 0 var(--ink);
+  margin-bottom:18px;
+  min-width:0;
+}
+.nb-an-block-head{
+  display:flex;align-items:baseline;justify-content:space-between;
+  flex-wrap:wrap;gap:8px;margin-bottom:14px;
+}
+.nb-an-block-head h2{
+  font-size:24px;font-weight:800;letter-spacing:-.015em;margin:0;
+}
+.nb-an-block-head h2 em{
+  font-family:var(--serif);font-style:italic;font-weight:500;color:var(--ink-2);
+}
+.nb-an-block-head .caption{
+  font-family:var(--mono);font-size:11px;color:var(--ink-3);
+  letter-spacing:.06em;text-transform:lowercase;
+}
+
+/* Activity strip — 30 tiles in a row, 12px each. Empty days fall back to
+   paper-2 so the strip still reads as a "thing" rather than empty space.
+   Light = yellow-2, heavy = yellow. We avoid a green/red scale to keep the
+   feel calm rather than judgemental. */
+.nb-an-strip{
+  display:flex;align-items:center;gap:4px;flex-wrap:wrap;
+  margin:4px 0 12px;
+}
+.nb-an-cell{
+  width:12px;height:12px;border-radius:2px;
+  background:var(--paper-2);
+  border:1px solid var(--rule-ink);
+  display:inline-block;flex-shrink:0;
+}
+.nb-an-cell.lvl-1{background:var(--yellow-2);border-color:var(--ink-3)}
+.nb-an-cell.lvl-2{background:var(--yellow);border-color:var(--ink)}
+
+/* Three-up grid for goal / mistakes / bookmarks summaries. Collapses to a
+   single column under 760px so each card keeps its breathing room on
+   narrower viewports. */
+.nb-an-grid{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  gap:18px;
+  margin-bottom:18px;
+}
+.nb-an-grid .nb-an-block{margin-bottom:0}
+
+.nb-an-summary{
+  display:flex;align-items:flex-start;gap:18px;
+}
+.nb-an-summary-figure{
+  display:flex;flex-direction:column;align-items:flex-start;gap:2px;
+  min-width:78px;
+}
+.nb-an-summary-figure strong{
+  font-family:var(--serif);font-style:italic;font-weight:700;
+  font-size:38px;line-height:1;color:var(--ink);
+}
+.nb-an-summary-figure span{
+  font-family:var(--mono);font-size:10.5px;color:var(--ink-3);
+  letter-spacing:.08em;text-transform:uppercase;
+}
+.nb-an-summary-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:12px}
+.nb-an-summary-body p{
+  margin:0;font-family:var(--serif);font-style:italic;font-size:14.5px;
+  color:var(--ink-2);line-height:1.5;
+}
+.nb-an-summary-body .nb-btn{align-self:flex-start}
+
+/* Weekly progress — mirrors the home-page pattern but lives inside an
+   analytics block so the bar stretches the full width of the panel. */
+.nb-an-weekly{display:flex;flex-direction:column;gap:8px}
+.nb-an-weekly-label{
+  font-family:var(--mono);font-size:12px;color:var(--ink-3);
+  letter-spacing:.04em;
+}
+.nb-an-weekly-label em{
+  font-family:var(--serif);font-style:italic;color:var(--ink);
+  font-weight:600;font-size:15px;letter-spacing:0;
+}
+.nb-an-weekly-bar{
+  position:relative;height:10px;border-radius:999px;
+  border:1.5px solid var(--ink);background:var(--paper-2);overflow:hidden;
+}
+.nb-an-weekly-fill{
+  height:100%;background:var(--mint);
+  transition:width .25s ease;
+}
+.nb-an-weekly-hint{
+  margin:0;font-family:var(--mono);font-size:11px;color:var(--ink-3);
+  letter-spacing:.04em;
+}
+.nb-an-weekly-empty p{
+  margin:0;font-family:var(--serif);font-style:italic;font-size:14.5px;
+  color:var(--ink-2);line-height:1.55;
+}
+.nb-an-weekly-empty a{
+  color:var(--ink);font-weight:600;text-decoration:underline;
+  text-underline-offset:3px;text-decoration-thickness:1.5px;
+}
+
+/* Weakest topics — ordered list with a thin weakness bar per row. The
+   highest-count topic anchors at 100% bar width so the relative gap
+   between #1 and #4 is visible at a glance. */
+.nb-an-topics{
+  list-style:none;margin:0;padding:0;
+  display:flex;flex-direction:column;gap:10px;
+}
+.nb-an-topic{
+  display:grid;
+  grid-template-columns:36px 1fr auto;
+  align-items:center;gap:14px;
+  padding:12px 14px;
+  border:1.5px solid var(--rule-ink);
+  border-radius:8px;
+  background:var(--paper);
+  transition:background .15s ease, border-color .15s ease;
+}
+.nb-an-topic:hover{background:var(--paper-2);border-color:var(--ink-3)}
+.nb-an-topic .rank{
+  font-family:var(--mono);font-size:12px;color:var(--ink-3);
+  letter-spacing:.06em;
+}
+.nb-an-topic .body{display:flex;flex-direction:column;gap:6px;min-width:0}
+.nb-an-topic .row{
+  display:flex;align-items:baseline;justify-content:space-between;
+  gap:12px;
+}
+.nb-an-topic .title{
+  font-family:var(--sans);font-size:14.5px;font-weight:600;color:var(--ink);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;
+}
+.nb-an-topic .count{
+  font-family:var(--mono);font-size:11px;color:var(--ink-3);
+  letter-spacing:.04em;flex-shrink:0;
+}
+.nb-an-topic .count b{
+  font-family:var(--serif);font-style:italic;font-size:14px;
+  color:var(--ink);font-weight:700;letter-spacing:0;
+}
+.nb-an-topic .bar{
+  height:5px;border-radius:999px;background:var(--paper-2);
+  border:1px solid var(--rule-ink);overflow:hidden;
+}
+.nb-an-topic .bar span{
+  display:block;height:100%;background:var(--blush);
+  transition:width .25s ease;
+}
+.nb-an-topic .cta{
+  font-family:var(--mono);font-size:11.5px;color:var(--ink);
+  letter-spacing:.06em;text-transform:lowercase;
+  padding:7px 12px;border:1.5px solid var(--ink);border-radius:6px;
+  background:var(--paper);cursor:pointer;text-decoration:none;
+  transition:background .15s ease;
+}
+.nb-an-topic .cta:hover{background:var(--yellow)}
+
+.nb-an-topics-empty{
+  border:1.5px dashed var(--ink);border-radius:8px;background:var(--paper-2);
+  padding:24px;text-align:center;
+}
+.nb-an-topics-empty p{
+  margin:0 0 14px;font-family:var(--serif);font-style:italic;font-size:15px;
+  color:var(--ink-2);line-height:1.55;
+}
+.nb-an-topics-loading{
+  padding:18px;font-family:var(--mono);font-size:12px;color:var(--ink-3);
+  text-align:center;letter-spacing:.04em;
+}
+
+/* Footnotes — small mono caption used twice (below the strip and at the
+   page bottom). The `.end` variant adds extra top space to separate the
+   privacy note from the topic list above. */
+.nb-an-foot{
+  margin:8px 0 0;font-family:var(--mono);font-size:11px;color:var(--ink-3);
+  letter-spacing:.04em;line-height:1.5;
+}
+.nb-an-foot.end{margin-top:28px;text-align:center}
+
+/* Responsive — phones get a single column for the cards and the summary
+   grid, plus tighter padding so nothing crowds the edge. */
+@media (max-width:760px){
+  .nb-an-grid{grid-template-columns:1fr;gap:14px}
+  .nb-an-cards{grid-template-columns:repeat(2, minmax(0, 1fr));gap:12px}
+}
+@media (max-width:600px){
+  .nb-an-cards{grid-template-columns:1fr}
+  .nb-an-card{padding:16px 18px}
+  .nb-an-card strong{font-size:36px}
+  .nb-an-block{padding:16px 18px}
+  .nb-an-block-head h2{font-size:21px}
+  .nb-an-summary{gap:14px}
+  .nb-an-summary-figure strong{font-size:32px}
+  .nb-an-topic{grid-template-columns:28px 1fr;row-gap:8px}
+  .nb-an-topic .cta{grid-column:1 / -1;justify-self:flex-start}
+}
+
