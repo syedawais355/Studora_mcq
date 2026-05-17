@@ -11,7 +11,8 @@ import { renderShareResult } from '../components/share-result.js?v=1778642504';
 import { wireNav, navigate } from '../core/router.js?v=1778642504';
 
 const root = () => document.getElementById('app');
-const COUNT = 10;
+const DEFAULT_COUNT = 10;
+const COUNT_OPTIONS = new Set([10, 20, 30]);
 const ADVANCE_MS = 1400;
 
 // Pick the most-played, most-diverse category as the daily quiz default.
@@ -20,12 +21,25 @@ function defaultCat() {
   return state.cats.find(c => slugs.includes(c.category_slug)) || state.cats[0];
 }
 
+// Honour optional ?cat=<slug>&n=<count> from the Quick-Quiz Builder. Falls
+// back to the default subject and length when either is missing or invalid.
+function paramsFromUrl() {
+  const u = new URL(location.href);
+  const slug = u.searchParams.get('cat');
+  const nRaw = parseInt(u.searchParams.get('n'), 10);
+  const cat = slug
+    ? state.cats.find(c => c.category_slug === slug) || defaultCat()
+    : defaultCat();
+  const count = COUNT_OPTIONS.has(nRaw) ? nRaw : DEFAULT_COUNT;
+  return { cat, count };
+}
+
 export async function renderQuiz() {
   if (trackPage()) return;
   resetSession();
 
   const r = root();
-  const cat = defaultCat();
+  const { cat, count } = paramsFromUrl();
   if (!cat) {
     r.innerHTML = `${topbar('home')}
       <main class="nb-wrap"><div class="nb-empty">Subjects haven't loaded yet — open this page from the home screen.</div></main>
@@ -37,6 +51,7 @@ export async function renderQuiz() {
   // Local quiz session (deliberately not in global state — quizzes are scoped to this page).
   const session = {
     cat,
+    count,
     questions: null,
     started: false,
     index: 0,
@@ -47,7 +62,7 @@ export async function renderQuiz() {
     startedAt: 0,
   };
 
-  r.innerHTML = shell(cat);
+  r.innerHTML = shell(cat, count);
   wireNav(r);
   document.getElementById('qz-start')?.addEventListener('click', () => startQuiz(session));
   document.getElementById('qz-change')?.addEventListener('click', (e) => {
@@ -56,7 +71,7 @@ export async function renderQuiz() {
   });
 }
 
-function shell(cat) {
+function shell(cat, count = DEFAULT_COUNT) {
   const title = cleanTitle(cat.category_title || '');
   return `
   ${topbar('home')}
@@ -68,13 +83,13 @@ function shell(cat) {
     <div id="qz-stage" class="nb-qz-stage">
       <section class="nb-qz-intro">
         <div class="nb-qz-card">
-          <div class="nb-qz-tag">Daily quiz · ${COUNT} questions</div>
+          <div class="nb-qz-tag">Daily quiz · ${count} questions</div>
           <h1>Quiz of the <em>day.</em></h1>
           <p class="nb-qz-sub">A focused 3-minute test pulled at random from <b>${esc(title)}</b>.
           Pick an option, see if you got it, and watch the streak run.</p>
 
           <ul class="nb-qz-meta" role="list">
-            <li><b>${COUNT}</b><em>questions</em></li>
+            <li><b>${count}</b><em>questions</em></li>
             <li><b>~3</b><em>minutes</em></li>
             <li><b>${(cat.answerable_questions || 0).toLocaleString()}</b><em>pool size</em></li>
           </ul>
@@ -95,7 +110,7 @@ async function startQuiz(session) {
   const stage = document.getElementById('qz-stage');
   stage.innerHTML = `<div style="padding:60px 24px">${skeletons(3)}</div>`;
   try {
-    session.questions = await API.getRandomQuiz(session.cat.category_id, COUNT);
+    session.questions = await API.getRandomQuiz(session.cat.category_id, session.count);
   } catch (err) {
     console.error('quiz fetch failed', err);
     showErrorState(stage, {
@@ -113,8 +128,8 @@ async function startQuiz(session) {
     });
     return;
   }
-  // Cap to COUNT just in case API returns more.
-  session.questions = session.questions.slice(0, COUNT);
+  // Cap to the session's chosen count just in case the API returns more.
+  session.questions = session.questions.slice(0, session.count);
   session.started = true;
   session.startedAt = Date.now();
   paintQuestion(session);
