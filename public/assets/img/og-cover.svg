@@ -73,5 +73,5 @@
   <!-- Footer tagline -->
   <line x1="140" y1="520" x2="1060" y2="520" stroke="#17181c" stroke-width="1" opacity="0.25"/>
   <text x="140" y="560" font-family="Fraunces, Georgia, serif" font-size="32" font-style="italic" font-weight="500" fill="#17181c">Study quietly. <tspan font-weight="700" font-style="normal">Score loudly.</tspan></text>
-  <text x="1060" y="560" text-anchor="end" font-family="ui-monospace, 'JetBrains Mono', monospace" font-size="14" fill="#3a3a3a">mcqbank.vercel.app</text>
+  <text x="1060" y="560" text-anchor="end" font-family="ui-monospace, 'JetBrains Mono', monospace" font-size="14" fill="#3a3a3a">studora.vercel.app</text>
 </svg>
