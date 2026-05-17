@@ -20,12 +20,43 @@
 /* Personal stats card on the home page — appears only when the visitor
    has any progress (streak, solved, or best > 0). */
 .nb-personal{max-width:1240px;margin:0 auto;padding:24px 24px 0;font-family:var(--sans)}
-.nb-personal-card{background:var(--paper);border:1.5px solid var(--ink);border-radius:10px;padding:20px 24px;box-shadow:3px 3px 0 var(--ink);position:relative}
+/* +2px top padding gives the big italic numbers room from the ink border. */
+.nb-personal-card{background:var(--paper);border:1.5px solid var(--ink);border-radius:10px;padding:22px 24px 20px;box-shadow:3px 3px 0 var(--ink);position:relative}
+
+/* Hand-drawn underline flourish — a short yellow swash that sits inside the
+ * top edge, like a highlighter swipe. Quiet enough to skim past, ink-fit
+ * enough to feel notebook-native. */
+.nb-personal-card::before{
+  content:"";
+  position:absolute;
+  top:12px;
+  left:22px;
+  width:48px;
+  height:6px;
+  background:var(--yellow);
+  border-radius:3px;
+  transform:skewX(-12deg);
+  opacity:.55;
+  pointer-events:none;
+}
+
+/* Paper-lift on hover — matches the QOTD / quick-quiz idiom for a single
+ * shared interaction language across the three new cards. */
+@media (prefers-reduced-motion: no-preference){
+  .nb-personal-card{transition:transform .15s ease, box-shadow .15s ease}
+  .nb-personal-card:hover{
+    transform:translateY(-1px);
+    box-shadow:4px 4px 0 var(--ink);
+  }
+}
+
 .nb-personal-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:14px;align-items:end}
 .nb-personal-stat{display:flex;flex-direction:column;gap:2px}
 .nb-personal-stat strong{font-family:var(--serif);font-style:italic;font-size:36px;font-weight:700;line-height:1;color:var(--ink)}
 .nb-personal-stat span{font-family:var(--mono);font-size:11.5px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.04em}
 .nb-personal-stat a{color:var(--red);font-weight:600}
+/* Brand-yellow focus ring matches the skip-link pattern. */
+.nb-personal-stat a:focus-visible{outline:2px solid var(--yellow);outline-offset:2px;border-radius:2px}
 .nb-personal-note{margin:14px 0 0;font-family:var(--serif);font-style:italic;font-size:15px;color:var(--ink-2);line-height:1.5}
 .nb-personal-note em{font-style:italic;color:var(--ink);font-weight:600}
 @media(max-width:600px){
@@ -83,10 +114,15 @@
   cursor:pointer;
   transition:background-color .12s ease;
 }
-.nb-personal-goal-pill:hover,
+.nb-personal-goal-pill:hover{
+  background:var(--yellow);
+}
+/* Keep keyboard focus distinguishable from hover with a real ring; matches
+ * the skip-link pattern site-wide. */
 .nb-personal-goal-pill:focus-visible{
   background:var(--yellow);
-  outline:none;
+  outline:2px solid var(--yellow);
+  outline-offset:2px;
 }
 
 .nb-personal-weekly-label{

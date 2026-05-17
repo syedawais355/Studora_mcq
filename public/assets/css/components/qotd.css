@@ -9,10 +9,52 @@
   border-left:4px solid var(--ink);
   border-radius:0 4px 4px 0;
   box-shadow:var(--shadow-pop);
-  padding:18px 22px 20px;
+  /* +2px top padding gives the italic heading more breathing room from the border. */
+  padding:20px 22px 20px;
   margin:0 0 22px;
   position:relative;
   animation:nbPageIn .25s ease both;
+}
+
+/* Hand-drawn paperclip flourish in the top-right corner. Two thin ink arcs
+ * rendered with border + border-radius, no images, no extra requests. The
+ * inner span is the open mouth of the clip. */
+.nb-qotd::before{
+  content:"";
+  position:absolute;
+  top:-6px;
+  right:18px;
+  width:14px;
+  height:30px;
+  border:1.25px solid var(--ink-3);
+  border-radius:8px 8px 6px 6px;
+  background:transparent;
+  pointer-events:none;
+  opacity:.55;
+}
+.nb-qotd::after{
+  content:"";
+  position:absolute;
+  top:-1px;
+  right:21.5px;
+  width:7px;
+  height:18px;
+  border:1.25px solid var(--ink-3);
+  border-top:0;
+  border-radius:0 0 4px 4px;
+  background:transparent;
+  pointer-events:none;
+  opacity:.55;
+}
+
+/* Subtle lift on hover so the card feels physical without losing its calm.
+ * Wrapped in no-preference so reduced-motion users see a static card. */
+@media (prefers-reduced-motion: no-preference){
+  .nb-qotd{transition:transform .15s ease, box-shadow .15s ease}
+  .nb-qotd:hover{
+    transform:translateY(-1px);
+    box-shadow:4px 4px 0 var(--ink);
+  }
 }
 
 .nb-qotd-head{
@@ -21,7 +63,7 @@
   justify-content:space-between;
   gap:12px;
   flex-wrap:wrap;
-  margin-bottom:10px;
+  margin-bottom:12px;
   padding-bottom:10px;
   border-bottom:1px dashed var(--rule-ink);
 }
@@ -98,8 +140,10 @@
   border-color:var(--ink);
   background:var(--paper-2);
 }
+/* Brand-yellow focus ring matches the skip-link pattern — high contrast on
+ * paper, still inside the notebook palette. */
 .nb-qotd-opt:focus-visible{
-  outline:2px solid var(--ink);
+  outline:2px solid var(--yellow);
   outline-offset:2px;
 }
 .nb-qotd-opt:disabled{cursor:default}

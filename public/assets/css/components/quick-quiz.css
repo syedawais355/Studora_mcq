@@ -9,10 +9,51 @@
   border-left:4px solid var(--ink);
   border-radius:0 4px 4px 0;
   box-shadow:var(--shadow-pop);
-  padding:18px 22px 20px;
+  /* +2px top padding so the italic heading isn't crowded by the border. */
+  padding:20px 22px 20px;
   margin:0 0 22px;
   position:relative;
   animation:nbPageIn .25s ease both;
+  /* Required so the folded-corner pseudo-element clips at the card edge. */
+  overflow:hidden;
+}
+
+/* Folded note-card corner in the top-right — a small triangle made by
+ * stacking two borders on a 14px square. Quiet yellow tint of the paper
+ * palette so it reads as a dog-ear rather than a sticker. */
+.nb-qq::after{
+  content:"";
+  position:absolute;
+  top:0;
+  right:0;
+  width:0;
+  height:0;
+  border-style:solid;
+  border-width:0 14px 14px 0;
+  border-color:transparent var(--yellow-2) transparent transparent;
+  pointer-events:none;
+}
+.nb-qq::before{
+  content:"";
+  position:absolute;
+  top:0;
+  right:0;
+  width:14px;
+  height:14px;
+  /* Thin diagonal ink line traces the fold so it reads as hand-drawn. */
+  background:linear-gradient(45deg,transparent 46%,var(--ink-3) 46%,var(--ink-3) 54%,transparent 54%);
+  pointer-events:none;
+  opacity:.5;
+}
+
+/* Subtle paper-lift on hover — same idiom as the QOTD card so the two read
+ * as a pair. Reduced-motion users get a static card. */
+@media (prefers-reduced-motion: no-preference){
+  .nb-qq{transition:transform .15s ease, box-shadow .15s ease}
+  .nb-qq:hover{
+    transform:translateY(-1px);
+    box-shadow:4px 4px 0 var(--ink);
+  }
 }
 
 .nb-qq-head{
@@ -21,7 +62,7 @@
   justify-content:space-between;
   gap:12px;
   flex-wrap:wrap;
-  margin-bottom:14px;
+  margin-bottom:16px;
   padding-bottom:10px;
   border-bottom:1px dashed var(--rule-ink);
 }
@@ -94,8 +135,9 @@
   transform:translate(-1px,-1px);
   box-shadow:var(--shadow-pop);
 }
+/* Brand-yellow focus ring matches the skip-link pattern site-wide. */
 .nb-qq-select:focus-visible{
-  outline:2px solid var(--ink);
+  outline:2px solid var(--yellow);
   outline-offset:2px;
 }
 
@@ -128,7 +170,7 @@
   color:var(--paper);
 }
 .nb-qq-count:focus-visible{
-  outline:2px solid var(--ink);
+  outline:2px solid var(--yellow);
   outline-offset:2px;
   position:relative;
   z-index:1;
