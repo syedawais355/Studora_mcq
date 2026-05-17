@@ -64,6 +64,30 @@ function toBookmarkList(list) {
 // home-page picker doesn't have to hard-code them in two places.
 export const WEEKLY_GOAL_OPTIONS = [50, 100, 200];
 
+// Topic mastery (#57): Brainscape-style 5-tier label derived from a rolling
+// 50-attempt window per subject. The thresholds are tuned so the label
+// settles after enough repetitions to be meaningful but still rewards a
+// genuine recent improvement (rather than averaging it out over a lifetime
+// of attempts). Exported so pages can render the label without re-deriving.
+//
+// Tiers (in order — first match wins):
+//   0 attempts            → "Untouched"   (ink-3, muted)
+//   <  5 attempts         → "Practicing"  (treated as too-few-to-judge)
+//   accuracy <  40%       → "Practicing"
+//   accuracy 40–60%       → "Familiar"
+//   accuracy 60–80%       → "Confident"
+//   accuracy 80–95%       → "Strong"
+//   accuracy >= 95% AND
+//     attempts >= 10      → "Mastered"
+export const MASTERY_LABELS = Object.freeze({
+  UNTOUCHED:  'Untouched',
+  PRACTICING: 'Practicing',
+  FAMILIAR:   'Familiar',
+  CONFIDENT:  'Confident',
+  STRONG:     'Strong',
+  MASTERED:   'Mastered',
+});
+
 export const state = {
   // Static data populated at boot.
   cats: [],
@@ -92,6 +116,11 @@ export const state = {
   weeklyGoal: 0,
   weeklyCount: 0,
 
+  // Topic mastery (#57). Per-subject rolling counters powering the
+  // 5-tier mastery label rendered on /subjects and /category/:id.
+  // Shape: { [category_id]: { attempts, correct, last_attempts:number[] } }
+  topicProgress: {},
+
   // Auth identity (null when not signed in).
   user: null,
 
@@ -116,6 +145,9 @@ export function hydrateFromStorage() {
   state.freezesAvailable = s.freezes_available | 0;
   state.weeklyGoal       = s.weekly_goal | 0;
   state.weeklyCount      = s.weekly_count | 0;
+  state.topicProgress    = (s.topicProgress && typeof s.topicProgress === 'object')
+    ? { ...s.topicProgress }
+    : {};
 }
 
 // True if the given question ID is bookmarked, regardless of which folder
@@ -197,6 +229,45 @@ export function recordMistake(qid) {
 export function clearMistake(qid) {
   const next = storage.clearMistake(qid);
   state.mistakes = Array.isArray(next.mistakes) ? [...next.mistakes] : state.mistakes;
+}
+
+// Topic mastery (#57): log a single attempt against a subject's rolling
+// counters. Pure additive — callers also invoke recordCorrect / recordWrong
+// as before, so streak and mistake flows stay untouched. A missing
+// categoryId is a no-op (quick-quiz / search-of-the-day flows that don't
+// carry a subject still tick the streak counters but skip mastery).
+export function recordAttempt(_qid, categoryId, isCorrect) {
+  const id = parseInt(categoryId, 10);
+  if (!Number.isInteger(id) || id <= 0) return;
+  const next = storage.recordAttempt(id, !!isCorrect);
+  state.topicProgress = (next.topicProgress && typeof next.topicProgress === 'object')
+    ? { ...next.topicProgress }
+    : state.topicProgress;
+}
+
+// Returns the mastery label for a subject as { label, accuracy, attempts }.
+// `accuracy` is the rolling-window accuracy in 0..1 (or null when there's no
+// data yet); `attempts` is the rolling-window size (0..50). The label maps to
+// MASTERY_LABELS — callers render it as-is.
+export function masteryFor(categoryId) {
+  const id = parseInt(categoryId, 10);
+  const empty = { label: MASTERY_LABELS.UNTOUCHED, accuracy: null, attempts: 0 };
+  if (!Number.isInteger(id) || id <= 0) return empty;
+  const entry = state.topicProgress?.[id];
+  if (!entry) return empty;
+  const window = Array.isArray(entry.last_attempts) ? entry.last_attempts : [];
+  const n = window.length;
+  if (n === 0) return empty;
+  const right = window.reduce((acc, bit) => acc + (bit ? 1 : 0), 0);
+  const accuracy = right / n;
+  // "Too few attempts to judge" maps to Practicing — calmer than a separate
+  // tier and keeps the label vocabulary at the five Brainscape words.
+  if (n < 5) return { label: MASTERY_LABELS.PRACTICING, accuracy, attempts: n };
+  if (accuracy >= 0.95 && n >= 10) return { label: MASTERY_LABELS.MASTERED, accuracy, attempts: n };
+  if (accuracy >= 0.80) return { label: MASTERY_LABELS.STRONG, accuracy, attempts: n };
+  if (accuracy >= 0.60) return { label: MASTERY_LABELS.CONFIDENT, accuracy, attempts: n };
+  if (accuracy >= 0.40) return { label: MASTERY_LABELS.FAMILIAR, accuracy, attempts: n };
+  return { label: MASTERY_LABELS.PRACTICING, accuracy, attempts: n };
 }
 
 // Pick the weekly target (one of WEEKLY_GOAL_OPTIONS). Invalid values are

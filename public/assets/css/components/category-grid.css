@@ -7,3 +7,21 @@
 .nb-cats a .ico svg{width:100%;height:100%;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .nb-cats a h4{margin:0;font-size:14.5px;font-weight:600;flex:1}
 .nb-cats a span{font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+
+/* Topic-mastery margin annotation (#57). Italic small-caps in Fraunces —
+ * reads like a quiet hand-written note in the right margin, not a badge.
+ * Resting "untouched" state is muted; once the visitor has any history on
+ * the subject the label deepens to --ink-2 so it gains a little weight
+ * without ever shouting (no colour, no glow, no progress bars). */
+.nb-cats a .mastery-label{
+  font-family:var(--serif);
+  font-style:italic;
+  font-variant-caps:all-small-caps;
+  letter-spacing:.06em;
+  font-size:11.5px;
+  font-weight:500;
+  color:var(--ink-2);
+  flex-shrink:0;
+  margin-right:6px;
+}
+.nb-cats a .mastery-label.is-untouched{color:var(--ink-3);font-weight:400}

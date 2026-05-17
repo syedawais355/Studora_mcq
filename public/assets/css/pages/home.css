@@ -150,3 +150,19 @@
   background:var(--yellow);
   border-radius:2px;
 }
+
+/* New-visitor goal-only state (#67). When a fresh visitor with no activity
+ * lands on the home page we render JUST the picker — no streak/best/solved
+ * zeros. In that case the divider line above the picker would float over
+ * nothing, so drop it and lift the picker copy so it reads like the
+ * primary call-to-action rather than an afterthought. */
+.nb-personal-goalonly .nb-personal-goal-picker{
+  margin-top:0;
+  padding-top:0;
+  border-top:0;
+}
+.nb-personal-goalonly .nb-personal-goal-label{
+  font-size:15px;
+  color:var(--ink-2);
+  margin-bottom:12px;
+}
