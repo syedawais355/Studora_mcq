@@ -568,10 +568,52 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(-
   border-left:4px solid var(--ink);
   border-radius:0 4px 4px 0;
   box-shadow:var(--shadow-pop);
-  padding:18px 22px 20px;
+  /* +2px top padding gives the italic heading more breathing room from the border. */
+  padding:20px 22px 20px;
   margin:0 0 22px;
   position:relative;
   animation:nbPageIn .25s ease both;
+}
+
+/* Hand-drawn paperclip flourish in the top-right corner. Two thin ink arcs
+ * rendered with border + border-radius, no images, no extra requests. The
+ * inner span is the open mouth of the clip. */
+.nb-qotd::before{
+  content:"";
+  position:absolute;
+  top:-6px;
+  right:18px;
+  width:14px;
+  height:30px;
+  border:1.25px solid var(--ink-3);
+  border-radius:8px 8px 6px 6px;
+  background:transparent;
+  pointer-events:none;
+  opacity:.55;
+}
+.nb-qotd::after{
+  content:"";
+  position:absolute;
+  top:-1px;
+  right:21.5px;
+  width:7px;
+  height:18px;
+  border:1.25px solid var(--ink-3);
+  border-top:0;
+  border-radius:0 0 4px 4px;
+  background:transparent;
+  pointer-events:none;
+  opacity:.55;
+}
+
+/* Subtle lift on hover so the card feels physical without losing its calm.
+ * Wrapped in no-preference so reduced-motion users see a static card. */
+@media (prefers-reduced-motion: no-preference){
+  .nb-qotd{transition:transform .15s ease, box-shadow .15s ease}
+  .nb-qotd:hover{
+    transform:translateY(-1px);
+    box-shadow:4px 4px 0 var(--ink);
+  }
 }
 
 .nb-qotd-head{
@@ -580,7 +622,7 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(-
   justify-content:space-between;
   gap:12px;
   flex-wrap:wrap;
-  margin-bottom:10px;
+  margin-bottom:12px;
   padding-bottom:10px;
   border-bottom:1px dashed var(--rule-ink);
 }
@@ -657,8 +699,10 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(-
   border-color:var(--ink);
   background:var(--paper-2);
 }
+/* Brand-yellow focus ring matches the skip-link pattern — high contrast on
+ * paper, still inside the notebook palette. */
 .nb-qotd-opt:focus-visible{
-  outline:2px solid var(--ink);
+  outline:2px solid var(--yellow);
   outline-offset:2px;
 }
 .nb-qotd-opt:disabled{cursor:default}
@@ -768,10 +812,51 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(-
   border-left:4px solid var(--ink);
   border-radius:0 4px 4px 0;
   box-shadow:var(--shadow-pop);
-  padding:18px 22px 20px;
+  /* +2px top padding so the italic heading isn't crowded by the border. */
+  padding:20px 22px 20px;
   margin:0 0 22px;
   position:relative;
   animation:nbPageIn .25s ease both;
+  /* Required so the folded-corner pseudo-element clips at the card edge. */
+  overflow:hidden;
+}
+
+/* Folded note-card corner in the top-right — a small triangle made by
+ * stacking two borders on a 14px square. Quiet yellow tint of the paper
+ * palette so it reads as a dog-ear rather than a sticker. */
+.nb-qq::after{
+  content:"";
+  position:absolute;
+  top:0;
+  right:0;
+  width:0;
+  height:0;
+  border-style:solid;
+  border-width:0 14px 14px 0;
+  border-color:transparent var(--yellow-2) transparent transparent;
+  pointer-events:none;
+}
+.nb-qq::before{
+  content:"";
+  position:absolute;
+  top:0;
+  right:0;
+  width:14px;
+  height:14px;
+  /* Thin diagonal ink line traces the fold so it reads as hand-drawn. */
+  background:linear-gradient(45deg,transparent 46%,var(--ink-3) 46%,var(--ink-3) 54%,transparent 54%);
+  pointer-events:none;
+  opacity:.5;
+}
+
+/* Subtle paper-lift on hover — same idiom as the QOTD card so the two read
+ * as a pair. Reduced-motion users get a static card. */
+@media (prefers-reduced-motion: no-preference){
+  .nb-qq{transition:transform .15s ease, box-shadow .15s ease}
+  .nb-qq:hover{
+    transform:translateY(-1px);
+    box-shadow:4px 4px 0 var(--ink);
+  }
 }
 
 .nb-qq-head{
@@ -780,7 +865,7 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(-
   justify-content:space-between;
   gap:12px;
   flex-wrap:wrap;
-  margin-bottom:14px;
+  margin-bottom:16px;
   padding-bottom:10px;
   border-bottom:1px dashed var(--rule-ink);
 }
@@ -853,8 +938,9 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(-
   transform:translate(-1px,-1px);
   box-shadow:var(--shadow-pop);
 }
+/* Brand-yellow focus ring matches the skip-link pattern site-wide. */
 .nb-qq-select:focus-visible{
-  outline:2px solid var(--ink);
+  outline:2px solid var(--yellow);
   outline-offset:2px;
 }
 
@@ -887,7 +973,7 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(-
   color:var(--paper);
 }
 .nb-qq-count:focus-visible{
-  outline:2px solid var(--ink);
+  outline:2px solid var(--yellow);
   outline-offset:2px;
   position:relative;
   z-index:1;
@@ -1602,12 +1688,43 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(-
 /* Personal stats card on the home page — appears only when the visitor
    has any progress (streak, solved, or best > 0). */
 .nb-personal{max-width:1240px;margin:0 auto;padding:24px 24px 0;font-family:var(--sans)}
-.nb-personal-card{background:var(--paper);border:1.5px solid var(--ink);border-radius:10px;padding:20px 24px;box-shadow:3px 3px 0 var(--ink);position:relative}
+/* +2px top padding gives the big italic numbers room from the ink border. */
+.nb-personal-card{background:var(--paper);border:1.5px solid var(--ink);border-radius:10px;padding:22px 24px 20px;box-shadow:3px 3px 0 var(--ink);position:relative}
+
+/* Hand-drawn underline flourish — a short yellow swash that sits inside the
+ * top edge, like a highlighter swipe. Quiet enough to skim past, ink-fit
+ * enough to feel notebook-native. */
+.nb-personal-card::before{
+  content:"";
+  position:absolute;
+  top:12px;
+  left:22px;
+  width:48px;
+  height:6px;
+  background:var(--yellow);
+  border-radius:3px;
+  transform:skewX(-12deg);
+  opacity:.55;
+  pointer-events:none;
+}
+
+/* Paper-lift on hover — matches the QOTD / quick-quiz idiom for a single
+ * shared interaction language across the three new cards. */
+@media (prefers-reduced-motion: no-preference){
+  .nb-personal-card{transition:transform .15s ease, box-shadow .15s ease}
+  .nb-personal-card:hover{
+    transform:translateY(-1px);
+    box-shadow:4px 4px 0 var(--ink);
+  }
+}
+
 .nb-personal-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:14px;align-items:end}
 .nb-personal-stat{display:flex;flex-direction:column;gap:2px}
 .nb-personal-stat strong{font-family:var(--serif);font-style:italic;font-size:36px;font-weight:700;line-height:1;color:var(--ink)}
 .nb-personal-stat span{font-family:var(--mono);font-size:11.5px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.04em}
 .nb-personal-stat a{color:var(--red);font-weight:600}
+/* Brand-yellow focus ring matches the skip-link pattern. */
+.nb-personal-stat a:focus-visible{outline:2px solid var(--yellow);outline-offset:2px;border-radius:2px}
 .nb-personal-note{margin:14px 0 0;font-family:var(--serif);font-style:italic;font-size:15px;color:var(--ink-2);line-height:1.5}
 .nb-personal-note em{font-style:italic;color:var(--ink);font-weight:600}
 @media(max-width:600px){
@@ -1665,10 +1782,15 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(-
   cursor:pointer;
   transition:background-color .12s ease;
 }
-.nb-personal-goal-pill:hover,
+.nb-personal-goal-pill:hover{
+  background:var(--yellow);
+}
+/* Keep keyboard focus distinguishable from hover with a real ring; matches
+ * the skip-link pattern site-wide. */
 .nb-personal-goal-pill:focus-visible{
   background:var(--yellow);
-  outline:none;
+  outline:2px solid var(--yellow);
+  outline-offset:2px;
 }
 
 .nb-personal-weekly-label{
