@@ -27,3 +27,6 @@
 .nb-streak-mini b{font-family:var(--sans);color:var(--red);font-weight:800}
 .nb-streak-mini.bump{animation:nbWobble .25s}
 @media(min-width:720px){.nb-streak-mini{display:inline-flex}}
+
+/* Mistake-count badge in the nav. Small, monospace, brand-red. */
+.nb-nav-badge{display:inline-block;margin-left:4px;padding:1px 6px;font-family:var(--mono);font-size:10.5px;font-weight:700;color:#fff;background:var(--red,#b94632);border-radius:999px;line-height:1.4;vertical-align:1px}
