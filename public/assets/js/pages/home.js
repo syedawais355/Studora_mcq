@@ -6,6 +6,7 @@ import { EXAM_META, DAILY_NOTES, formatDate } from '../core/data.js?v=1778642504
 import { topbar, footer } from '../components/topbar.js?v=1778642504';
 import { setupSearch } from '../components/search.js?v=1778642504';
 import { renderQotd, setupQotd } from '../components/qotd.js?v=1778642504';
+import { renderQuickQuiz, setupQuickQuiz } from '../components/quick-quiz.js?v=1778642504';
 import { trackPage } from '../components/login-wall.js?v=1778642504';
 import { wireNav, navigate } from '../core/router.js?v=1778642504';
 
@@ -107,6 +108,8 @@ export async function renderHome() {
 
     ${renderQotd()}
 
+    ${renderQuickQuiz()}
+
     <div class="nb-sh">
       <h2>Today's <em>notes</em></h2>
       <span class="caption">— current affairs, daily</span>
@@ -133,6 +136,7 @@ export async function renderHome() {
   wireNav(r);
   setupSearch();
   setupQotd();
+  setupQuickQuiz();
   document.getElementById('nb-quiz')?.addEventListener('click', () => {
     navigate('quiz');
   });
