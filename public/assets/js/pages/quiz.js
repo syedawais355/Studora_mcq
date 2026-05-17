@@ -7,6 +7,7 @@ import { API } from '../core/api.js?v=1778642504';
 import { topbar, footer } from '../components/topbar.js?v=1778642504';
 import { confetti } from '../core/confetti.js?v=1778642504';
 import { trackPage } from '../components/login-wall.js?v=1778642504';
+import { renderShareResult } from '../components/share-result.js?v=1778642504';
 import { wireNav, navigate } from '../core/router.js?v=1778642504';
 
 const root = () => document.getElementById('app');
@@ -247,6 +248,15 @@ function paintResults(session) {
       correctCount: 0, longestStreak: 0, currentStreak: 0, startedAt: 0,
     });
     startQuiz(session);
+  });
+
+  // Drop the share-card panel right below the results card. The "exam" param
+  // doubles as a subject slug here — the share-card endpoint handles either.
+  renderShareResult(stage, {
+    score: pct,
+    total,
+    correct: score,
+    exam: session.cat?.category_slug || 'mixed',
   });
 
   if (pct >= 80) {

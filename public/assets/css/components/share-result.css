@@ -1,0 +1,114 @@
+/* Share result panel — sits below the quiz / exam end-of-session card.
+   Reuses the .nb-qz-card paper aesthetic so the page feels continuous: ink
+   border, paper background, yellow corner sticker, mono labels for chrome and
+   Fraunces-italic accents for emotion. */
+
+.nb-share{margin:18px 0 32px;animation:nbRise .28s ease-out}
+
+.nb-share-card{
+  background:var(--paper);
+  border:1.5px solid var(--ink);
+  border-radius:8px;
+  padding:26px 26px 22px;
+  max-width:760px;margin:0 auto;
+  position:relative;
+  box-shadow:var(--shadow-pop);
+}
+.nb-share-card::before{
+  content:"";position:absolute;
+  inset:-7px -7px auto auto;
+  width:46px;height:46px;background:var(--mint);
+  border:1.5px solid var(--ink);
+  transform:rotate(-6deg);
+  z-index:-1;border-radius:6px;
+}
+
+@media(max-width:640px){
+  .nb-share-card{padding:20px 18px 18px}
+}
+
+.nb-share-tag{
+  display:inline-block;padding:4px 11px;margin-bottom:12px;
+  border:1.5px solid var(--ink);border-radius:999px;background:var(--paper-2);
+  font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink);
+}
+
+.nb-share-card h3{
+  margin:0 0 6px;font-size:24px;font-weight:800;letter-spacing:-.02em;line-height:1.15;
+}
+.nb-share-card h3 em{
+  font-family:var(--serif);font-style:italic;font-weight:500;color:var(--ink-2);
+}
+
+.nb-share-sub{
+  margin:0 0 18px;color:var(--ink-2);
+  font-family:var(--serif);font-style:italic;font-size:15px;line-height:1.5;
+}
+
+/* URL row — readonly input + copy button, paired in a single bordered box. */
+.nb-share-url{
+  display:flex;align-items:stretch;
+  border:1.5px solid var(--ink);border-radius:8px;
+  background:var(--paper);overflow:hidden;
+  margin-bottom:14px;transition:box-shadow .12s;
+}
+.nb-share-url:focus-within{box-shadow:var(--shadow-pop)}
+
+.nb-share-input{
+  flex:1;min-width:0;border:0;outline:none;background:transparent;
+  padding:11px 12px;
+  font-family:var(--mono);font-size:12.5px;color:var(--ink-2);
+}
+
+.nb-share-copy{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:0 16px;
+  background:var(--paper-2);
+  border:0;border-left:1.5px solid var(--ink);
+  font-family:var(--mono);font-size:12px;font-weight:600;
+  letter-spacing:.04em;color:var(--ink);
+  cursor:pointer;transition:background .12s;
+}
+.nb-share-copy:hover{background:var(--yellow)}
+.nb-share-copy svg{flex-shrink:0}
+
+/* Action row — wraps on narrow screens so the three buttons always fit. */
+.nb-share-row{
+  display:flex;flex-wrap:wrap;gap:10px;
+  margin-bottom:14px;
+}
+
+.nb-share-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:11px 16px;
+  border:1.5px solid var(--ink);border-radius:8px;
+  background:var(--paper);color:var(--ink);
+  font-family:var(--mono);font-size:12.5px;font-weight:600;
+  letter-spacing:.02em;cursor:pointer;text-decoration:none;
+  transition:transform .12s,box-shadow .12s,background .12s;
+}
+.nb-share-btn:hover{
+  transform:translate(-1px,-1px);box-shadow:var(--shadow-pop);
+}
+.nb-share-btn:active{transform:translate(0,0);box-shadow:none}
+.nb-share-btn svg{flex-shrink:0}
+
+.nb-share-btn.primary{background:var(--ink);color:var(--paper)}
+.nb-share-btn.primary:hover{box-shadow:2px 2px 0 var(--ink-3)}
+
+.nb-share-btn.wa:hover{background:var(--mint)}
+.nb-share-btn.tw:hover{background:var(--paper-2)}
+
+.nb-share-foot{
+  margin:0;color:var(--ink-3);
+  font-family:var(--mono);font-size:11px;letter-spacing:.02em;
+  line-height:1.5;
+}
+
+/* Keyboard focus polish — same outline as the rest of the app for consistency. */
+.nb-share-input:focus-visible,
+.nb-share-copy:focus-visible,
+.nb-share-btn:focus-visible{
+  outline:2px solid var(--ink-3);outline-offset:2px;
+}

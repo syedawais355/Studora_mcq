@@ -8,6 +8,7 @@ import { buildPag } from '../components/pagination.js?v=1778642504';
 import { buildFAQ } from '../components/faq.js?v=1778642504';
 import { trackPage } from '../components/login-wall.js?v=1778642504';
 import { openExamDownloadModal } from '../components/exam-download-modal.js?v=1778642504';
+import { renderShareResult } from '../components/share-result.js?v=1778642504';
 import { wireNav, navigate } from '../core/router.js?v=1778642504';
 import { API } from '../core/api.js?v=1778642504';
 
@@ -130,9 +131,36 @@ export async function renderExam() {
     const active = document.querySelector('#nb-tabs button.active');
     const idx = active ? Array.from(active.parentNode.children).indexOf(active) : 0;
     loadExamQs(idx === 0 ? 'all' : state.examCats[idx - 1]);
+    paintShareForExam(exam);
   });
 
   await loadExamQs('all');
+  paintShareForExam(exam);
+}
+
+// Render (or refresh) the share-result panel below the exam FAQ. The exam page
+// doesn't have a fixed "session end" event — instead the visitor can flip into
+// test mode and accumulate solves, so we treat the running streak / solved
+// counter as a milestone snapshot. Hidden until they've solved at least one.
+function paintShareForExam(exam) {
+  const faq = document.getElementById('nb-faq');
+  if (!faq) return;
+  const old = document.getElementById('nb-share-host');
+  if (old) old.remove();
+
+  const solved = state.solved | 0;
+  if (solved < 1) return; // nothing meaningful to share yet
+
+  const host = document.createElement('div');
+  host.id = 'nb-share-host';
+  faq.insertAdjacentElement('afterend', host);
+
+  renderShareResult(host, {
+    score: 100,
+    total: solved,
+    correct: solved,
+    exam: exam.slug || 'mixed',
+  });
 }
 
 async function selectTab(catOrAll, btn) {
