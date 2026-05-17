@@ -17,6 +17,7 @@
     { "source": "/about",           "destination": "/" },
     { "source": "/bookmarks",       "destination": "/" },
     { "source": "/mistakes",        "destination": "/" },
+    { "source": "/analytics",       "destination": "/" },
     { "source": "/quiz",            "destination": "/" },
     { "source": "/home",            "destination": "/" },
     { "source": "/results",         "destination": "/api/results-page" }

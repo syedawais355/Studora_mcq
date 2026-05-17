@@ -16,6 +16,7 @@ import { renderBookmarks } from './pages/bookmarks.js?v=1778642504';
 import { renderMistakes }  from './pages/mistakes.js?v=1778642504';
 import { renderQuestion } from './pages/question.js?v=1778642504';
 import { renderQuiz }     from './pages/quiz.js?v=1778642504';
+import { renderAnalytics } from './pages/analytics.js?v=1778642504';
 import { topbar }         from './components/topbar.js?v=1778642504';
 
 const root = document.getElementById('app');
@@ -30,6 +31,7 @@ register('bookmarks', renderBookmarks);
 register('mistakes', renderMistakes);
 register('question', renderQuestion);
 register('quiz', renderQuiz);
+register('analytics', renderAnalytics);
 
 // Delegated click-handler for actions baked into the topbar / login wall —
 // these elements get re-rendered, so we attach once at the document level.

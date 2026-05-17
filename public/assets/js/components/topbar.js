@@ -17,6 +17,7 @@ export function hrefFor(nav) {
     case 'exams':     return '/exams';
     case 'bookmarks': return '/bookmarks';
     case 'mistakes':  return '/mistakes';
+    case 'analytics': return '/analytics';
     case 'about':     return '/about';
     default:          return '/';
   }
@@ -47,6 +48,7 @@ export function topbar(active = 'home') {
       <a data-nav="exams"    href="/exams"     class="${active === 'exams' ? 'active' : ''}">exams</a>
       <a data-nav="bookmarks" href="/bookmarks" class="${active === 'bookmarks' ? 'active' : ''}">bookmarks</a>
       <a data-nav="mistakes" href="/mistakes"  class="${active === 'mistakes' ? 'active' : ''}">mistakes${mistakeBadge}</a>
+      <a data-nav="analytics" href="/analytics" class="${active === 'analytics' ? 'active' : ''}">analytics</a>
       <a data-nav="about"    href="/about"     class="${active === 'about' ? 'active' : ''}">about</a>
     </nav>
     <div class="nb-top-cta">
@@ -86,6 +88,7 @@ export function footer() {
       <a data-nav="exams"     href="/exams">exams</a>
       <a data-nav="bookmarks" href="/bookmarks">bookmarks</a>
       <a data-nav="mistakes"  href="/mistakes">mistakes</a>
+      <a data-nav="analytics" href="/analytics">analytics</a>
       <a data-nav="about"     href="/about">about</a>
     </div>
   </div></footer>`;
