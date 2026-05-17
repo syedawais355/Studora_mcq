@@ -7,7 +7,7 @@
 // clear localStorage *and* cookies *and* close every tab to start over.
 
 const KEY = 'studora';
-const VERSION = 2;
+const VERSION = 3;
 const PV_COOKIE = 'sd_pv';
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365 * 2; // 2 years
 
@@ -17,9 +17,13 @@ const DEFAULT_STATE = Object.freeze({
   bestStreak: 0,
   solved: 0,
   bookmarks: [],
+  mistakes: [],          // question IDs answered wrong; cleared when answered right
   pagesVisited: 0,
   lastSeenISO: null,
 });
+
+// Hard cap so the Mistake Book never grows unbounded on heavy users.
+const MISTAKE_CAP = 500;
 
 function safeRead() {
   try {
@@ -116,6 +120,21 @@ export function toggleBookmark(questionId) {
 
 export function isBookmarked(questionId) {
   return load(true).bookmarks.includes(questionId);
+}
+
+export function recordMistake(questionId) {
+  const cur = load(true);
+  const list = Array.isArray(cur.mistakes) ? cur.mistakes : [];
+  if (list.includes(questionId)) return cur; // already on the list — no-op
+  const next = [questionId, ...list].slice(0, MISTAKE_CAP);
+  return update({ mistakes: next });
+}
+
+export function clearMistake(questionId) {
+  const cur = load(true);
+  const list = Array.isArray(cur.mistakes) ? cur.mistakes : [];
+  if (!list.includes(questionId)) return cur;
+  return update({ mistakes: list.filter(id => id !== questionId) });
 }
 
 export function trackPageView() {

@@ -13,6 +13,7 @@ import { renderCategory } from './pages/category.js?v=1778642504';
 import { renderExam }     from './pages/exam.js?v=1778642504';
 import { renderAbout }    from './pages/about.js?v=1778642504';
 import { renderBookmarks } from './pages/bookmarks.js?v=1778642504';
+import { renderMistakes }  from './pages/mistakes.js?v=1778642504';
 import { renderQuestion } from './pages/question.js?v=1778642504';
 import { renderQuiz }     from './pages/quiz.js?v=1778642504';
 import { topbar }         from './components/topbar.js?v=1778642504';
@@ -26,6 +27,7 @@ register('category', renderCategory);
 register('exam',     renderExam);
 register('about',    renderAbout);
 register('bookmarks', renderBookmarks);
+register('mistakes', renderMistakes);
 register('question', renderQuestion);
 register('quiz', renderQuiz);
 

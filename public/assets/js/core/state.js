@@ -30,6 +30,7 @@ export const state = {
   bestStreak: 0,
   solved: 0,
   bookmarks: [],
+  mistakes: [],
   pagesVisited: 0,
 
   // Auth identity (null when not signed in).
@@ -46,6 +47,7 @@ export function hydrateFromStorage() {
   state.bestStreak   = s.bestStreak;
   state.solved       = s.solved;
   state.bookmarks    = [...s.bookmarks];
+  state.mistakes     = Array.isArray(s.mistakes) ? [...s.mistakes] : [];
   state.pagesVisited = s.pagesVisited;
 }
 
@@ -70,6 +72,16 @@ export function toggleBookmark(qid) {
   const next = storage.toggleBookmark(qid);
   state.bookmarks = [...next.bookmarks];
   return state.bookmarks.includes(qid);
+}
+
+export function recordMistake(qid) {
+  const next = storage.recordMistake(qid);
+  state.mistakes = Array.isArray(next.mistakes) ? [...next.mistakes] : state.mistakes;
+}
+
+export function clearMistake(qid) {
+  const next = storage.clearMistake(qid);
+  state.mistakes = Array.isArray(next.mistakes) ? [...next.mistakes] : state.mistakes;
 }
 
 // Test mode is per-page, not persisted.

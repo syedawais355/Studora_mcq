@@ -3,7 +3,7 @@
 // persist via localStorage automatically.
 import { esc } from '../core/helpers.js?v=1778642504';
 import { icon } from '../core/icons.js?v=1778642504';
-import { state, recordCorrect, recordWrong, toggleBookmark } from '../core/state.js?v=1778642504';
+import { state, recordCorrect, recordWrong, toggleBookmark, recordMistake, clearMistake } from '../core/state.js?v=1778642504';
 import { confetti } from '../core/confetti.js?v=1778642504';
 import { toast } from '../core/toast.js?v=1778642504';
 import { openReportModal } from './report-modal.js?v=1778642504';
@@ -122,9 +122,12 @@ function onPick(card, opt, correct) {
   opt.classList.add('picked');
   card.classList.add('answered');
 
+  const qid = parseInt(card.dataset.id, 10);
+
   if (k === correct) {
     opt.classList.add('correct');
     recordCorrect();
+    if (qid) clearMistake(qid); // resolved → drop from Mistake Book
     state.wrongTopic = { topic: null, count: 0, dismissed: state.wrongTopic.dismissed };
     bumpStreakDigits();
     confetti();
@@ -137,6 +140,7 @@ function onPick(card, opt, correct) {
       if (x.dataset.k === correct) x.classList.add('correct');
     });
     recordWrong();
+    if (qid) recordMistake(qid); // log for later review on /mistakes
     bumpStreakDigits();
     trackWrong(card);
   }

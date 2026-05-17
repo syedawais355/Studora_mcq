@@ -23,6 +23,7 @@ export function topbar(active = 'home') {
       <a data-nav="subjects" class="${active === 'subjects' ? 'active' : ''}">subjects</a>
       <a data-nav="exams"    class="${active === 'exams' ? 'active' : ''}">exams</a>
       <a data-nav="bookmarks" class="${active === 'bookmarks' ? 'active' : ''}">bookmarks</a>
+      <a data-nav="mistakes" class="${active === 'mistakes' ? 'active' : ''}">mistakes${state.mistakes?.length ? ` <b class="nb-nav-badge">${state.mistakes.length}</b>` : ''}</a>
       <a data-nav="about"    class="${active === 'about' ? 'active' : ''}">about</a>
     </nav>
     <div class="nb-top-cta">
@@ -61,6 +62,7 @@ export function footer() {
       <a data-nav="subjects">subjects</a>
       <a data-nav="exams">exams</a>
       <a data-nav="bookmarks">bookmarks</a>
+      <a data-nav="mistakes">mistakes</a>
       <a data-nav="about">about</a>
     </div>
   </div></footer>`;
