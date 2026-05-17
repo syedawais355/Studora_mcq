@@ -49,11 +49,16 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(-
 .nb-wrap{max-width:1240px;margin:0 auto;padding:0 24px}
 @media(max-width:600px){.nb-wrap{padding:0 16px}}
 
-/* Hand-drawn red squiggle underline on hover for body links — signature #4 */
+/* Hand-drawn red squiggle underline on hover for body links — signature #4.
+   The SVG lives in /assets/img/squiggle.svg so the bytes are cached
+   immutably (per the long-lived Cache-Control rule on /assets/img/*) and
+   removed from every CSS bundle. The previous inline data URL added ~280 B
+   to every CSS render — small per-byte, but it was inside the critical
+   bundle and shipped on every page load. */
 .sq{display:inline;position:relative;background-image:none}
 .sq::after{
   content:"";position:absolute;left:-2%;right:-2%;bottom:-2px;height:6px;
-  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 8'><path d='M2 6 Q 20 2 40 5 T 80 5 T 120 5 T 160 5 T 200 5' stroke='%23b94632' stroke-width='2' fill='none' stroke-linecap='round'/></svg>") no-repeat bottom;
+  background:url("/assets/img/squiggle.svg") no-repeat bottom;
   background-size:100% 100%;opacity:0;transition:opacity .15s;
   pointer-events:none;
 }
