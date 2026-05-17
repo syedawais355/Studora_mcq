@@ -102,18 +102,68 @@ export async function renderExam() {
 
   const tabsEl = document.getElementById('nb-tabs');
   if (tabsEl) {
+    // ARIA tabs pattern (#42). Each tab gets role=tab, aria-controls, and a
+    // roving tabindex (only the active tab is in the tab sequence). The
+    // keydown handler below moves focus with Left/Right/Home/End without
+    // activating — Enter/Space commit the tab. This matches WAI-ARIA APG.
     const allBtn = document.createElement('button');
     allBtn.type = 'button';
     allBtn.className = 'active';
+    allBtn.setAttribute('role', 'tab');
+    allBtn.setAttribute('aria-selected', 'true');
+    allBtn.setAttribute('aria-controls', 'nb-eq');
+    allBtn.tabIndex = 0;
     allBtn.innerHTML = `All<span class="n">${totalQ.toLocaleString()}</span>`;
     allBtn.addEventListener('click', () => selectTab('all', allBtn));
     tabsEl.appendChild(allBtn);
     state.examCats.forEach((c) => {
       const t = document.createElement('button');
       t.type = 'button';
+      t.setAttribute('role', 'tab');
+      t.setAttribute('aria-selected', 'false');
+      t.setAttribute('aria-controls', 'nb-eq');
+      t.tabIndex = -1;
       t.innerHTML = `${esc(cleanTitle(c.category_title || ''))}<span class="n">${(c.question_count || 0).toLocaleString()}</span>`;
       t.addEventListener('click', () => selectTab(c, t));
       tabsEl.appendChild(t);
+    });
+
+    // Keyboard navigation per the WAI-ARIA tabs pattern: arrows move focus
+    // among the tabs without activating them; Enter / Space commit the
+    // currently focused tab. Home / End jump to first / last (#42).
+    tabsEl.addEventListener('keydown', (e) => {
+      const tabs = Array.from(tabsEl.querySelectorAll('button[role="tab"]'));
+      if (!tabs.length) return;
+      const currentIdx = tabs.indexOf(document.activeElement);
+      if (currentIdx === -1 && e.key !== 'Home' && e.key !== 'End') return;
+      let nextIdx = currentIdx;
+      switch (e.key) {
+        case 'ArrowRight':
+          nextIdx = (currentIdx + 1) % tabs.length;
+          break;
+        case 'ArrowLeft':
+          nextIdx = (currentIdx - 1 + tabs.length) % tabs.length;
+          break;
+        case 'Home':
+          nextIdx = 0;
+          break;
+        case 'End':
+          nextIdx = tabs.length - 1;
+          break;
+        case 'Enter':
+        case ' ':
+          // Activate the focused tab. Click handler reads dataset / closure
+          // to figure out which category to load.
+          if (currentIdx >= 0) {
+            e.preventDefault();
+            tabs[currentIdx].click();
+          }
+          return;
+        default:
+          return;
+      }
+      e.preventDefault();
+      tabs[nextIdx].focus();
     });
   }
 
@@ -164,8 +214,17 @@ function paintShareForExam(exam) {
 }
 
 async function selectTab(catOrAll, btn) {
-  document.querySelectorAll('#nb-tabs button').forEach(b => b.classList.remove('active'));
+  // Sync ARIA state across the tablist (#42). Every sibling tab loses the
+  // active class, gets aria-selected=false and tabindex=-1; the newly active
+  // tab becomes the single focus stop with aria-selected=true.
+  document.querySelectorAll('#nb-tabs button[role="tab"]').forEach((b) => {
+    b.classList.remove('active');
+    b.setAttribute('aria-selected', 'false');
+    b.tabIndex = -1;
+  });
   btn.classList.add('active');
+  btn.setAttribute('aria-selected', 'true');
+  btn.tabIndex = 0;
   await loadExamQs(catOrAll);
 }
 

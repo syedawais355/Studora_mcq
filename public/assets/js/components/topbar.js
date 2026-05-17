@@ -1,6 +1,24 @@
 // Top bar — sticky, Studora SVG mark + "tudora" wordmark + nav + auth CTA.
 import { state } from '../core/state.js?v=1778642504';
 
+// Cross-tab re-render trigger (#22). Swaps the existing `.nb-top` element
+// in-place so the mistake badge / streak pill update from the freshly
+// hydrated state without re-rendering the whole route. Returns true when a
+// topbar was found and replaced, false otherwise — useful for the boot path
+// where no topbar exists yet. Preserves the active-nav highlight by reading
+// the current data-nav off the previously-active anchor.
+export function rerenderTopbar() {
+  const existing = document.querySelector('.nb-top');
+  if (!existing) return false;
+  const active = existing.querySelector('.nb-nav a.active')?.dataset.nav || 'home';
+  const tmp = document.createElement('div');
+  tmp.innerHTML = topbar(active);
+  const replacement = tmp.firstElementChild;
+  if (!replacement) return false;
+  existing.replaceWith(replacement);
+  return true;
+}
+
 // Reusable inner lockup — SVG mark (the "S") followed by the "tudora" wordmark
 // so the eye reads "Studora". Caller wraps it in its own anchor/span.
 export function studoraLockup() {

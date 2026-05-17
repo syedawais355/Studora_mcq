@@ -72,8 +72,12 @@ async function shareQuestion(card) {
   }
 }
 
-export function wireMcqCards() {
-  document.querySelectorAll('.nb-mcq.test').forEach((card) => {
+// `root` lets a caller scope the wiring to a freshly-rendered list (e.g.
+// the mistakes / bookmarks filter) so we don't re-walk every card in the
+// document on every keystroke. Defaults to `document` so existing call
+// sites keep working unchanged.
+export function wireMcqCards(root = document) {
+  root.querySelectorAll('.nb-mcq.test').forEach((card) => {
     if (card.dataset.wired) return;
     card.dataset.wired = '1';
     const correct = card.dataset.correct;
@@ -81,7 +85,7 @@ export function wireMcqCards() {
       btn.addEventListener('click', () => onPick(card, btn, correct));
     });
   });
-  document.querySelectorAll('.nb-mcq .bk').forEach((btn) => {
+  root.querySelectorAll('.nb-mcq .bk').forEach((btn) => {
     if (btn.dataset.wired) return;
     btn.dataset.wired = '1';
     btn.addEventListener('click', (e) => {
@@ -95,7 +99,7 @@ export function wireMcqCards() {
       if (label) label.textContent = isOn ? 'saved' : 'bookmark';
     });
   });
-  document.querySelectorAll('.nb-mcq .sh').forEach((btn) => {
+  root.querySelectorAll('.nb-mcq .sh').forEach((btn) => {
     if (btn.dataset.wired) return;
     btn.dataset.wired = '1';
     btn.addEventListener('click', (e) => {
@@ -103,7 +107,7 @@ export function wireMcqCards() {
       shareQuestion(btn.closest('.nb-mcq'));
     });
   });
-  document.querySelectorAll('.nb-mcq .rp').forEach((btn) => {
+  root.querySelectorAll('.nb-mcq .rp').forEach((btn) => {
     if (btn.dataset.wired) return;
     btn.dataset.wired = '1';
     btn.addEventListener('click', (e) => {

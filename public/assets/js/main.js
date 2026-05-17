@@ -17,7 +17,7 @@ import { renderMistakes }  from './pages/mistakes.js?v=1778642504';
 import { renderQuestion } from './pages/question.js?v=1778642504';
 import { renderQuiz }     from './pages/quiz.js?v=1778642504';
 import { renderAnalytics } from './pages/analytics.js?v=1778642504';
-import { topbar }         from './components/topbar.js?v=1778642504';
+import { topbar, rerenderTopbar } from './components/topbar.js?v=1778642504';
 
 const root = document.getElementById('app');
 
@@ -137,6 +137,13 @@ async function init() {
 }
 
 init();
+
+// Cross-tab state sync (#22). When another tab mutates localStorage,
+// core/state.js re-hydrates and fires `studora:state-changed`. The
+// rerenderTopbar helper swaps `.nb-top` in-place so the mistake badge /
+// streak pill update without re-rendering the whole route — no scroll
+// jump, no input refocus loss.
+document.addEventListener('studora:state-changed', rerenderTopbar);
 
 // Register the service worker. Silent failure is fine — offline mode is a
 // nice-to-have, not a hard requirement. If the document is already past

@@ -93,9 +93,18 @@ export async function renderMistakes() {
       return;
     }
     list.innerHTML = filtered.map((q, i) => mcqItem(q, i + 1, true)).join('');
-    wireMcqCards();
+    // Scope wiring to the freshly-rendered list so a long Mistake Book
+    // doesn't trigger a full-document walk on every keystroke (#23).
+    wireMcqCards(list);
   }
   render();
 
-  document.getElementById('mb-search')?.addEventListener('input', (e) => render(e.target.value));
+  // Debounce the filter input (#23). Without this, every keystroke re-renders
+  // the list AND re-walks every .nb-mcq in the document via wireMcqCards.
+  // 200ms matches the existing search.js timer pattern from components/search.js.
+  document.getElementById('mb-search')?.addEventListener('input', (e) => {
+    const value = e.target.value;
+    clearTimeout(state.searchTimer);
+    state.searchTimer = setTimeout(() => render(value), 200);
+  });
 }

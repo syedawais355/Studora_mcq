@@ -118,6 +118,20 @@ export function hydrateFromStorage() {
   state.weeklyCount      = s.weekly_count | 0;
 }
 
+// Cross-tab sync (#22). The browser dispatches a `storage` event in *other*
+// tabs whenever localStorage is written in this origin — same tab never sees
+// its own writes. So when another tab solves a question or records a mistake
+// (storage.update() writes the 'studora' key), we re-hydrate this tab's state
+// and fire `studora:state-changed` on the document so the topbar can re-render
+// its mistake badge / streak pill without a manual refresh.
+if (typeof window !== 'undefined') {
+  window.addEventListener('storage', (e) => {
+    if (e.key !== 'studora') return;
+    hydrateFromStorage();
+    document.dispatchEvent(new CustomEvent('studora:state-changed'));
+  });
+}
+
 // True if the given question ID is bookmarked, regardless of which folder
 // (or none) it lives in. Used by the MCQ card so the bookmark button stays
 // in sync with the rich shape.
