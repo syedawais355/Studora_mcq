@@ -14,7 +14,7 @@ export function renderExams() {
   r.innerHTML = `
   ${topbar('exams')}
   <main class="nb-wrap">
-    <div class="nb-crumbs"><a data-nav="home">home</a><span class="sep">/</span>exams</div>
+    <div class="nb-crumbs"><a data-nav="home" href="/">home</a><span class="sep">/</span>exams</div>
     <div class="nb-sh">
       <span class="num">§</span>
       <h2>National <em>exams</em></h2>

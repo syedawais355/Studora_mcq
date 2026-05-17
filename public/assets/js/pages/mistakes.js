@@ -22,7 +22,7 @@ export async function renderMistakes() {
   r.innerHTML = `
   ${topbar('home')}
   <main class="nb-wrap">
-    <div class="nb-crumbs"><a data-nav="home">home</a><span class="sep">/</span>mistakes</div>
+    <div class="nb-crumbs"><a data-nav="home" href="/">home</a><span class="sep">/</span>mistakes</div>
 
     <header class="nb-cathead">
       <div class="tag">Mistake book · review what you missed</div>
@@ -54,7 +54,7 @@ export async function renderMistakes() {
       <div class="nb-bm-empty">
         <h3>Nothing here — yet</h3>
         <p>When you answer a question wrong in test mode, it shows up on this page. Use the page to come back and try again until every one of them sticks.</p>
-        <a class="nb-btn primary" data-nav="subjects">browse subjects</a>
+        <a class="nb-btn primary" data-nav="subjects" href="/subjects">browse subjects</a>
       </div>`;
     wireNav(list);
     return;
