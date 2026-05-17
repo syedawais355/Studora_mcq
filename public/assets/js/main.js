@@ -135,3 +135,12 @@ async function init() {
 }
 
 init();
+
+// Register the service worker after the page is interactive so SW install
+// never blocks first paint. Silent failure is fine — offline mode is a
+// nice-to-have, not a hard requirement.
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => { /* swallow */ });
+  });
+}
