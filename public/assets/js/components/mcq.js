@@ -32,7 +32,8 @@ export function mcqItem(q, idx, testMode, subjectLabel = '') {
       ${opts.map((o, i) => {
         const k = letters[i];
         const isCorrect = k === correct;
-        return `<li data-k="${k}" class="${!testMode && isCorrect ? 'correct' : ''}"><span class="k">${k}</span><span class="txt">${esc(o)}</span></li>`;
+        const liClass = !testMode && isCorrect ? 'correct' : '';
+        return `<li data-k="${k}" class="${liClass}"><button type="button" class="opt" data-k="${k}" aria-pressed="false"><span class="k">${k}</span><span class="txt">${esc(o)}</span></button></li>`;
       }).join('')}
     </ul>
     <div class="tools">
@@ -76,8 +77,8 @@ export function wireMcqCards() {
     if (card.dataset.wired) return;
     card.dataset.wired = '1';
     const correct = card.dataset.correct;
-    card.querySelectorAll('.opts li').forEach((opt) => {
-      opt.addEventListener('click', () => onPick(card, opt, correct));
+    card.querySelectorAll('.opts button').forEach((btn) => {
+      btn.addEventListener('click', () => onPick(card, btn, correct));
     });
   });
   document.querySelectorAll('.nb-mcq .bk').forEach((btn) => {
@@ -116,16 +117,22 @@ export function wireMcqCards() {
   });
 }
 
-function onPick(card, opt, correct) {
+function onPick(card, btn, correct) {
   if (card.classList.contains('answered')) return;
-  const k = opt.dataset.k;
-  opt.classList.add('picked');
+  const k = btn.dataset.k;
+  // Apply visual state on both the <li> (existing styles) and the <button>
+  // (where aria-pressed lives) so assistive tech and sighted users agree.
+  const li = btn.closest('li');
+  if (li) li.classList.add('picked');
+  btn.classList.add('picked');
+  btn.setAttribute('aria-pressed', 'true');
   card.classList.add('answered');
 
   const qid = parseInt(card.dataset.id, 10);
 
   if (k === correct) {
-    opt.classList.add('correct');
+    if (li) li.classList.add('correct');
+    btn.classList.add('correct');
     recordCorrect();
     if (qid) clearMistake(qid); // resolved → drop from Mistake Book
     state.wrongTopic = { topic: null, count: 0, dismissed: state.wrongTopic.dismissed };
@@ -135,7 +142,8 @@ function onPick(card, opt, correct) {
       toast('Three in a row. Keep going.', 'ok');
     }
   } else {
-    opt.classList.add('wrong');
+    if (li) li.classList.add('wrong');
+    btn.classList.add('wrong');
     card.querySelectorAll('.opts li').forEach((x) => {
       if (x.dataset.k === correct) x.classList.add('correct');
     });

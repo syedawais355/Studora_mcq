@@ -19,7 +19,7 @@ export async function renderBookmarks() {
   r.innerHTML = `
   ${topbar('home')}
   <main class="nb-wrap">
-    <div class="nb-crumbs"><a data-nav="home">home</a><span class="sep">/</span>bookmarks</div>
+    <div class="nb-crumbs"><a data-nav="home" href="/">home</a><span class="sep">/</span>bookmarks</div>
 
     <header class="nb-cathead">
       <div class="tag">Your shelf · saved MCQs</div>
@@ -51,7 +51,7 @@ export async function renderBookmarks() {
       <div class="nb-bm-empty">
         <h3>No bookmarks yet</h3>
         <p>Browse a subject and tap the <b>bookmark</b> button on any question to save it here.</p>
-        <a class="nb-btn primary" data-nav="subjects">browse subjects</a>
+        <a class="nb-btn primary" data-nav="subjects" href="/subjects">browse subjects</a>
       </div>`;
     wireNav(list);
     return;

@@ -10,29 +10,32 @@
 .nb-mcq .qtx{font-size:17px;font-weight:600;margin:0 0 14px;letter-spacing:-.005em;line-height:1.4;color:var(--ink)}
 
 .nb-mcq .opts{list-style:none;padding:0;margin:0;display:grid;gap:7px}
-.nb-mcq .opts li{
+.nb-mcq .opts li{margin:0;padding:0;list-style:none;background:transparent}
+.nb-mcq .opts li button.opt{
+  width:100%;text-align:left;font:inherit;color:inherit;
   padding:11px 14px;border:1.5px solid var(--rule-ink);border-radius:4px;
   font-size:14.5px;display:flex;gap:12px;align-items:center;
   background:var(--paper);cursor:pointer;transition:.18s;user-select:none;
 }
-.nb-mcq .opts li:hover{border-color:var(--ink);background:var(--paper-2)}
-.nb-mcq .opts li .k{
+.nb-mcq .opts li button.opt:hover{border-color:var(--ink);background:var(--paper-2)}
+.nb-mcq .opts li button.opt:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.nb-mcq .opts li button.opt .k{
   width:24px;height:24px;border:1.5px solid var(--ink);
   display:grid;place-items:center;font-family:var(--mono);font-size:11px;font-weight:700;
   flex-shrink:0;border-radius:3px;text-transform:uppercase;
 }
 
 /* Study mode (default): pre-highlight correct */
-.nb-mcq:not(.test) .opts li.correct{background:var(--mint);border-color:var(--green)}
-.nb-mcq:not(.test) .opts li.correct .k{background:var(--green);color:var(--paper);border-color:var(--green)}
+.nb-mcq:not(.test) .opts li.correct button.opt{background:var(--mint);border-color:var(--green)}
+.nb-mcq:not(.test) .opts li.correct button.opt .k{background:var(--green);color:var(--paper);border-color:var(--green)}
 
 /* Test mode: hide answers until pick */
-.nb-mcq.test .opts li.picked.correct{background:var(--mint);border-color:var(--green);animation:nbSpring .45s cubic-bezier(.2,1.6,.3,1)}
-.nb-mcq.test .opts li.picked.correct .k{background:var(--green);color:var(--paper);border-color:var(--green)}
-.nb-mcq.test .opts li.picked.wrong{background:var(--blush);border-color:var(--red);animation:nbShake .35s}
-.nb-mcq.test .opts li.picked.wrong .k{background:var(--red);color:var(--paper);border-color:var(--red)}
-.nb-mcq.test.answered .opts li.correct:not(.picked){border-color:var(--green);background:var(--mint);transition:background .3s ease .2s, border-color .3s ease .2s}
-.nb-mcq.test.answered .opts li{cursor:default;pointer-events:none}
+.nb-mcq.test .opts li.picked.correct button.opt{background:var(--mint);border-color:var(--green);animation:nbSpring .45s cubic-bezier(.2,1.6,.3,1)}
+.nb-mcq.test .opts li.picked.correct button.opt .k{background:var(--green);color:var(--paper);border-color:var(--green)}
+.nb-mcq.test .opts li.picked.wrong button.opt{background:var(--blush);border-color:var(--red);animation:nbShake .35s}
+.nb-mcq.test .opts li.picked.wrong button.opt .k{background:var(--red);color:var(--paper);border-color:var(--red)}
+.nb-mcq.test.answered .opts li.correct:not(.picked) button.opt{border-color:var(--green);background:var(--mint);transition:background .3s ease .2s, border-color .3s ease .2s}
+.nb-mcq.test.answered .opts li button.opt{cursor:default;pointer-events:none}
 
 .nb-mcq .tools{
   display:flex;gap:14px;font-family:var(--mono);font-size:11px;color:var(--ink-3);

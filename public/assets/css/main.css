@@ -10,7 +10,7 @@
   --paper-2:#f3efe2;
   --ink:#17181c;
   --ink-2:#3c3d44;
-  --ink-3:#7b7c84;
+  --ink-3:#646570;
   --rule:#e6e0cd;
   --rule-ink:#d6cfb6;
 
@@ -138,6 +138,35 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(-
 .nb-nav a{text-decoration:none;padding:6px 0;border-bottom:2px solid transparent;cursor:pointer;transition:border-color .15s, color .15s}
 .nb-nav a:hover,.nb-nav a.active{border-bottom-color:var(--ink);color:var(--ink)}
 @media(min-width:1040px){.nb-nav{display:flex}}
+
+/* Hamburger button — visible below the 1040px breakpoint where the inline
+   nav collapses. Matches the brand: paper background, ink rules, square-ish
+   corners via --radius. The two lines are pure CSS, no SVG needed. */
+.nb-burger{
+  display:none;width:44px;height:44px;flex-shrink:0;
+  background:var(--paper);border:1.5px solid var(--ink);border-radius:var(--radius);
+  cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:5px;
+  margin-left:auto;padding:0;
+}
+.nb-burger .nb-burger-line{display:block;width:20px;height:1.5px;background:var(--ink);border-radius:1px}
+.nb-burger:hover{background:var(--paper-2)}
+.nb-burger:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+@media(max-width:1039px){
+  .nb-burger{display:inline-flex}
+  .nb-top-cta{margin-left:8px}
+  .nb-top-in{position:relative}
+  .nb-nav{
+    display:none;flex-direction:column;align-items:flex-start;gap:0;
+    position:absolute;top:100%;left:0;right:0;margin:0;
+    background:var(--paper);border-top:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);
+    padding:6px 24px;z-index:49;
+  }
+  .nb-nav.open{display:flex}
+  .nb-nav a{display:block;width:100%;padding:12px 0;border-bottom:1px solid var(--rule)}
+  .nb-nav a:last-child{border-bottom:0}
+  .nb-nav a:hover,.nb-nav a.active{border-bottom-color:var(--ink);color:var(--ink)}
+}
 
 .nb-top-cta{margin-left:auto;display:flex;gap:8px;flex-shrink:0;align-items:center}
 .nb-streak-mini{display:none;font-family:var(--mono);font-size:12px;color:var(--ink-2);align-items:center;gap:6px;padding:6px 10px;border:1.5px solid var(--ink);border-radius:6px;background:var(--paper)}
@@ -666,29 +695,32 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(-
 .nb-mcq .qtx{font-size:17px;font-weight:600;margin:0 0 14px;letter-spacing:-.005em;line-height:1.4;color:var(--ink)}
 
 .nb-mcq .opts{list-style:none;padding:0;margin:0;display:grid;gap:7px}
-.nb-mcq .opts li{
+.nb-mcq .opts li{margin:0;padding:0;list-style:none;background:transparent}
+.nb-mcq .opts li button.opt{
+  width:100%;text-align:left;font:inherit;color:inherit;
   padding:11px 14px;border:1.5px solid var(--rule-ink);border-radius:4px;
   font-size:14.5px;display:flex;gap:12px;align-items:center;
   background:var(--paper);cursor:pointer;transition:.18s;user-select:none;
 }
-.nb-mcq .opts li:hover{border-color:var(--ink);background:var(--paper-2)}
-.nb-mcq .opts li .k{
+.nb-mcq .opts li button.opt:hover{border-color:var(--ink);background:var(--paper-2)}
+.nb-mcq .opts li button.opt:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.nb-mcq .opts li button.opt .k{
   width:24px;height:24px;border:1.5px solid var(--ink);
   display:grid;place-items:center;font-family:var(--mono);font-size:11px;font-weight:700;
   flex-shrink:0;border-radius:3px;text-transform:uppercase;
 }
 
 /* Study mode (default): pre-highlight correct */
-.nb-mcq:not(.test) .opts li.correct{background:var(--mint);border-color:var(--green)}
-.nb-mcq:not(.test) .opts li.correct .k{background:var(--green);color:var(--paper);border-color:var(--green)}
+.nb-mcq:not(.test) .opts li.correct button.opt{background:var(--mint);border-color:var(--green)}
+.nb-mcq:not(.test) .opts li.correct button.opt .k{background:var(--green);color:var(--paper);border-color:var(--green)}
 
 /* Test mode: hide answers until pick */
-.nb-mcq.test .opts li.picked.correct{background:var(--mint);border-color:var(--green);animation:nbSpring .45s cubic-bezier(.2,1.6,.3,1)}
-.nb-mcq.test .opts li.picked.correct .k{background:var(--green);color:var(--paper);border-color:var(--green)}
-.nb-mcq.test .opts li.picked.wrong{background:var(--blush);border-color:var(--red);animation:nbShake .35s}
-.nb-mcq.test .opts li.picked.wrong .k{background:var(--red);color:var(--paper);border-color:var(--red)}
-.nb-mcq.test.answered .opts li.correct:not(.picked){border-color:var(--green);background:var(--mint);transition:background .3s ease .2s, border-color .3s ease .2s}
-.nb-mcq.test.answered .opts li{cursor:default;pointer-events:none}
+.nb-mcq.test .opts li.picked.correct button.opt{background:var(--mint);border-color:var(--green);animation:nbSpring .45s cubic-bezier(.2,1.6,.3,1)}
+.nb-mcq.test .opts li.picked.correct button.opt .k{background:var(--green);color:var(--paper);border-color:var(--green)}
+.nb-mcq.test .opts li.picked.wrong button.opt{background:var(--blush);border-color:var(--red);animation:nbShake .35s}
+.nb-mcq.test .opts li.picked.wrong button.opt .k{background:var(--red);color:var(--paper);border-color:var(--red)}
+.nb-mcq.test.answered .opts li.correct:not(.picked) button.opt{border-color:var(--green);background:var(--mint);transition:background .3s ease .2s, border-color .3s ease .2s}
+.nb-mcq.test.answered .opts li button.opt{cursor:default;pointer-events:none}
 
 .nb-mcq .tools{
   display:flex;gap:14px;font-family:var(--mono);font-size:11px;color:var(--ink-3);

@@ -61,7 +61,7 @@ function shell(cat) {
   ${topbar('home')}
   <main class="nb-wrap">
     <div class="nb-crumbs">
-      <a data-nav="home">home</a><span class="sep">/</span>quiz of the day
+      <a data-nav="home" href="/">home</a><span class="sep">/</span>quiz of the day
     </div>
 
     <div id="qz-stage" class="nb-qz-stage">
@@ -235,7 +235,7 @@ function paintResults(session) {
           <span>another quiz</span>
         </button>
         <a class="nb-btn" data-cat-id="${session.cat.category_id}">study ${esc(cleanTitle(session.cat.category_title || ''))} →</a>
-        <a class="nb-btn" data-nav="subjects">other subjects</a>
+        <a class="nb-btn" data-nav="subjects" href="/subjects">other subjects</a>
       </div>
     </div>
   </section>`;

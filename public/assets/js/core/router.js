@@ -106,8 +106,29 @@ export function wireNav(root) {
   if (!root) return;
   root.querySelectorAll('[data-nav]').forEach((el) => {
     el.addEventListener('click', (e) => {
+      // Honour modifier-clicks and middle-click so users can open in a new tab.
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1) return;
       e.preventDefault();
+      // Close the mobile nav panel if a link inside it was tapped.
+      const panel = el.closest('.nb-nav.open');
+      if (panel) {
+        panel.classList.remove('open');
+        const burger = document.querySelector('.nb-burger[aria-expanded="true"]');
+        if (burger) burger.setAttribute('aria-expanded', 'false');
+      }
       navigate(el.dataset.nav);
+    });
+  });
+  // Hamburger toggle — collapses/expands the mobile nav panel.
+  root.querySelectorAll('.nb-burger').forEach((btn) => {
+    if (btn.dataset.wired) return;
+    btn.dataset.wired = '1';
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      const panelId = btn.getAttribute('aria-controls');
+      const panel = panelId ? document.getElementById(panelId) : null;
+      btn.setAttribute('aria-expanded', String(!expanded));
+      if (panel) panel.classList.toggle('open', !expanded);
     });
   });
   root.querySelectorAll('[data-cat-id]').forEach((el) => {

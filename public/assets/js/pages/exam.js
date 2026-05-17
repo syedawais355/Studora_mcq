@@ -27,8 +27,8 @@ export async function renderExam() {
   ${topbar('exams')}
   <main class="nb-wrap">
     <div class="nb-crumbs">
-      <a data-nav="home">home</a><span class="sep">/</span>
-      <a data-nav="exams">exams</a><span class="sep">/</span>
+      <a data-nav="home" href="/">home</a><span class="sep">/</span>
+      <a data-nav="exams" href="/exams">exams</a><span class="sep">/</span>
       ${esc((exam.slug || '').toUpperCase())}
     </div>
 

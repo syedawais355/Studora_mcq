@@ -15,6 +15,8 @@ import { studoraLockup } from './topbar.js?v=1778642504';
 
 const APP_ID = 'app';
 let observer = null;
+let trappedNodes = [];
+let trapHandler = null;
 
 // Page-view tracker used by every page renderer at the top of its body. Bumps
 // the cross-store counter and forces the wall up if the quota is exhausted.
@@ -37,6 +39,7 @@ export function showWall() {
   document.documentElement.style.overflow = 'hidden';
 
   wireWall(app);
+  trapFocus(app);
   installObserver(app);
 }
 
@@ -46,6 +49,47 @@ export function releaseWall() {
   state.wallActive = false;
   document.documentElement.style.overflow = '';
   if (observer) { observer.disconnect(); observer = null; }
+  releaseTrap();
+}
+
+// Inert the rest of the document, focus the primary CTA, and wire a Tab
+// keydown handler that wraps focus inside the dialog. WCAG 2.4.3 /
+// dialog-pattern guidance: a modal must not leak focus to background nodes.
+function trapFocus(app) {
+  const dialog = app.querySelector('.nb-wall.is-hard');
+  if (!dialog) return;
+  const cta = app.querySelector('#wall-google');
+  if (cta && typeof cta.focus === 'function') cta.focus();
+
+  trappedNodes = Array.from(document.body.children).filter(n => n.id !== APP_ID);
+  trappedNodes.forEach(n => n.setAttribute('inert', ''));
+
+  trapHandler = (e) => {
+    if (e.key !== 'Tab') return;
+    const focusables = dialog.querySelectorAll(
+      'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    );
+    if (!focusables.length) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  };
+  document.addEventListener('keydown', trapHandler);
+}
+
+function releaseTrap() {
+  trappedNodes.forEach(n => n.removeAttribute('inert'));
+  trappedNodes = [];
+  if (trapHandler) {
+    document.removeEventListener('keydown', trapHandler);
+    trapHandler = null;
+  }
 }
 
 function wallHtml() {

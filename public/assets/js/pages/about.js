@@ -11,7 +11,7 @@ export function renderAbout() {
   r.innerHTML = `
   ${topbar('about')}
   <main class="nb-wrap">
-    <div class="nb-crumbs"><a data-nav="home">home</a><span class="sep">/</span>about</div>
+    <div class="nb-crumbs"><a data-nav="home" href="/">home</a><span class="sep">/</span>about</div>
     <header class="nb-about-hero">
       <h1>Made in Bahawalpur, for <em>every student in Pakistan.</em></h1>
       <p>Studora is a quieter place to practice — built like a notebook, fast like an app. We collect, verify and explain MCQs for the eight national exams candidates actually sit.</p>
