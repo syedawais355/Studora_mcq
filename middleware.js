@@ -25,11 +25,12 @@ function escapeHtml(s) {
 }
 
 function lookupMeta(pathname) {
-  const segs = pathname.split('/').filter(Boolean);
-  if (segs.length === 2) {
-    if (segs[0] === 'subjects') return seoMeta.subjects?.[segs[1]];
-    if (segs[0] === 'exams')    return seoMeta.exams?.[segs[1]];
-  }
+  // Take the remainder after /subjects/ or /exams/ as the slug — supports
+  // nested slugs like /subjects/medical-mcqs/anatomy-mcqs.
+  const subjMatch = pathname.match(/^\/subjects\/(.+?)\/?$/);
+  if (subjMatch) return seoMeta.subjects?.[subjMatch[1]];
+  const examMatch = pathname.match(/^\/exams\/(.+?)\/?$/);
+  if (examMatch) return seoMeta.exams?.[examMatch[1]];
   return null;
 }
 
