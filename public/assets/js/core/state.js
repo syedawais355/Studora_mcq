@@ -10,6 +10,56 @@ import * as storage from './storage.js?v=1778642504';
 
 export const FREE_PAGES = 5;
 
+// The bookmarks array carries {id, folder} records since #62 added folders.
+// Two existing call sites — mcq.js's `state.bookmarks.includes(qid)` and
+// search.js's `ids.join(',')` for the API call — expect bare numbers. Rather
+// than touch those files, every entry quacks like its question ID:
+//   - toString() / valueOf() return the numeric id, so .join() and arithmetic
+//     coercions resolve to "1,2,3" exactly as before
+//   - the BookmarkList subclass overrides includes() so a numeric needle
+//     matches any entry whose .id is that needle
+// Plain iteration, spreading, map/filter still yield the rich {id, folder}
+// objects, so the bookmarks page can read the folder slot directly.
+class BookmarkEntry {
+  constructor(id, folder = null) {
+    this.id = id;
+    this.folder = folder || null;
+  }
+  toString() { return String(this.id); }
+  valueOf()  { return this.id; }
+  toJSON()   { return { id: this.id, folder: this.folder }; }
+}
+
+class BookmarkList extends Array {
+  includes(needle, fromIndex) {
+    if (typeof needle === 'number') {
+      const start = fromIndex | 0;
+      for (let i = start < 0 ? Math.max(0, this.length + start) : start; i < this.length; i++) {
+        const entry = this[i];
+        const id = typeof entry === 'number' ? entry : entry?.id;
+        if (id === needle) return true;
+      }
+      return false;
+    }
+    return super.includes(needle, fromIndex);
+  }
+}
+
+function toBookmarkList(list) {
+  const out = new BookmarkList();
+  if (Array.isArray(list)) {
+    for (const item of list) {
+      if (item == null) continue;
+      if (item instanceof BookmarkEntry) out.push(item);
+      else if (typeof item === 'number') out.push(new BookmarkEntry(item, null));
+      else if (typeof item === 'object' && Number.isFinite(item.id)) {
+        out.push(new BookmarkEntry(item.id, item.folder ?? null));
+      }
+    }
+  }
+  return out;
+}
+
 // Mirror of the goal options offered in storage.js — exported so the
 // home-page picker doesn't have to hard-code them in two places.
 export const WEEKLY_GOAL_OPTIONS = [50, 100, 200];
@@ -33,7 +83,7 @@ export const state = {
   streak: 0,
   bestStreak: 0,
   solved: 0,
-  bookmarks: [],
+  bookmarks: toBookmarkList([]),
   mistakes: [],
   pagesVisited: 0,
 
@@ -58,12 +108,21 @@ export function hydrateFromStorage() {
   state.streak           = s.streak;
   state.bestStreak       = s.bestStreak;
   state.solved           = s.solved;
-  state.bookmarks        = [...s.bookmarks];
+  // Bookmarks now carry a folder slot (#62). Storage hands back the rich
+  // {id, folder} shape; the legacy bare-number form is migrated on read.
+  state.bookmarks        = toBookmarkList(s.bookmarks);
   state.mistakes         = Array.isArray(s.mistakes) ? [...s.mistakes] : [];
   state.pagesVisited     = s.pagesVisited;
   state.freezesAvailable = s.freezes_available | 0;
   state.weeklyGoal       = s.weekly_goal | 0;
   state.weeklyCount      = s.weekly_count | 0;
+}
+
+// True if the given question ID is bookmarked, regardless of which folder
+// (or none) it lives in. Used by the MCQ card so the bookmark button stays
+// in sync with the rich shape.
+export function isBookmarked(qid) {
+  return state.bookmarks.some(b => (typeof b === 'number' ? b : b?.id) === qid);
 }
 
 export function recordCorrect() {
@@ -87,8 +146,47 @@ export function trackPage() {
 
 export function toggleBookmark(qid) {
   const next = storage.toggleBookmark(qid);
-  state.bookmarks = [...next.bookmarks];
-  return state.bookmarks.includes(qid);
+  state.bookmarks = toBookmarkList(next.bookmarks);
+  return state.bookmarks.some(b => (typeof b === 'number' ? b : b?.id) === qid);
+}
+
+// Move (or unfile) a single bookmark. Pass null/empty to clear the folder so
+// the bookmark falls back under "All saved".
+export function setBookmarkFolder(qid, folderName) {
+  const next = storage.setBookmarkFolder(qid, folderName || null);
+  state.bookmarks = toBookmarkList(next.bookmarks);
+  return state.bookmarks;
+}
+
+// Sorted list of folder names currently in use.
+export function listBookmarkFolders() {
+  return storage.listFolders();
+}
+
+// Create an empty folder. Returns true on success, false when the name was
+// invalid, taken, or the per-device cap is hit.
+export function createBookmarkFolder(name) {
+  return storage.createFolder(name);
+}
+
+// Rename a folder. Returns true on success, false when the new name was
+// invalid, the old folder didn't exist, or the rename would collide.
+export function renameBookmarkFolder(oldName, newName) {
+  const before = storage.listFolders();
+  const next = storage.renameFolder(oldName, newName);
+  state.bookmarks = toBookmarkList(next.bookmarks);
+  const after = storage.listFolders();
+  // Cheap success check: the old name is gone and the new one is present.
+  return before.includes(oldName) && after.includes(String(newName || '').trim());
+}
+
+// Delete a folder. Mode is forwarded to storage:
+//   'move-to-default'  → keep the bookmarks, just unfile them
+//   'delete-bookmarks' → drop the bookmarks along with the folder
+export function deleteBookmarkFolder(name, mode = 'move-to-default') {
+  const next = storage.deleteFolder(name, mode);
+  state.bookmarks = toBookmarkList(next.bookmarks);
+  return state.bookmarks;
 }
 
 export function recordMistake(qid) {
