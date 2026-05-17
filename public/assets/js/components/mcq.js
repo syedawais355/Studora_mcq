@@ -3,7 +3,7 @@
 // persist via localStorage automatically.
 import { esc } from '../core/helpers.js?v=1778642504';
 import { icon } from '../core/icons.js?v=1778642504';
-import { state, recordCorrect, recordWrong, toggleBookmark, recordMistake, clearMistake } from '../core/state.js?v=1778642504';
+import { state, recordCorrect, recordWrong, toggleBookmark, recordMistake, clearMistake, recordAttempt } from '../core/state.js?v=1778642504';
 import { confetti } from '../core/confetti.js?v=1778642504';
 import { toast } from '../core/toast.js?v=1778642504';
 import { openReportModal } from './report-modal.js?v=1778642504';
@@ -25,7 +25,11 @@ export function mcqItem(q, idx, testMode, subjectLabel = '') {
     ? `Q ${String(idx).padStart(3, '0')} · ${esc(label.toLowerCase())}`
     : `Q ${String(idx).padStart(3, '0')}`;
 
-  return `<article class="${wrapClass}" data-correct="${esc(correct)}" data-id="${esc(qid)}" data-topic="${esc(q.category_slug || q.category_title || '')}">
+  // data-cat-id powers topic-mastery accuracy (#57). It's the numeric subject
+  // ID so the rolling-window counter in state.topicProgress can be keyed
+  // without re-resolving slug → id at attempt time.
+  const catId = q.category_id != null ? q.category_id : '';
+  return `<article class="${wrapClass}" data-correct="${esc(correct)}" data-id="${esc(qid)}" data-cat-id="${esc(catId)}" data-topic="${esc(q.category_slug || q.category_title || '')}">
     <div class="qn">${header}</div>
     <h3 class="qtx">${esc(q.text || q.question_text || '')}</h3>
     <ul class="opts">
@@ -134,10 +138,20 @@ function onPick(card, btn, correct) {
 
   const qid = parseInt(card.dataset.id, 10);
 
+  // Topic mastery (#57): the rolling per-subject accuracy counter is keyed by
+  // category_id. Prefer the value baked into the card; fall back to the
+  // active category-page subject so flows that don't carry per-question
+  // category_id (server omitted, single-subject page) still get tracked.
+  const cardCatId = parseInt(card.dataset.catId, 10);
+  const catId = Number.isInteger(cardCatId) && cardCatId > 0
+    ? cardCatId
+    : (state.currentCat?.category_id || 0);
+
   if (k === correct) {
     if (li) li.classList.add('correct');
     btn.classList.add('correct');
     recordCorrect();
+    if (catId) recordAttempt(qid, catId, true); // additive — feeds topic-mastery label
     if (qid) clearMistake(qid); // resolved → drop from Mistake Book
     state.wrongTopic = { topic: null, count: 0, dismissed: state.wrongTopic.dismissed };
     bumpStreakDigits();
@@ -152,6 +166,7 @@ function onPick(card, btn, correct) {
       if (x.dataset.k === correct) x.classList.add('correct');
     });
     recordWrong();
+    if (catId) recordAttempt(qid, catId, false); // additive — feeds topic-mastery label
     if (qid) recordMistake(qid); // log for later review on /mistakes
     bumpStreakDigits();
     trackWrong(card);

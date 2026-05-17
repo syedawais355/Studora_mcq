@@ -21,12 +21,25 @@ export async function renderHome() {
 
   // Personal stats card: render when the visitor has any history, OR when
   // they've already picked a weekly goal (so the progress bar doesn't vanish
-  // on ISO-week resets that zero out the count).
+  // on ISO-week resets that zero out the count), OR — new in #67 — when
+  // they're fresh and haven't picked a goal yet. The goal picker is most
+  // useful as an onboarding nudge, so it has to appear before any activity.
   const hasHistory = state.streak > 0 || state.solved > 0 || state.bestStreak > 0;
-  const showPersonal = hasHistory || state.weeklyGoal > 0;
+  const needsGoal  = !state.weeklyGoal;
+  const showPersonal = hasHistory || state.weeklyGoal > 0 || needsGoal;
 
-  const personal = showPersonal
-    ? `
+  // When the visitor is wholly fresh — no history AND no goal picked — the
+  // stat numbers would all read "0", which is more discouraging than
+  // welcoming. In that case we render the picker on its own so the first
+  // thing they see below the hero is the soft "pick a goal" prompt.
+  const goalOnly = needsGoal && !hasHistory;
+
+  const personal = !showPersonal ? '' : goalOnly ? `
+    <section class="nb-personal nb-personal-goalonly" aria-label="Pick a weekly goal">
+      <div class="nb-personal-card">
+        ${weeklyBlock(state.weeklyGoal, state.weeklyCount)}
+      </div>
+    </section>` : `
     <section class="nb-personal" aria-label="Your stats">
       <div class="nb-personal-card">
         <div class="nb-personal-row">
@@ -52,7 +65,7 @@ export async function renderHome() {
         ${weeklyBlock(state.weeklyGoal, state.weeklyCount)}
         ${milestoneCopy(state.streak)}
       </div>
-    </section>` : '';
+    </section>`;
 
   r.innerHTML = `
   ${topbar('home')}

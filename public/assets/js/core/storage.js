@@ -44,7 +44,24 @@ const DEFAULT_STATE = Object.freeze({
   weekly_goal: 0,                        // 0 = user hasn't picked yet
   weekly_count: 0,                       // questions solved this ISO week
   weekly_count_iso: null,                // ISO week the count was last reset in (e.g. "2026-W20")
+
+  // Topic mastery (#57). Per-subject rolling counters used to derive the
+  // 5-tier mastery label (Untouched / Practicing / Familiar / Confident /
+  // Strong / Mastered). Pure additive — existing users get `{}` on first
+  // read after this ships, no schema bump required.
+  //
+  // Shape: { [category_id]: { attempts, correct, last_attempts:number[] } }
+  // last_attempts is the rolling window of the last 50 results, where 1
+  // means right and 0 means wrong. attempts/correct are the running totals
+  // and exist for cheap "lifetime accuracy" reads later — the label uses
+  // the rolling window only.
+  topicProgress: {},
 });
+
+// Rolling window size for the mastery label. Brainscape's CBR scale settles
+// after a few dozen reps; 50 is large enough to be statistically meaningful
+// without lagging a real recent improvement by months.
+const MASTERY_WINDOW = 50;
 
 // Hard cap so the Mistake Book never grows unbounded on heavy users.
 const MISTAKE_CAP = 500;
@@ -153,6 +170,31 @@ function validateState(state) {
       if (cleaned.length >= BOOKMARK_CAP) break; // newest entries live at the head
     }
     state.bookmarks = cleaned;
+  }
+
+  // topicProgress must be a plain object keyed by category_id. Anything that
+  // doesn't look like a number key, or whose value isn't a counters object,
+  // gets dropped — same defence-in-depth posture as bookmarks/mistakes.
+  if (!state.topicProgress || typeof state.topicProgress !== 'object' || Array.isArray(state.topicProgress)) {
+    state.topicProgress = {};
+  } else {
+    const cleaned = {};
+    for (const key of Object.keys(state.topicProgress)) {
+      const id = parseInt(key, 10);
+      if (!Number.isInteger(id) || id <= 0) continue;
+      const v = state.topicProgress[key];
+      if (!v || typeof v !== 'object') continue;
+      const attempts = Number.isInteger(v.attempts) && v.attempts >= 0 ? v.attempts : 0;
+      const correct  = Number.isInteger(v.correct)  && v.correct  >= 0 ? v.correct  : 0;
+      const lastRaw  = Array.isArray(v.last_attempts) ? v.last_attempts : [];
+      const last = [];
+      for (const bit of lastRaw) {
+        if (bit === 0 || bit === 1) last.push(bit);
+        if (last.length >= MASTERY_WINDOW) break;
+      }
+      cleaned[id] = { attempts, correct: Math.min(correct, attempts), last_attempts: last };
+    }
+    state.topicProgress = cleaned;
   }
 
   // mistakes must be an array of positive integers, truncated to MISTAKE_CAP.
@@ -513,6 +555,34 @@ export function deleteFolder(name, mode = 'move-to-default') {
 // "x of 12" hint without having to re-derive the cap.
 export const BOOKMARK_FOLDER_CAP = FOLDER_CAP;
 export const BOOKMARK_FOLDER_NAME_MAX = FOLDER_NAME_MAX;
+
+// --- topic mastery (#57) ----------------------------------------------------
+
+// Record an attempt against a subject's rolling counters. Pure additive — the
+// streak / mistakes / bookmarks pipelines run unchanged; this just tucks an
+// extra accuracy datapoint into the per-subject ring buffer so the mastery
+// label on /subjects and /category/:id can read off a recent-N accuracy.
+// No-op when categoryId is missing — anonymous / quick-quiz flows that don't
+// carry a subject still hit recordCorrect/recordWrong as before.
+export function recordAttempt(categoryId, isCorrect) {
+  const id = parseInt(categoryId, 10);
+  if (!Number.isInteger(id) || id <= 0) return load(true);
+  const cur = load(true);
+  const map = (cur.topicProgress && typeof cur.topicProgress === 'object' && !Array.isArray(cur.topicProgress))
+    ? cur.topicProgress
+    : {};
+  const prev = map[id] || { attempts: 0, correct: 0, last_attempts: [] };
+  const bit = isCorrect ? 1 : 0;
+  // Newest at the head so the slice is a single op; mirrors the mistakes list.
+  const lastRaw = Array.isArray(prev.last_attempts) ? prev.last_attempts : [];
+  const last = [bit, ...lastRaw].slice(0, MASTERY_WINDOW);
+  const nextEntry = {
+    attempts: (prev.attempts | 0) + 1,
+    correct: (prev.correct | 0) + (bit ? 1 : 0),
+    last_attempts: last,
+  };
+  return update({ topicProgress: { ...map, [id]: nextEntry } });
+}
 
 export function recordMistake(questionId) {
   const cur = load(true);

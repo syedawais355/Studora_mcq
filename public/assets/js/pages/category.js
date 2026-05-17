@@ -1,6 +1,6 @@
 // Category (subject) page — MCQ list with pagination + test-mode toggle.
 import { esc, cleanTitle, skeletons, showErrorState } from '../core/helpers.js?v=1778642504';
-import { state, resetSession } from '../core/state.js?v=1778642504';
+import { state, resetSession, masteryFor } from '../core/state.js?v=1778642504';
 import { BLURBS } from '../core/data.js?v=1778642504';
 import { normalizeSlug } from '../core/icons.js?v=1778642504';
 import { API } from '../core/api.js?v=1778642504';
@@ -26,6 +26,18 @@ export function renderCategory() {
   const count = (cat.answerable_questions || 0).toLocaleString();
   const pages = Math.ceil((cat.answerable_questions || 0) / state.perPage);
 
+  // Topic mastery (#57). A quiet italic-small-caps annotation sits below the
+  // title; the resting state for a brand-new subject is "untouched" in
+  // --ink-3 so it reads like a margin note rather than a badge.
+  const mastery = masteryFor(cat.category_id);
+  const masteryAccuracy = mastery.accuracy != null
+    ? `${Math.round(mastery.accuracy * 100)}% over last ${mastery.attempts}`
+    : '';
+  const masteryTitle = mastery.accuracy != null
+    ? `${mastery.label} — ${masteryAccuracy}`
+    : 'No attempts on this subject yet';
+  const masteryClass = mastery.attempts === 0 ? 'mastery-label is-untouched' : 'mastery-label';
+
   r.innerHTML = `
   ${topbar('subjects')}
   <main class="nb-wrap">
@@ -38,6 +50,7 @@ export function renderCategory() {
     <header class="nb-cathead">
       <div class="tag">Subject · question bank</div>
       <h1>${esc(title)} <em>MCQs</em></h1>
+      <div class="${masteryClass}" title="${esc(masteryTitle)}" aria-label="Mastery: ${esc(masteryTitle)}">${esc(mastery.label)}.</div>
       <div class="meta">
         <span><b>${count}</b> questions</span>
         <span><b>${pages}</b> pages</span>
