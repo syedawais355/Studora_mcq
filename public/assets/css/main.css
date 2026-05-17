@@ -1577,7 +1577,83 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(-
 .nb-boot-err h4{font-size:22px}
 
 /* ==== pages/bookmarks.css ==== */
-/* Bookmarks page — filter input + empty state */
+/* Bookmarks page — folder tabs, per-card chip, filter input, empty state */
+
+/* Folder bar — folder tab strip + "new folder" / "rename · delete" actions.
+   The tabs themselves mirror the existing .nb-tabs pattern (exam page) so
+   the visual language stays consistent: monospace labels, ink-on-paper, the
+   active tab inverts to paper-on-ink. */
+.nb-bm-folderbar{
+  display:flex;align-items:stretch;gap:12px;margin:18px 0 6px;flex-wrap:wrap;
+}
+.nb-bm-tabs{flex:1 1 320px;min-width:0;margin:0}
+.nb-bm-folderbar-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:stretch}
+.nb-bm-folderbar-actions .nb-btn{align-self:stretch}
+
+/* Inline prompt that replaces native prompt() for create / rename actions. */
+.nb-bm-prompt{
+  flex:1 1 100%;
+  display:flex;flex-wrap:wrap;align-items:center;gap:8px;
+  border:1.5px dashed var(--ink);background:var(--yellow-2);
+  padding:10px 12px;border-radius:8px;margin-top:4px;
+}
+.nb-bm-prompt input{
+  flex:1 1 220px;min-width:0;
+  padding:8px 12px;border:1.5px solid var(--ink);border-radius:6px;
+  background:var(--paper);font-family:var(--sans);font-size:14px;color:var(--ink);
+  outline:none;
+}
+.nb-bm-prompt input:focus{box-shadow:var(--shadow-pop)}
+.nb-bm-prompt-hint{
+  flex:1 1 100%;
+  font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.04em;
+}
+
+/* Folder chip on every MCQ card — a single button that opens a small picker
+   dropdown. "has" = file is in a named folder (mint tint, calm). "none" =
+   unfiled (paper-2, ink-3 label). */
+.nb-bm-chip-wrap{display:inline-flex;align-items:center}
+.nb-bm-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:3px 9px;border:1.5px solid var(--ink) !important;
+  border-bottom-width:1.5px;
+  border-radius:999px;
+  background:var(--paper-2);color:var(--ink-2);
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;
+  cursor:pointer;line-height:1.4;
+}
+.nb-bm-chip.has{background:var(--mint);color:var(--ink)}
+.nb-bm-chip:hover{background:var(--yellow)}
+.nb-bm-chip svg{width:12px;height:12px;flex-shrink:0}
+.nb-bm-chip .lbl{
+  max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+
+/* Picker popover. Fixed-positioned by JS so it floats above whatever's
+   underneath; visually a small notebook-style menu. */
+.nb-bm-picker{
+  position:fixed;z-index:120;
+  min-width:200px;max-width:min(280px, calc(100vw - 16px));
+  background:var(--paper);border:1.5px solid var(--ink);border-radius:8px;
+  box-shadow:var(--shadow-pop);
+  padding:6px;display:flex;flex-direction:column;gap:2px;
+}
+.nb-bm-picker-row{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 10px;border:0;border-radius:5px;
+  background:transparent;cursor:pointer;text-align:left;
+  font-family:var(--sans);font-size:13.5px;color:var(--ink);
+}
+.nb-bm-picker-row .lbl{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nb-bm-picker-row:hover{background:var(--paper-2)}
+.nb-bm-picker-row.sel{background:var(--mint);font-weight:600}
+.nb-bm-picker-row.new{
+  font-family:var(--mono);font-size:12px;color:var(--ink-2);letter-spacing:.04em;
+}
+.nb-bm-picker-row.danger{color:var(--red);font-weight:600}
+.nb-bm-picker-row.danger:hover{background:#f5d8d2}
+.nb-bm-picker-sep{height:1px;background:var(--rule-ink);margin:4px 2px}
+
 .nb-bm-toolbar{margin:6px 0 18px}
 .nb-bm-filter{
   display:flex;align-items:center;gap:10px;padding:10px 14px;

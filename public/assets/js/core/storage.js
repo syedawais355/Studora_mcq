@@ -27,6 +27,10 @@ const DEFAULT_STATE = Object.freeze({
   bestStreak: 0,
   solved: 0,
   bookmarks: [],
+  // Soft-extended in #62: a list of folder names the user has created. Kept
+  // separate from `bookmarks` so a folder can exist even before anything is
+  // filed into it. Never bumps `version` — older clients simply ignore it.
+  bookmarkFolders: [],
   mistakes: [],          // question IDs answered wrong; cleared when answered right
   pagesVisited: 0,
   lastSeenISO: null,
@@ -44,6 +48,52 @@ const DEFAULT_STATE = Object.freeze({
 
 // Hard cap so the Mistake Book never grows unbounded on heavy users.
 const MISTAKE_CAP = 500;
+
+// Bookmark folders (#62). At most a dozen folders per device — enough for
+// "Pre-test cram", "Mistakes I keep making", "Re-read tomorrow", a folder per
+// subject, etc., without letting the sidebar explode. The cap is a UX choice,
+// not a storage one.
+const FOLDER_CAP = 12;
+const FOLDER_NAME_MAX = 32;
+const FOLDER_NAME_RE = /^[A-Za-z0-9 _-]{1,32}$/;
+
+// Lift any legacy bookmark records (bare question IDs) into the new
+// {id, folder} shape. Returns a fresh array so we never mutate caller data.
+// Folder = null means "unfiled" — still shown under the All saved tab.
+function normalizeBookmarks(list) {
+  if (!Array.isArray(list)) return [];
+  return list
+    .map((entry) => {
+      if (entry == null) return null;
+      if (typeof entry === 'number') return { id: entry, folder: null };
+      if (typeof entry === 'object' && Number.isFinite(entry.id)) {
+        const folder = typeof entry.folder === 'string' && entry.folder.trim()
+          ? entry.folder.trim()
+          : null;
+        return { id: entry.id, folder };
+      }
+      // String numerics from older clients — coerce defensively.
+      const n = parseInt(entry, 10);
+      return Number.isFinite(n) ? { id: n, folder: null } : null;
+    })
+    .filter(Boolean);
+}
+
+// True if a bookmark record matches the given question ID. Handles both the
+// new {id, folder} shape and the legacy bare-number form so calls during
+// hydration don't trip on partially-migrated data.
+function sameQid(entry, qid) {
+  if (entry == null) return false;
+  if (typeof entry === 'number') return entry === qid;
+  return entry.id === qid;
+}
+
+function bookmarkFolderName(entry) {
+  if (entry && typeof entry === 'object' && typeof entry.folder === 'string') {
+    return entry.folder;
+  }
+  return null;
+}
 
 function safeRead() {
   try {
@@ -100,8 +150,20 @@ function reconcilePagesVisited(localValue) {
 
 export function load(raw = false) {
   const stored = { ...DEFAULT_STATE, ...(safeRead() || {}) };
-  if (raw) return stored;
+  // Soft schema lift (#62): old bookmarks were bare question IDs, new ones
+  // carry a folder slot. We rewrite the array on every read so the rest of
+  // the codebase sees a uniform shape — no version bump required.
+  const normalized = normalizeBookmarks(stored.bookmarks);
+  const wasLegacy = (stored.bookmarks || []).some(b => typeof b === 'number' || typeof b === 'string');
+  stored.bookmarks = normalized;
+  if (raw) {
+    // Persist the lift the first time we see legacy records so future reads
+    // don't repeat the work — but only when something actually changed.
+    if (wasLegacy) safeWrite({ ...stored, bookmarks: normalized });
+    return stored;
+  }
   stored.pagesVisited = reconcilePagesVisited(stored.pagesVisited);
+  if (wasLegacy) safeWrite({ ...stored, bookmarks: normalized });
   return stored;
 }
 
@@ -239,15 +301,140 @@ export function resetStreak() {
 
 export function toggleBookmark(questionId) {
   const cur = load(true);
-  const has = cur.bookmarks.includes(questionId);
+  const has = cur.bookmarks.some(b => sameQid(b, questionId));
   return update({
-    bookmarks: has ? cur.bookmarks.filter(id => id !== questionId) : [...cur.bookmarks, questionId],
+    bookmarks: has
+      ? cur.bookmarks.filter(b => !sameQid(b, questionId))
+      : [...cur.bookmarks, { id: questionId, folder: null }],
   });
 }
 
 export function isBookmarked(questionId) {
-  return load(true).bookmarks.includes(questionId);
+  return load(true).bookmarks.some(b => sameQid(b, questionId));
 }
+
+// --- bookmark folders (#62) -------------------------------------------------
+
+// Validate a folder name against the cap and allowed character set. Returns
+// a normalized (trimmed) name on success, or null when invalid — the UI shows
+// a toast in that case.
+export function validateFolderName(name) {
+  const trimmed = String(name ?? '').trim();
+  if (!FOLDER_NAME_RE.test(trimmed)) return null;
+  return trimmed;
+}
+
+// Returns the unique folder names known to the device, in stable A→Z order
+// so the tab strip doesn't reshuffle between renders. The list is the union
+// of (a) folders the user has explicitly created via createFolder() and
+// (b) folders any bookmark is currently filed under — that second source
+// covers older devices where folders only existed implicitly.
+export function listFolders() {
+  const cur = load(true);
+  const names = new Set();
+  (Array.isArray(cur.bookmarkFolders) ? cur.bookmarkFolders : []).forEach((n) => {
+    const v = String(n ?? '').trim();
+    if (v) names.add(v);
+  });
+  cur.bookmarks.forEach((b) => {
+    const f = bookmarkFolderName(b);
+    if (f) names.add(f);
+  });
+  return [...names].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+}
+
+// Create an empty folder. Returns true on success, false when the name was
+// invalid, already exists, or the cap is hit. Stored separately from
+// `bookmarks` so the folder survives until something is filed into it.
+export function createFolder(name) {
+  const fresh = validateFolderName(name);
+  if (!fresh) return false;
+  const existing = listFolders();
+  if (existing.includes(fresh)) return false;
+  if (existing.length >= FOLDER_CAP) return false;
+  const cur = load(true);
+  const list = Array.isArray(cur.bookmarkFolders) ? cur.bookmarkFolders : [];
+  update({ bookmarkFolders: [...list, fresh] });
+  return true;
+}
+
+// Move a single bookmark into the named folder (or null to unfile it). Caller
+// is responsible for validating the folder name first; we just write what we
+// were handed so the same helper can also restore from a rename / delete.
+// Returns the updated full state.
+export function setBookmarkFolder(questionId, folderName) {
+  const cur = load(true);
+  const target = folderName ? String(folderName).trim() || null : null;
+  // Enforce the cap when introducing a new folder name. Existing folders are
+  // always allowed even if somehow over the cap — we never refuse a move
+  // between folders that are already on the device.
+  if (target) {
+    const existing = new Set(listFolders());
+    if (!existing.has(target) && existing.size >= FOLDER_CAP) {
+      return cur;
+    }
+  }
+  let touched = false;
+  const next = cur.bookmarks.map((b) => {
+    const entry = typeof b === 'number' ? { id: b, folder: null } : b;
+    if (entry.id !== questionId) return entry;
+    if ((entry.folder || null) === target) return entry;
+    touched = true;
+    return { ...entry, folder: target };
+  });
+  if (!touched) return cur;
+  return update({ bookmarks: next });
+}
+
+// Rename a folder in place. Every bookmark currently filed under `oldName`
+// gets reassigned to `newName`, and the explicit folder list is updated to
+// match. No-op when the new name is invalid, the old folder doesn't exist,
+// or the rename would collide with another folder.
+export function renameFolder(oldName, newName) {
+  const old = String(oldName ?? '').trim();
+  const fresh = validateFolderName(newName);
+  if (!old || !fresh) return load(true);
+  const folders = new Set(listFolders());
+  if (!folders.has(old)) return load(true);
+  if (folders.has(fresh) && fresh !== old) return load(true);
+  const cur = load(true);
+  const nextBookmarks = cur.bookmarks.map((b) => {
+    const entry = typeof b === 'number' ? { id: b, folder: null } : b;
+    return entry.folder === old ? { ...entry, folder: fresh } : entry;
+  });
+  const list = Array.isArray(cur.bookmarkFolders) ? cur.bookmarkFolders : [];
+  const nextFolders = list.map((n) => (String(n).trim() === old ? fresh : n));
+  // Make sure the new name shows up exactly once, even if the old explicit
+  // list was missing it (folder existed only via a bookmark).
+  if (!nextFolders.includes(fresh)) nextFolders.push(fresh);
+  return update({ bookmarks: nextBookmarks, bookmarkFolders: nextFolders });
+}
+
+// Delete a folder. Mode controls what happens to its bookmarks:
+//   'move-to-default'  → bookmarks survive, folder is cleared (null)
+//   'delete-bookmarks' → bookmarks are removed from the saved list entirely
+// Any other mode is treated as 'move-to-default' so we fail safe. The
+// folder is also dropped from the explicit list.
+export function deleteFolder(name, mode = 'move-to-default') {
+  const target = String(name ?? '').trim();
+  if (!target) return load(true);
+  const cur = load(true);
+  const matches = (b) => bookmarkFolderName(b) === target;
+  const nextBookmarks = mode === 'delete-bookmarks'
+    ? cur.bookmarks.filter(b => !matches(b))
+    : cur.bookmarks.map((b) => {
+        const entry = typeof b === 'number' ? { id: b, folder: null } : b;
+        return matches(entry) ? { ...entry, folder: null } : entry;
+      });
+  const list = Array.isArray(cur.bookmarkFolders) ? cur.bookmarkFolders : [];
+  const nextFolders = list.filter(n => String(n).trim() !== target);
+  return update({ bookmarks: nextBookmarks, bookmarkFolders: nextFolders });
+}
+
+// Exposed for the UI so the "New folder" button can render an accurate
+// "x of 12" hint without having to re-derive the cap.
+export const BOOKMARK_FOLDER_CAP = FOLDER_CAP;
+export const BOOKMARK_FOLDER_NAME_MAX = FOLDER_NAME_MAX;
 
 export function recordMistake(questionId) {
   const cur = load(true);
