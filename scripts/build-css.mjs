@@ -30,6 +30,7 @@ const ORDER = [
   'components/pagination.css',
   'components/tabs.css',
   'components/login-wall.css',
+  'components/share-result.css',
   'components/download-modal.css',
   'components/rail.css',
   'components/toast.css',
