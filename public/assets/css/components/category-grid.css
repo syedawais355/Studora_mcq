@@ -3,7 +3,13 @@
 @media(max-width:500px){.nb-cats{columns:1}}
 .nb-cats a{display:flex;align-items:center;gap:12px;padding:12px 20px;text-decoration:none;color:inherit;break-inside:avoid;border-bottom:1px dashed var(--rule-ink);transition:background .15s;cursor:pointer}
 .nb-cats a:hover{background:var(--yellow)}
-.nb-cats a .ico{width:24px;height:24px;color:var(--ink-2);flex-shrink:0}
+/* Subject icons are full-colour illustrations under /assets/img/subject-icons/.
+   Bumped from 24px to 38px so the artwork reads at a glance without
+   crowding the title. The svg rule below is kept for any legacy caller
+   that still returns the inline stroke icon set. */
+.nb-cats a .ico{width:38px;height:38px;color:var(--ink-2);flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.nb-cats a .ico img{width:100%;height:100%;object-fit:contain;display:block;transition:transform .18s ease}
+.nb-cats a:hover .ico img{transform:scale(1.08) rotate(-3deg)}
 .nb-cats a .ico svg{width:100%;height:100%;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .nb-cats a h4{margin:0;font-size:14.5px;font-weight:600;flex:1}
 .nb-cats a span{font-family:var(--mono);font-size:11px;color:var(--ink-3)}

@@ -1,6 +1,6 @@
 // Subjects index page.
 import { esc, cleanTitle } from '../core/helpers.js?v=1778642504';
-import { icon, catIcon } from '../core/icons.js?v=1778642504';
+import { catIconImg } from '../core/icons.js?v=1778642504';
 import { state, masteryFor } from '../core/state.js?v=1778642504';
 import { topbar, footer } from '../components/topbar.js?v=1778642504';
 import { trackPage } from '../components/login-wall.js?v=1778642504';
@@ -33,7 +33,7 @@ export function renderSubjects() {
         const cls = m.attempts === 0 ? 'mastery-label is-untouched' : 'mastery-label';
         return `
         <a data-cat-id="${c.category_id}">
-          <span class="ico">${icon(catIcon(c))}</span>
+          <span class="ico">${catIconImg(c, cleanTitle(c.category_title || ''))}</span>
           <h4>${esc(cleanTitle(c.category_title || ''))}</h4>
           <em class="${cls}" title="${esc(tip)}" aria-label="Mastery: ${esc(tip)}">${esc(m.label)}</em>
           <span>${(c.answerable_questions || 0).toLocaleString()}</span>
