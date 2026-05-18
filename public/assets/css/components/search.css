@@ -69,6 +69,7 @@
   color:var(--ink-2);flex-shrink:0;
 }
 .nb-srow .ico svg{width:18px;height:18px}
+.nb-srow .ico img{width:24px;height:24px;object-fit:contain;display:block}
 
 /* kind-specific icon backgrounds — subtle colour cue */
 .nb-srow[data-kind="subject"]  .ico{background:var(--mint)}

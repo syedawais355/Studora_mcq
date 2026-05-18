@@ -44,6 +44,9 @@ export function normalizeSlug(slug) {
     .trim();
 }
 
+// Legacy stroke-icon name picker — kept for backwards compatibility but no
+// longer the recommended path. New surfaces should call catIconImg(cat)
+// directly so they get the full-colour subject illustrations.
 export function catIcon(cat) {
   const s = normalizeSlug(cat?.category_slug);
   if (s.includes('general-knowledge')) return 'globe';
@@ -63,4 +66,86 @@ export function catIcon(cat) {
   if (s.includes('current-affairs')) return 'news';
   if (s.includes('pedagogy') || s.includes('teaching')) return 'board';
   return 'book';
+}
+
+// Map a subject slug (normalised) to one of the 24 illustration SVGs under
+// /assets/img/subject-icons/. Returned file names are stable — change the
+// mapping below if you want a different icon for a subject; never rename
+// the files. Falls back to book.svg when nothing matches.
+export function catIconName(cat) {
+  const s = normalizeSlug(cat?.category_slug);
+
+  // Engineering tracks — drafting / circuits / lab apparatus.
+  if (s.includes('software-engineering')) return 'computer';
+  if (s.includes('electrical-engineering')) return 'atom-spin';
+  if (s.includes('chemical-engineering')) return 'beakers';
+  if (s.includes('civil-engineering')) return 'compass-draw';
+  if (s.includes('mechanical-engineering')) return 'compass';
+  if (s.includes('engineering')) return 'compass-draw';
+
+  // Hard sciences.
+  if (s.includes('physics')) return 'physics';
+  if (s.includes('chemistry')) return 'beakers';
+  if (s.includes('biology')) return 'dna';
+  if (s.includes('medical') || s.includes('anatomy') || s.includes('physiology') ||
+      s.includes('biochemistry') || s.includes('histology') || s.includes('pathology') ||
+      s.includes('microbiology') || s.includes('pharmacology')) return 'microscope';
+  if (s.includes('dental') || s.includes('oral')) return 'molecule';
+
+  // Numbers + commerce.
+  if (s.includes('math')) return 'calculator';
+  if (s.includes('accounting')) return 'analytics';
+  if (s.includes('finance')) return 'analytics';
+  if (s.includes('economics')) return 'analytics';
+  if (s.includes('marketing')) return 'analytics';
+  if (s.includes('hrm') || s.includes('human-resource')) return 'certificate';
+
+  // Computing.
+  if (s.includes('computer') || s.includes('information-technology') || s.includes('tech')) return 'computer';
+
+  // Living world.
+  if (s.includes('agriculture')) return 'plant';
+  if (s.includes('forestry') || s.includes('botany')) return 'leaf-magnifier';
+
+  // Social sciences + governance.
+  if (s.includes('psychology')) return 'brain';
+  if (s.includes('sociology')) return 'blackboard';
+  if (s.includes('political') || s.includes('political-science')) return 'scales';
+  if (s.includes('judiciary') || s.includes('law')) return 'scales';
+  if (s.includes('election') || s.includes('officer')) return 'scales';
+  if (s.includes('international-relations')) return 'globe';
+
+  // Geography / world / current affairs.
+  if (s.includes('geography')) return 'globe';
+  if (s.includes('world-current-affairs')) return 'globe';
+  if (s.includes('pakistan-current-affairs') || s.includes('pakistan-affairs')) return 'globe';
+  if (s.includes('current-affairs')) return 'globe';
+  if (s.includes('general-knowledge')) return 'globe';
+
+  // Language + literature.
+  if (s.includes('urdu')) return 'translate';
+  if (s.includes('english-literature') || s.includes('literature')) return 'pen-paper';
+  if (s.includes('english')) return 'blackboard';
+
+  // History + religion + classics.
+  if (s.includes('islamiat') || s.includes('islamic-studies') || s.includes('islamic')) return 'scroll';
+  if (s.includes('pak-study') || s.includes('history')) return 'scroll';
+
+  // Education + teaching.
+  if (s.includes('pedagogy') || s.includes('teaching')) return 'blackboard';
+  if (s.includes('physical-education')) return 'certificate';
+
+  // Catch-all science buckets.
+  if (s.includes('everyday-science')) return 'atom';
+  if (s.includes('science')) return 'atom';
+
+  return 'book';
+}
+
+// Render the colour subject illustration as an <img>. Lazy-loaded since the
+// subject grid can render 24+ at once; decoding="async" keeps it off the
+// main paint thread.
+export function catIconImg(cat, alt = '') {
+  const name = catIconName(cat);
+  return `<img src="/assets/img/subject-icons/${name}.svg" alt="${alt}" loading="lazy" decoding="async" width="44" height="44">`;
 }

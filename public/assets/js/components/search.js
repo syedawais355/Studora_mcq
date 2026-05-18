@@ -3,7 +3,7 @@
 // matched in-memory once we've hydrated their text. MCQs go through the
 // /api/search RPC (full-text via search_vector + ts_rank).
 import { esc, cleanTitle } from '../core/helpers.js?v=1778642504';
-import { icon, catIcon, normalizeSlug } from '../core/icons.js?v=1778642504';
+import { icon, catIconImg, normalizeSlug } from '../core/icons.js?v=1778642504';
 import { state } from '../core/state.js?v=1778642504';
 import { API } from '../core/api.js?v=1778642504';
 import { navigate } from '../core/router.js?v=1778642504';
@@ -140,7 +140,7 @@ function renderPanel({ q, subjects, exams, bmMatches, mcqs, loading }) {
         <div class="nb-sgrp-h"><span>Subjects</span><span class="n">${subjects.length}</span></div>
         ${subjects.map(c => `
           <a class="nb-srow" data-sr data-kind="subject" data-cat="${c.category_id}" tabindex="0">
-            <span class="ico">${icon(catIcon(c))}</span>
+            <span class="ico">${catIconImg(c, cleanTitle(c.category_title || ''))}</span>
             <span class="t">${highlight(cleanTitle(c.category_title || ''), q)}</span>
             <span class="m">${(c.answerable_questions || 0).toLocaleString()} MCQs</span>
           </a>
