@@ -1,14 +1,14 @@
 // Home page — hero (slim) + Exams table + Subjects grid + Daily + Quiz of the day.
-import { esc, cleanTitle, animCount, skeletons } from '../core/helpers.js?v=1778642504';
-import { icon, catIconImg } from '../core/icons.js?v=1778642504';
-import { state, setWeeklyGoal, WEEKLY_GOAL_OPTIONS } from '../core/state.js?v=1778642504';
-import { EXAM_META, DAILY_NOTES, formatDate } from '../core/data.js?v=1778642504';
-import { topbar, footer } from '../components/topbar.js?v=1778642504';
-import { setupSearch } from '../components/search.js?v=1778642504';
-import { renderQotd, setupQotd } from '../components/qotd.js?v=1778642504';
-import { renderQuickQuiz, setupQuickQuiz } from '../components/quick-quiz.js?v=1778642504';
-import { trackPage } from '../components/login-wall.js?v=1778642504';
-import { wireNav, navigate } from '../core/router.js?v=1778642504';
+import { esc, cleanTitle, animCount, skeletons } from '../core/helpers.js?v=1779087891';
+import { icon, catIconImg } from '../core/icons.js?v=1779087891';
+import { state, setWeeklyGoal, WEEKLY_GOAL_OPTIONS } from '../core/state.js?v=1779087891';
+import { EXAM_META, DAILY_NOTES, formatDate } from '../core/data.js?v=1779087891';
+import { topbar, footer } from '../components/topbar.js?v=1779087891';
+import { setupSearch } from '../components/search.js?v=1779087891';
+import { renderQotd, setupQotd } from '../components/qotd.js?v=1779087891';
+import { renderQuickQuiz, setupQuickQuiz } from '../components/quick-quiz.js?v=1779087891';
+import { trackPage } from '../components/login-wall.js?v=1779087891';
+import { wireNav, navigate } from '../core/router.js?v=1779087891';
 
 const root = () => document.getElementById('app');
 

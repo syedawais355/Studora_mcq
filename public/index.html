@@ -38,8 +38,8 @@
 
 <!-- PWA -->
 <link rel="manifest" href="/manifest.webmanifest">
-<link rel="icon" type="image/svg+xml" href="/assets/img/studora-logo.svg">
-<link rel="apple-touch-icon" href="/assets/img/studora-logo.svg">
+<link rel="icon" type="image/svg+xml" href="/assets/img/studora-logo.svg?v=1779087891">
+<link rel="apple-touch-icon" href="/assets/img/studora-logo.svg?v=1779087891">
 
 <!-- Performance hints -->
 <link rel="preconnect" href="https://xwvvxhkfndchpbyyaych.supabase.co">
@@ -72,17 +72,17 @@
 
 <!-- Preload the two fonts the hero actually paints with so they arrive
      in the first round trip and don't cause a layout shift. -->
-<link rel="preload" as="font" type="font/woff2" crossorigin href="/assets/fonts/inter-var.woff2">
-<link rel="preload" as="font" type="font/woff2" crossorigin href="/assets/fonts/fraunces-italic-var.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="/assets/fonts/inter-var.woff2?v=1779087891">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="/assets/fonts/fraunces-italic-var.woff2?v=1779087891">
 
 <!-- Preload the JS modules the boot path actually needs (main.js + its two
      static deps core/router.js and core/api.js). modulepreload tells the
      browser to fetch + parse them as ES modules in parallel with everything
      else, so by the time main.js executes its imports are already warm in
      the module map. -->
-<link rel="modulepreload" href="/assets/js/main.js">
-<link rel="modulepreload" href="/assets/js/core/router.js">
-<link rel="modulepreload" href="/assets/js/core/api.js">
+<link rel="modulepreload" href="/assets/js/main.js?v=1779087891">
+<link rel="modulepreload" href="/assets/js/core/router.js?v=1779087891">
+<link rel="modulepreload" href="/assets/js/core/api.js?v=1779087891">
 
 <!-- Critical CSS — inlined so first paint never blocks on a stylesheet.
      The full bundle (main-rest.css below) covers everything off-screen and
@@ -98,7 +98,7 @@
      used in async patterns (would need 'unsafe-hashes' to allow it).
      main-rest.css is ~12 KB brotli — the parallel download alongside the
      JS modulepreloads keeps it off the critical path in practice. -->
-<link rel="stylesheet" href="/assets/css/main-rest.css?v=1778642504">
+<link rel="stylesheet" href="/assets/css/main-rest.css?v=1779087891">
 
 <!-- Structured data: Organization + WebSite + EducationalOrganization -->
 <script type="application/ld+json">
@@ -184,6 +184,6 @@
      since main.js calls currentUser() to detect a returning session — but
      the loading state in #app covers the extra round trip and the bytes
      never need to live in the critical-path bundle. -->
-<script type="module" src="/assets/js/main.js?v=1778642504"></script>
+<script type="module" src="/assets/js/main.js?v=1779087891"></script>
 </body>
 </html>

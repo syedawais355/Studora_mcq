@@ -1,5 +1,5 @@
 // Top bar — sticky, Studora SVG mark + "tudora" wordmark + nav + auth CTA.
-import { state } from '../core/state.js?v=1778642504';
+import { state } from '../core/state.js?v=1779087891';
 
 // Cross-tab re-render trigger (#22). Swaps the existing `.nb-top` element
 // in-place so the mistake badge / streak pill update from the freshly

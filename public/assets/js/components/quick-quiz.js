@@ -6,10 +6,10 @@
 // The component renders synchronously off `state.cats`, so the dropdown is
 // pre-populated by the time the home view paints. On submit we navigate to
 // `/quiz?cat=<slug>&n=<count>` — the existing quiz page handles the rest.
-import { esc, cleanTitle } from '../core/helpers.js?v=1778642504';
-import { state } from '../core/state.js?v=1778642504';
-import { toast } from '../core/toast.js?v=1778642504';
-import { navigate } from '../core/router.js?v=1778642504';
+import { esc, cleanTitle } from '../core/helpers.js?v=1779087891';
+import { state } from '../core/state.js?v=1779087891';
+import { toast } from '../core/toast.js?v=1779087891';
+import { navigate } from '../core/router.js?v=1779087891';
 
 const COUNTS = [10, 20, 30];
 const DEFAULT_COUNT = 10;

@@ -6,7 +6,7 @@
 // stays on-device. Only the signed-in user identity (state.user) comes from
 // Supabase Auth.
 
-import * as storage from './storage.js?v=1778642504';
+import * as storage from './storage.js?v=1779087891';
 
 export const FREE_PAGES = 5;
 

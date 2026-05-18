@@ -5,17 +5,17 @@
 // only pulls in the page renderer the current URL actually needs. Sibling
 // page modules and the modal components (download / report / exam-download)
 // stay off the critical path until the user navigates to them or opens them.
-import { API } from './core/api.js?v=1778642504';
-import { state, hydrateFromStorage, setUser } from './core/state.js?v=1778642504';
-import { register, bootFromPath } from './core/router.js?v=1778642504';
-import { onAuthChange, currentUser, signOut } from './core/auth.js?v=1778642504';
-import { releaseWall } from './components/login-wall.js?v=1778642504';
-import { toast } from './core/toast.js?v=1778642504';
+import { API } from './core/api.js?v=1779087891';
+import { state, hydrateFromStorage, setUser } from './core/state.js?v=1779087891';
+import { register, bootFromPath } from './core/router.js?v=1779087891';
+import { onAuthChange, currentUser, signOut } from './core/auth.js?v=1779087891';
+import { releaseWall } from './components/login-wall.js?v=1779087891';
+import { toast } from './core/toast.js?v=1779087891';
 // The page renderers are NOT statically imported — they're behind dynamic
 // import() thunks below so first paint only pulls the route the URL needs.
 // rerenderTopbar is imported eagerly so the storage-event listener can swap
 // the topbar in place across tabs without an extra round trip.
-import { topbar, rerenderTopbar } from './components/topbar.js?v=1778642504';
+import { topbar, rerenderTopbar } from './components/topbar.js?v=1779087891';
 
 const root = document.getElementById('app');
 
@@ -23,17 +23,17 @@ const root = document.getElementById('app');
 // browser only fetches the one the current route resolves to. params is
 // threaded through so renderers that take arguments (renderQuestion) still
 // receive them; extra params on the others are harmless.
-register('home',      (params) => import('./pages/home.js?v=1778642504').then(m => m.renderHome(params)));
-register('subjects',  (params) => import('./pages/subjects.js?v=1778642504').then(m => m.renderSubjects(params)));
-register('exams',     (params) => import('./pages/exams.js?v=1778642504').then(m => m.renderExams(params)));
-register('category',  (params) => import('./pages/category.js?v=1778642504').then(m => m.renderCategory(params)));
-register('exam',      (params) => import('./pages/exam.js?v=1778642504').then(m => m.renderExam(params)));
-register('about',     (params) => import('./pages/about.js?v=1778642504').then(m => m.renderAbout(params)));
-register('bookmarks', (params) => import('./pages/bookmarks.js?v=1778642504').then(m => m.renderBookmarks(params)));
-register('mistakes',  (params) => import('./pages/mistakes.js?v=1778642504').then(m => m.renderMistakes(params)));
-register('question',  (params) => import('./pages/question.js?v=1778642504').then(m => m.renderQuestion(params)));
-register('quiz',      (params) => import('./pages/quiz.js?v=1778642504').then(m => m.renderQuiz(params)));
-register('analytics', (params) => import('./pages/analytics.js?v=1778642504').then(m => m.renderAnalytics(params)));
+register('home',      (params) => import('./pages/home.js?v=1779087891').then(m => m.renderHome(params)));
+register('subjects',  (params) => import('./pages/subjects.js?v=1779087891').then(m => m.renderSubjects(params)));
+register('exams',     (params) => import('./pages/exams.js?v=1779087891').then(m => m.renderExams(params)));
+register('category',  (params) => import('./pages/category.js?v=1779087891').then(m => m.renderCategory(params)));
+register('exam',      (params) => import('./pages/exam.js?v=1779087891').then(m => m.renderExam(params)));
+register('about',     (params) => import('./pages/about.js?v=1779087891').then(m => m.renderAbout(params)));
+register('bookmarks', (params) => import('./pages/bookmarks.js?v=1779087891').then(m => m.renderBookmarks(params)));
+register('mistakes',  (params) => import('./pages/mistakes.js?v=1779087891').then(m => m.renderMistakes(params)));
+register('question',  (params) => import('./pages/question.js?v=1779087891').then(m => m.renderQuestion(params)));
+register('quiz',      (params) => import('./pages/quiz.js?v=1779087891').then(m => m.renderQuiz(params)));
+register('analytics', (params) => import('./pages/analytics.js?v=1779087891').then(m => m.renderAnalytics(params)));
 
 // Delegated click-handler for actions baked into the topbar / login wall —
 // these elements get re-rendered, so we attach once at the document level.
@@ -54,7 +54,7 @@ document.addEventListener('click', async (e) => {
   const action = target.dataset.action;
 
   if (action === 'signin') {
-    const { signInWithGoogle } = await import('./core/auth.js?v=1778642504');
+    const { signInWithGoogle } = await import('./core/auth.js?v=1779087891');
     try { await signInWithGoogle(); }
     catch (err) { console.error(err); toast('Sign-in failed — please try again.', 'err'); }
   }

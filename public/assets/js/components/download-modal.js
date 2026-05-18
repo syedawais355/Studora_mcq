@@ -1,9 +1,9 @@
 // PDF download modal — mirrors the login-wall visual style with a form for
 // file name and "all vs custom range" controls. Triggers a native browser
 // download via an <a download> link so there's no fetch/blob round-trip.
-import { toast } from '../core/toast.js?v=1778642504';
-import { cleanTitle } from '../core/helpers.js?v=1778642504';
-import { normalizeSlug } from '../core/icons.js?v=1778642504';
+import { toast } from '../core/toast.js?v=1779087891';
+import { cleanTitle } from '../core/helpers.js?v=1779087891';
+import { normalizeSlug } from '../core/icons.js?v=1779087891';
 
 // Keep in sync with MAX_ALL in /api/category-pdf.js — the server caps total at this.
 const HARD_MAX = 3000;

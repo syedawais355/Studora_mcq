@@ -8,10 +8,10 @@
 //   - Page counter is mirrored across localStorage / sessionStorage / cookie
 //     (see core/storage.js) — wiping any single store doesn't reset progress.
 //   - Browser back/forward re-runs the gate (router popstate → bootFromPath).
-import { state, trackPage as trackPageStorage, isWalledOff } from '../core/state.js?v=1778642504';
-import { signInWithGoogle } from '../core/auth.js?v=1778642504';
-import { toast } from '../core/toast.js?v=1778642504';
-import { studoraLockup } from './topbar.js?v=1778642504';
+import { state, trackPage as trackPageStorage, isWalledOff } from '../core/state.js?v=1779087891';
+import { signInWithGoogle } from '../core/auth.js?v=1779087891';
+import { toast } from '../core/toast.js?v=1779087891';
+import { studoraLockup } from './topbar.js?v=1779087891';
 
 const APP_ID = 'app';
 let observer = null;

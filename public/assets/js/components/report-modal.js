@@ -1,8 +1,8 @@
 // Report modal — opens when a user clicks "report" on any MCQ. Posts to
 // /api/report with the chosen reason + optional details, then closes with a
 // confirmation toast. Mirrors the download-modal aesthetic.
-import { toast } from '../core/toast.js?v=1778642504';
-import { state } from '../core/state.js?v=1778642504';
+import { toast } from '../core/toast.js?v=1779087891';
+import { state } from '../core/state.js?v=1779087891';
 
 const REASONS = [
   { id: 'wrong_answer', label: 'Wrong answer marked', hint: 'The correct option is incorrect.',  icon: 'x' },

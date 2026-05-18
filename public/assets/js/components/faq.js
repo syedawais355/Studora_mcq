@@ -1,5 +1,5 @@
 // FAQ accordion — dashed dividers, + → × on open.
-import { esc } from '../core/helpers.js?v=1778642504';
+import { esc } from '../core/helpers.js?v=1779087891';
 
 export function buildFAQ(container, faqs) {
   if (!container) return;

@@ -1277,118 +1277,230 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(-
 }
 
 /* ==== components/share-result.css ==== */
-/* Share result panel — sits below the quiz / exam end-of-session card.
-   Reuses the .nb-qz-card paper aesthetic so the page feels continuous: ink
-   border, paper background, yellow corner sticker, mono labels for chrome and
-   Fraunces-italic accents for emotion. */
+/* Share result panel (v2) — premium, brand-aligned scorecard sharer.
+   Sits below the end-of-session card on quiz / exam pages. Reuses the
+   notebook aesthetic: ink border, paper background, yellow corner sticker,
+   mono chrome, Fraunces-italic for emotion. Adds: PNG preview, 7-channel
+   share strip, native share sheet, download + caption utilities. */
 
-.nb-share{margin:18px 0 32px;animation:nbRise .28s ease-out}
+.nb-share{margin:24px 0 36px;animation:nbRise .28s ease-out}
 
-.nb-share-card{
+.nb-share-card.nb-share-v2{
   background:var(--paper);
   border:1.5px solid var(--ink);
-  border-radius:8px;
-  padding:26px 26px 22px;
-  max-width:760px;margin:0 auto;
+  border-radius:10px;
+  padding:28px 28px 24px;
+  max-width:920px;margin:0 auto;
   position:relative;
-  box-shadow:var(--shadow-pop);
+  box-shadow:3px 3px 0 var(--ink);
 }
-.nb-share-card::before{
+.nb-share-card.nb-share-v2::before{
   content:"";position:absolute;
-  inset:-7px -7px auto auto;
-  width:46px;height:46px;background:var(--mint);
+  inset:-9px -9px auto auto;
+  width:56px;height:56px;
+  background:var(--yellow);
   border:1.5px solid var(--ink);
-  transform:rotate(-6deg);
+  transform:rotate(8deg);
+  z-index:-1;border-radius:6px;
+}
+.nb-share-card.nb-share-v2::after{
+  content:"";position:absolute;
+  inset:auto auto -8px -8px;
+  width:46px;height:46px;
+  background:var(--mint);
+  border:1.5px solid var(--ink);
+  transform:rotate(-7deg);
   z-index:-1;border-radius:6px;
 }
 
 @media(max-width:640px){
-  .nb-share-card{padding:20px 18px 18px}
+  .nb-share-card.nb-share-v2{padding:22px 18px 18px;border-radius:8px}
+  .nb-share-card.nb-share-v2::before{width:42px;height:42px;inset:-6px -6px auto auto}
 }
+
+/* ---- Header ---- */
+.nb-share-head{margin-bottom:18px}
 
 .nb-share-tag{
-  display:inline-block;padding:4px 11px;margin-bottom:12px;
+  display:inline-flex;align-items:center;gap:8px;
+  padding:5px 12px;margin-bottom:14px;
   border:1.5px solid var(--ink);border-radius:999px;background:var(--paper-2);
-  font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.1em;
+  font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.14em;
   text-transform:uppercase;color:var(--ink);
 }
+.nb-share-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--ink-3);
+}
+.nb-share-green .nb-share-dot{background:var(--green)}
+.nb-share-amber .nb-share-dot{background:#b88a2a}
+.nb-share-ochre .nb-share-dot{background:#7a4a2a}
+.nb-share-red   .nb-share-dot{background:var(--red)}
 
 .nb-share-card h3{
-  margin:0 0 6px;font-size:24px;font-weight:800;letter-spacing:-.02em;line-height:1.15;
+  margin:0 0 8px;font-family:var(--sans);font-weight:800;
+  font-size:26px;letter-spacing:-.02em;line-height:1.15;color:var(--ink);
 }
 .nb-share-card h3 em{
   font-family:var(--serif);font-style:italic;font-weight:500;color:var(--ink-2);
 }
 
 .nb-share-sub{
-  margin:0 0 18px;color:var(--ink-2);
-  font-family:var(--serif);font-style:italic;font-size:15px;line-height:1.5;
+  margin:0;color:var(--ink-2);
+  font-family:var(--serif);font-style:italic;font-size:16px;line-height:1.55;
+  max-width:640px;
+}
+.nb-share-sub em{font-style:italic;color:var(--ink);font-weight:500}
+
+/* ---- Hero: preview + side panel ---- */
+.nb-share-hero{
+  display:grid;grid-template-columns:1.2fr .8fr;gap:18px;
+  margin:20px 0 18px;
+}
+@media(max-width:780px){.nb-share-hero{grid-template-columns:1fr}}
+
+.nb-share-preview{
+  margin:0;border:1.5px solid var(--ink);border-radius:8px;
+  background:var(--paper-2);overflow:hidden;
+  box-shadow:2px 2px 0 var(--ink);
+}
+.nb-share-preview img{
+  display:block;width:100%;height:auto;background:var(--paper-2);
+  /* The fetch isn't always instant; a soft skeleton keeps the layout calm. */
+  min-height:140px;
+}
+.nb-share-preview figcaption{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:9px 13px;border-top:1.5px solid var(--ink);background:var(--paper);
+  font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.06em;
+}
+.nb-share-preview figcaption a{
+  color:var(--ink);text-decoration:none;
+  border-bottom:1px solid var(--ink-3);font-weight:600;
+}
+.nb-share-preview figcaption a:hover{border-bottom-color:var(--ink)}
+
+.nb-share-side{display:flex;flex-direction:column;gap:14px}
+
+.nb-share-statgrid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:8px;
+}
+.nb-share-statgrid .ss{
+  border:1.5px solid var(--ink);border-radius:8px;background:var(--paper-2);
+  padding:12px;display:flex;flex-direction:column;align-items:flex-start;gap:2px;
+}
+.nb-share-statgrid .ss b{
+  font-family:var(--serif);font-style:italic;font-weight:500;
+  font-size:28px;letter-spacing:-.02em;line-height:1;color:var(--ink);
+}
+.nb-share-statgrid .ss b.g{color:var(--green)}
+.nb-share-statgrid .ss b.r{color:var(--red)}
+.nb-share-statgrid .ss b.a{color:#b88a2a}
+.nb-share-statgrid .ss em{
+  font-family:var(--mono);font-style:normal;font-size:10px;
+  color:var(--ink-3);letter-spacing:.1em;text-transform:uppercase;font-weight:600;
 }
 
-/* URL row — readonly input + copy button, paired in a single bordered box. */
+/* ---- URL row ---- */
 .nb-share-url{
   display:flex;align-items:stretch;
   border:1.5px solid var(--ink);border-radius:8px;
   background:var(--paper);overflow:hidden;
-  margin-bottom:14px;transition:box-shadow .12s;
+  transition:box-shadow .12s;
 }
-.nb-share-url:focus-within{box-shadow:var(--shadow-pop)}
+.nb-share-url:focus-within{box-shadow:2px 2px 0 var(--ink)}
 
 .nb-share-input{
   flex:1;min-width:0;border:0;outline:none;background:transparent;
   padding:11px 12px;
   font-family:var(--mono);font-size:12.5px;color:var(--ink-2);
+  text-overflow:ellipsis;
 }
 
 .nb-share-copy{
   display:inline-flex;align-items:center;gap:8px;
-  padding:0 16px;
-  background:var(--paper-2);
+  padding:0 16px;background:var(--paper-2);
   border:0;border-left:1.5px solid var(--ink);
-  font-family:var(--mono);font-size:12px;font-weight:600;
-  letter-spacing:.04em;color:var(--ink);
-  cursor:pointer;transition:background .12s;
+  font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.04em;
+  color:var(--ink);cursor:pointer;transition:background .12s;
 }
 .nb-share-copy:hover{background:var(--yellow)}
 .nb-share-copy svg{flex-shrink:0}
 
-/* Action row — wraps on narrow screens so the three buttons always fit. */
-.nb-share-row{
-  display:flex;flex-wrap:wrap;gap:10px;
-  margin-bottom:14px;
+/* ---- Channels grid ---- */
+.nb-share-channels{
+  display:grid;grid-template-columns:repeat(7,1fr);gap:8px;
+  margin:0 0 14px;
 }
+@media(max-width:780px){.nb-share-channels{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:480px){.nb-share-channels{grid-template-columns:repeat(3,1fr)}}
 
-.nb-share-btn{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:11px 16px;
+.nb-ch{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+  padding:13px 6px;
   border:1.5px solid var(--ink);border-radius:8px;
-  background:var(--paper);color:var(--ink);
-  font-family:var(--mono);font-size:12.5px;font-weight:600;
-  letter-spacing:.02em;cursor:pointer;text-decoration:none;
-  transition:transform .12s,box-shadow .12s,background .12s;
+  background:var(--paper);color:var(--ink);text-decoration:none;cursor:pointer;
+  font-family:var(--mono);font-size:10.5px;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;text-align:center;
+  transition:transform .12s,box-shadow .12s,background .12s,color .12s;
 }
-.nb-share-btn:hover{
-  transform:translate(-1px,-1px);box-shadow:var(--shadow-pop);
+.nb-ch:hover{transform:translate(-1px,-1px);box-shadow:2px 2px 0 var(--ink)}
+.nb-ch:active{transform:translate(0,0);box-shadow:none}
+.nb-ch svg{width:22px;height:22px}
+.nb-ch span{display:block}
+
+.nb-ch-wa:hover{background:#cfe9d4}
+.nb-ch-x:hover{background:var(--ink);color:var(--paper)}
+.nb-ch-li:hover{background:#cfe1f5}
+.nb-ch-fb:hover{background:#cfe1f5}
+.nb-ch-tg:hover{background:#cfe5ef}
+.nb-ch-mail:hover{background:var(--paper-2)}
+
+.nb-ch-native{background:var(--ink);color:var(--paper)}
+.nb-ch-native:hover{background:#0b0c10;color:var(--yellow)}
+
+/* ---- Utility row (download / copy caption / open page) ---- */
+.nb-share-util{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+
+.nb-share-util-btn{
+  flex:1;min-width:160px;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:11px 14px;
+  border:1.5px solid var(--ink);border-radius:8px;background:var(--paper);
+  color:var(--ink);text-decoration:none;cursor:pointer;
+  font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.04em;
+  transition:background .12s,transform .12s,box-shadow .12s;
 }
-.nb-share-btn:active{transform:translate(0,0);box-shadow:none}
-.nb-share-btn svg{flex-shrink:0}
+.nb-share-util-btn:hover{background:var(--paper-2);transform:translate(-1px,-1px);box-shadow:2px 2px 0 var(--ink-3)}
+.nb-share-util-btn svg{flex-shrink:0}
 
-.nb-share-btn.primary{background:var(--ink);color:var(--paper)}
-.nb-share-btn.primary:hover{box-shadow:2px 2px 0 var(--ink-3)}
+/* ---- Caption card ---- */
+.nb-share-caption{
+  border:1px dashed var(--ink-3);border-radius:8px;background:var(--paper-2);
+  padding:14px 16px;margin:0 0 14px;
+}
+.nb-share-caption-label{
+  display:block;margin-bottom:6px;
+  font-family:var(--mono);font-size:10px;
+  color:var(--ink-3);letter-spacing:.14em;text-transform:uppercase;font-weight:600;
+}
+.nb-share-caption p{
+  margin:0;font-family:var(--serif);font-style:italic;font-size:15px;
+  color:var(--ink);line-height:1.55;
+}
 
-.nb-share-btn.wa:hover{background:var(--mint)}
-.nb-share-btn.tw:hover{background:var(--paper-2)}
-
+/* ---- Foot note ---- */
 .nb-share-foot{
   margin:0;color:var(--ink-3);
   font-family:var(--mono);font-size:11px;letter-spacing:.02em;
-  line-height:1.5;
+  line-height:1.55;
 }
 
-/* Keyboard focus polish — same outline as the rest of the app for consistency. */
+/* ---- Focus polish ---- */
 .nb-share-input:focus-visible,
 .nb-share-copy:focus-visible,
-.nb-share-btn:focus-visible{
+.nb-ch:focus-visible,
+.nb-share-util-btn:focus-visible{
   outline:2px solid var(--ink-3);outline-offset:2px;
 }
 

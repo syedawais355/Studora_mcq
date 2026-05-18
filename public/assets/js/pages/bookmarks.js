@@ -3,7 +3,7 @@
 // (default = null, surfaced under "All saved"). The page shows a folder tab
 // strip above the list, a small folder chip on every card for one-click
 // re-filing, and a "+ New folder" affordance for fresh buckets.
-import { esc, cleanTitle, skeletons, showErrorState } from '../core/helpers.js?v=1778642504';
+import { esc, cleanTitle, skeletons, showErrorState } from '../core/helpers.js?v=1779087891';
 import {
   state,
   resetSession,
@@ -12,18 +12,18 @@ import {
   setBookmarkFolder,
   renameBookmarkFolder,
   deleteBookmarkFolder,
-} from '../core/state.js?v=1778642504';
+} from '../core/state.js?v=1779087891';
 import {
   validateFolderName,
   BOOKMARK_FOLDER_CAP,
   BOOKMARK_FOLDER_NAME_MAX,
-} from '../core/storage.js?v=1778642504';
-import { API } from '../core/api.js?v=1778642504';
-import { topbar, footer } from '../components/topbar.js?v=1778642504';
-import { mcqItem, wireMcqCards } from '../components/mcq.js?v=1778642504';
-import { trackPage } from '../components/login-wall.js?v=1778642504';
-import { toast } from '../core/toast.js?v=1778642504';
-import { wireNav } from '../core/router.js?v=1778642504';
+} from '../core/storage.js?v=1779087891';
+import { API } from '../core/api.js?v=1779087891';
+import { topbar, footer } from '../components/topbar.js?v=1779087891';
+import { mcqItem, wireMcqCards } from '../components/mcq.js?v=1779087891';
+import { trackPage } from '../components/login-wall.js?v=1779087891';
+import { toast } from '../core/toast.js?v=1779087891';
+import { wireNav } from '../core/router.js?v=1779087891';
 
 const root = () => document.getElementById('app');
 
