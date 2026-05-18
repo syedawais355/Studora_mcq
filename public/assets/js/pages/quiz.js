@@ -1,14 +1,14 @@
 // Quiz of the day — focused 10-question quiz, one MCQ at a time, with a live
 // progress bar, instant feedback, and a results card at the end. Premium feel,
 // matches the Studora paper aesthetic.
-import { esc, cleanTitle, skeletons, showErrorState } from '../core/helpers.js?v=1778642504';
-import { state, resetSession, recordCorrect, recordWrong } from '../core/state.js?v=1778642504';
-import { API } from '../core/api.js?v=1778642504';
-import { topbar, footer } from '../components/topbar.js?v=1778642504';
-import { confetti } from '../core/confetti.js?v=1778642504';
-import { trackPage } from '../components/login-wall.js?v=1778642504';
-import { renderShareResult } from '../components/share-result.js?v=1778642504';
-import { wireNav, navigate } from '../core/router.js?v=1778642504';
+import { esc, cleanTitle, skeletons, showErrorState } from '../core/helpers.js?v=1779087891';
+import { state, resetSession, recordCorrect, recordWrong } from '../core/state.js?v=1779087891';
+import { API } from '../core/api.js?v=1779087891';
+import { topbar, footer } from '../components/topbar.js?v=1779087891';
+import { confetti } from '../core/confetti.js?v=1779087891';
+import { trackPage } from '../components/login-wall.js?v=1779087891';
+import { renderShareResult } from '../components/share-result.js?v=1779087891';
+import { wireNav, navigate } from '../core/router.js?v=1779087891';
 
 const root = () => document.getElementById('app');
 const DEFAULT_COUNT = 10;

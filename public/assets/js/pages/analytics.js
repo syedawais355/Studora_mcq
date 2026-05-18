@@ -17,12 +17,12 @@
 // with at most "today" and "yesterday" filled in, and a footnote that flags
 // the full heatmap as a follow-up. When per-day tracking ships, this file is
 // the only one that needs changing.
-import { esc, cleanTitle, showErrorState } from '../core/helpers.js?v=1778642504';
-import { state, resetSession } from '../core/state.js?v=1778642504';
-import { API } from '../core/api.js?v=1778642504';
-import { topbar, footer } from '../components/topbar.js?v=1778642504';
-import { trackPage } from '../components/login-wall.js?v=1778642504';
-import { wireNav } from '../core/router.js?v=1778642504';
+import { esc, cleanTitle, showErrorState } from '../core/helpers.js?v=1779087891';
+import { state, resetSession } from '../core/state.js?v=1779087891';
+import { API } from '../core/api.js?v=1779087891';
+import { topbar, footer } from '../components/topbar.js?v=1779087891';
+import { trackPage } from '../components/login-wall.js?v=1779087891';
+import { wireNav } from '../core/router.js?v=1779087891';
 
 const root = () => document.getElementById('app');
 

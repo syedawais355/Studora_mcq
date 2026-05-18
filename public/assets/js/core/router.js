@@ -2,8 +2,8 @@
 // All routes resolve to plain paths (/subjects/<slug>, /exams/<slug>) — no `#`.
 // Vercel rewrites every non-/api/, non-/assets/ path to /index.html so deep links work
 // on hard reload; bootFromPath() then re-hydrates the route from location.pathname.
-import { state } from './state.js?v=1778642504';
-import { normalizeSlug } from './icons.js?v=1778642504';
+import { state } from './state.js?v=1779087891';
+import { normalizeSlug } from './icons.js?v=1779087891';
 
 const handlers = new Map();
 let currentView = null;

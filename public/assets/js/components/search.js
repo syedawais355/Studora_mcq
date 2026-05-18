@@ -2,11 +2,11 @@
 // Subjects & exams match in-memory (47 + 50 items, instant). Bookmarked MCQs are
 // matched in-memory once we've hydrated their text. MCQs go through the
 // /api/search RPC (full-text via search_vector + ts_rank).
-import { esc, cleanTitle } from '../core/helpers.js?v=1778642504';
-import { icon, catIconImg, normalizeSlug } from '../core/icons.js?v=1778642504';
-import { state } from '../core/state.js?v=1778642504';
-import { API } from '../core/api.js?v=1778642504';
-import { navigate } from '../core/router.js?v=1778642504';
+import { esc, cleanTitle } from '../core/helpers.js?v=1779087891';
+import { icon, catIconImg, normalizeSlug } from '../core/icons.js?v=1779087891';
+import { state } from '../core/state.js?v=1779087891';
+import { API } from '../core/api.js?v=1779087891';
+import { navigate } from '../core/router.js?v=1779087891';
 
 const MIN_LEN = 2;
 let bookmarkCache = null; // { ids: number[], rows: Array<{id,text,category_id}> }

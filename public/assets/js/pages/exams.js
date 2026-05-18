@@ -1,10 +1,10 @@
 // Exams index page.
-import { esc } from '../core/helpers.js?v=1778642504';
-import { state } from '../core/state.js?v=1778642504';
-import { EXAM_META } from '../core/data.js?v=1778642504';
-import { topbar, footer } from '../components/topbar.js?v=1778642504';
-import { trackPage } from '../components/login-wall.js?v=1778642504';
-import { wireNav } from '../core/router.js?v=1778642504';
+import { esc } from '../core/helpers.js?v=1779087891';
+import { state } from '../core/state.js?v=1779087891';
+import { EXAM_META } from '../core/data.js?v=1779087891';
+import { topbar, footer } from '../components/topbar.js?v=1779087891';
+import { trackPage } from '../components/login-wall.js?v=1779087891';
+import { wireNav } from '../core/router.js?v=1779087891';
 
 const root = () => document.getElementById('app');
 

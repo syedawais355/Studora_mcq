@@ -2,7 +2,7 @@
 // deterministic question per UTC date served by /api/qotd, so peers can
 // compare picks. Attempt state lives in localStorage under
 // `studora_qotd_<YYYY-MM-DD>` — no account needed for v1.
-import { esc, cleanTitle } from '../core/helpers.js?v=1778642504';
+import { esc, cleanTitle } from '../core/helpers.js?v=1779087891';
 
 const LETTERS = ['A', 'B', 'C', 'D'];
 const STORAGE_PREFIX = 'studora_qotd_';

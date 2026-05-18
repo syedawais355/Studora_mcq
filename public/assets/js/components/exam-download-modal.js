@@ -2,8 +2,8 @@
 // include (all by default). For exams whose total MCQs exceed SINGLE_CAP, the
 // modal offers a "split into volumes" mode so the entire content is downloadable
 // across N independent PDFs.
-import { toast } from '../core/toast.js?v=1778642504';
-import { cleanTitle } from '../core/helpers.js?v=1778642504';
+import { toast } from '../core/toast.js?v=1779087891';
+import { cleanTitle } from '../core/helpers.js?v=1779087891';
 
 // Keep in sync with MAX_TOTAL in /api/exam-pdf.js.
 const SINGLE_CAP = 8000;

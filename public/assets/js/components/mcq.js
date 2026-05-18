@@ -1,12 +1,12 @@
 // MCQ card — render + interactivity (test-mode picks, bookmarks, streak,
 // margin notes). Streak/solved/bookmarks all flow through state.js so they
 // persist via localStorage automatically.
-import { esc } from '../core/helpers.js?v=1778642504';
-import { icon } from '../core/icons.js?v=1778642504';
-import { state, recordCorrect, recordWrong, toggleBookmark, recordMistake, clearMistake, recordAttempt } from '../core/state.js?v=1778642504';
-import { confetti } from '../core/confetti.js?v=1778642504';
-import { toast } from '../core/toast.js?v=1778642504';
-import { openReportModal } from './report-modal.js?v=1778642504';
+import { esc } from '../core/helpers.js?v=1779087891';
+import { icon } from '../core/icons.js?v=1779087891';
+import { state, recordCorrect, recordWrong, toggleBookmark, recordMistake, clearMistake, recordAttempt } from '../core/state.js?v=1779087891';
+import { confetti } from '../core/confetti.js?v=1779087891';
+import { toast } from '../core/toast.js?v=1779087891';
+import { openReportModal } from './report-modal.js?v=1779087891';
 
 // `subjectLabel` is the human-readable subject shown after "Q 001 ·" in the
 // card header. Pass an empty string (or omit) to hide it — e.g. on the

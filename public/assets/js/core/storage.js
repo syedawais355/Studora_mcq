@@ -599,7 +599,7 @@ export function recordMistake(questionId) {
   // toast circular import on boot; silently skipped if the toast module or
   // its mount aren't ready yet (#26).
   if (list.length === MISTAKE_CAP) {
-    import('./toast.js?v=1778642504')
+    import('./toast.js?v=1779087891')
       .then(m => m?.toast?.('Mistake book is full — oldest entry dropped', 'err'))
       .catch(() => { /* boot path or no toast host — silent */ });
   }

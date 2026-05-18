@@ -1,15 +1,15 @@
 // Category (subject) page — MCQ list with pagination + test-mode toggle.
-import { esc, cleanTitle, skeletons, showErrorState } from '../core/helpers.js?v=1778642504';
-import { state, resetSession, masteryFor } from '../core/state.js?v=1778642504';
-import { BLURBS } from '../core/data.js?v=1778642504';
-import { normalizeSlug } from '../core/icons.js?v=1778642504';
-import { API } from '../core/api.js?v=1778642504';
-import { topbar, footer } from '../components/topbar.js?v=1778642504';
-import { mcqItem, wireMcqCards } from '../components/mcq.js?v=1778642504';
-import { buildPag } from '../components/pagination.js?v=1778642504';
-import { trackPage } from '../components/login-wall.js?v=1778642504';
-import { openDownloadModal } from '../components/download-modal.js?v=1778642504';
-import { wireNav, navigate } from '../core/router.js?v=1778642504';
+import { esc, cleanTitle, skeletons, showErrorState } from '../core/helpers.js?v=1779087891';
+import { state, resetSession, masteryFor } from '../core/state.js?v=1779087891';
+import { BLURBS } from '../core/data.js?v=1779087891';
+import { normalizeSlug } from '../core/icons.js?v=1779087891';
+import { API } from '../core/api.js?v=1779087891';
+import { topbar, footer } from '../components/topbar.js?v=1779087891';
+import { mcqItem, wireMcqCards } from '../components/mcq.js?v=1779087891';
+import { buildPag } from '../components/pagination.js?v=1779087891';
+import { trackPage } from '../components/login-wall.js?v=1779087891';
+import { openDownloadModal } from '../components/download-modal.js?v=1779087891';
+import { wireNav, navigate } from '../core/router.js?v=1779087891';
 
 const root = () => document.getElementById('app');
 

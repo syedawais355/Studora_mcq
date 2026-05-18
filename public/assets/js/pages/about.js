@@ -1,7 +1,7 @@
 // About page — short, calm, with the tagline as the centerpiece.
-import { topbar, footer } from '../components/topbar.js?v=1778642504';
-import { trackPage } from '../components/login-wall.js?v=1778642504';
-import { wireNav } from '../core/router.js?v=1778642504';
+import { topbar, footer } from '../components/topbar.js?v=1779087891';
+import { trackPage } from '../components/login-wall.js?v=1779087891';
+import { wireNav } from '../core/router.js?v=1779087891';
 
 const root = () => document.getElementById('app');
 

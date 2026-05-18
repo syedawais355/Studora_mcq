@@ -1,16 +1,16 @@
 // Exam pillar page — hero stats + subject tabs + MCQ feed + FAQ.
-import { esc, cleanTitle, animCount, skeletons, showErrorState } from '../core/helpers.js?v=1778642504';
-import { state, resetSession } from '../core/state.js?v=1778642504';
-import { EXAM_META } from '../core/data.js?v=1778642504';
-import { topbar, footer } from '../components/topbar.js?v=1778642504';
-import { mcqItem, wireMcqCards } from '../components/mcq.js?v=1778642504';
-import { buildPag } from '../components/pagination.js?v=1778642504';
-import { buildFAQ } from '../components/faq.js?v=1778642504';
-import { trackPage } from '../components/login-wall.js?v=1778642504';
-import { openExamDownloadModal } from '../components/exam-download-modal.js?v=1778642504';
-import { renderShareResult } from '../components/share-result.js?v=1778642504';
-import { wireNav, navigate } from '../core/router.js?v=1778642504';
-import { API } from '../core/api.js?v=1778642504';
+import { esc, cleanTitle, animCount, skeletons, showErrorState } from '../core/helpers.js?v=1779087891';
+import { state, resetSession } from '../core/state.js?v=1779087891';
+import { EXAM_META } from '../core/data.js?v=1779087891';
+import { topbar, footer } from '../components/topbar.js?v=1779087891';
+import { mcqItem, wireMcqCards } from '../components/mcq.js?v=1779087891';
+import { buildPag } from '../components/pagination.js?v=1779087891';
+import { buildFAQ } from '../components/faq.js?v=1779087891';
+import { trackPage } from '../components/login-wall.js?v=1779087891';
+import { openExamDownloadModal } from '../components/exam-download-modal.js?v=1779087891';
+import { renderShareResult } from '../components/share-result.js?v=1779087891';
+import { wireNav, navigate } from '../core/router.js?v=1779087891';
+import { API } from '../core/api.js?v=1779087891';
 
 const root = () => document.getElementById('app');
 
