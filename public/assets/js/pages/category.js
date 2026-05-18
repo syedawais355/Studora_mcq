@@ -26,17 +26,13 @@ export function renderCategory() {
   const count = (cat.answerable_questions || 0).toLocaleString();
   const pages = Math.ceil((cat.answerable_questions || 0) / state.perPage);
 
-  // Topic mastery (#57). A quiet italic-small-caps annotation sits below the
-  // title; the resting state for a brand-new subject is "untouched" in
-  // --ink-3 so it reads like a margin note rather than a badge.
+  // Topic mastery (#57). Only render the annotation once the visitor has
+  // actually attempted the subject — the original "Untouched" resting state
+  // was visual noise on a first visit.
   const mastery = masteryFor(cat.category_id);
-  const masteryAccuracy = mastery.accuracy != null
-    ? `${Math.round(mastery.accuracy * 100)}% over last ${mastery.attempts}`
+  const masteryHtml = mastery.attempts > 0
+    ? `<div class="mastery-label" title="${esc(`${mastery.label} — ${Math.round(mastery.accuracy * 100)}% over last ${mastery.attempts}`)}" aria-label="Mastery: ${esc(mastery.label)}">${esc(mastery.label)}.</div>`
     : '';
-  const masteryTitle = mastery.accuracy != null
-    ? `${mastery.label} — ${masteryAccuracy}`
-    : 'No attempts on this subject yet';
-  const masteryClass = mastery.attempts === 0 ? 'mastery-label is-untouched' : 'mastery-label';
 
   r.innerHTML = `
   ${topbar('subjects')}
@@ -50,7 +46,7 @@ export function renderCategory() {
     <header class="nb-cathead">
       <div class="tag">Subject · question bank</div>
       <h1>${esc(title)} <em>MCQs</em></h1>
-      <div class="${masteryClass}" title="${esc(masteryTitle)}" aria-label="Mastery: ${esc(masteryTitle)}">${esc(mastery.label)}.</div>
+      ${masteryHtml}
       <div class="meta">
         <span><b>${count}</b> questions</span>
         <span><b>${pages}</b> pages</span>

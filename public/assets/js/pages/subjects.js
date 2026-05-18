@@ -23,19 +23,19 @@ export function renderSubjects() {
     </div>
     <div class="nb-cats">
       ${sorted.length ? sorted.map(c => {
-        // Topic mastery (#57) — small italic small-caps annotation next to
-        // each subject in the grid. The "untouched" resting state stays in
-        // --ink-3 so a fresh user doesn't see a wall of labels shouting.
+        // Topic mastery (#57) — only surface the label once the visitor has
+        // actually attempted the subject. The original "Untouched" resting
+        // state was visual noise on a fresh visit, so we hide it entirely
+        // until there's real data to report.
         const m = masteryFor(c.category_id);
-        const tip = m.accuracy != null
-          ? `${m.label} — ${Math.round(m.accuracy * 100)}% over last ${m.attempts}`
-          : 'No attempts on this subject yet';
-        const cls = m.attempts === 0 ? 'mastery-label is-untouched' : 'mastery-label';
+        const masteryHtml = m.attempts > 0
+          ? `<em class="mastery-label" title="${esc(`${m.label} — ${Math.round(m.accuracy * 100)}% over last ${m.attempts}`)}" aria-label="Mastery: ${esc(m.label)}">${esc(m.label)}</em>`
+          : '';
         return `
         <a data-cat-id="${c.category_id}">
           <span class="ico">${catIconImg(c, cleanTitle(c.category_title || ''))}</span>
           <h4>${esc(cleanTitle(c.category_title || ''))}</h4>
-          <em class="${cls}" title="${esc(tip)}" aria-label="Mastery: ${esc(tip)}">${esc(m.label)}</em>
+          ${masteryHtml}
           <span>${(c.answerable_questions || 0).toLocaleString()}</span>
         </a>
       `;
